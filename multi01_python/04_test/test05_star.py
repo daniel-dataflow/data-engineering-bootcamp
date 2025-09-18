@@ -6,7 +6,8 @@
 *****
 '''
 def star01():
-    pass
+    for i in range(6):
+        print('*'*i)
 
 
 
@@ -19,8 +20,8 @@ def star01():
 *
 '''
 def star02():
-    pass
-
+    for i in range(5,0,-1):
+        print('*'*i)
 
 
 
@@ -32,7 +33,10 @@ def star02():
 *****
 '''
 def star03():
-    pass
+    for i in range(6):
+        a = '*'*i
+        c = f'{a:>5}'
+        print(c)
 
 
 
@@ -45,7 +49,10 @@ def star03():
     *
 '''
 def star04():
-    pass
+    for i in range(5, 0, -1):
+        a = '*' * i
+        c = f'{a:>5}'
+        print(c)
 
 
 
@@ -58,7 +65,12 @@ def star04():
 *********
 '''
 def star05():
-    pass
+    for i in range(10):
+        a = '*' * i
+        c = f'{a:^10}'
+        if i%2 != 0:
+            print(c)
+
 
 
 if __name__ == '__main__':

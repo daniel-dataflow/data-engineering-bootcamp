@@ -69,4 +69,4 @@ print(list(filter(lambda x: x > 1, num)))
 test_list = ["3", "6", None, "9", "", "a"]
 # hint! str.isdigit()
 # hint!! list, filter, lambda
-print(list(filter(lambda x: bool(x.isdigit()) , test_list)))
+print(list(filter(lambda x: x if(x == None) else x.isdigit() , test_list)))

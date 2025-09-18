@@ -13,7 +13,11 @@ students = [{'name': '홍길동', 'kor': 100, 'eng': 70, 'math': 89},
 [김선달]
 총점 : 275 	 평균 : 91.67
 '''
+sum = lambda x, y, z: x + y + z
 
-
-
+for i in students:
+    name = i['name'].replace("'", "")
+    print(f"[{name}]")
+    final_sum = sum(int(i['kor']), int(i['eng']), int(i['math']))
+    print(f"총점 :  {final_sum} 	 평균 : {final_sum / len(students):.2f}")
 

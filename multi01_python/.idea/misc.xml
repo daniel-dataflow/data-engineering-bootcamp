@@ -3,5 +3,5 @@
   <component name="Black">
     <option name="sdkName" value="multi01" />
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="$PROJECT_DIR$/../../miniconda3/envs/multi01" project-jdk-type="Python SDK" />
+  <component name="ProjectRootManager" version="2" project-jdk-name="multi01_python" project-jdk-type="Python SDK" />
 </project>
