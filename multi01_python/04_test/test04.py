@@ -11,7 +11,15 @@ def fibo(n):
 
     return print(*fibo_list)
 
-
+"""
+def fibo(n):
+    a, b = 0, 1
+    i = 0
+    while i < n :
+        print(a, end=" ")
+        a, b = b, a + b
+        i += 1
+"""
 
 if __name__ == '__main__':
     n = int(input('출력할 갯수 입력 : '))

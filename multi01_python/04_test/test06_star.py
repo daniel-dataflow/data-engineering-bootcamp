@@ -1,5 +1,20 @@
 # 해석하는 숙제
 # 1
+
+"""
+1) ['*' for i in range(i + 1)] : i가 0부터 i+1까지 반복하면서 * 생성 -> list에 담아라
+=> ["*"],
+=> ["*", "*"]
+...
+2)  [''.join(['*' for i in range(i + 1)]) for i in range(5)] : join은 리스트를 문자열로 바꿔준다.
+=> ["*"] => "*"
+=> ["*", "*"] => "**"
+...
+=>["*", "**", "***", ...] => "*****"
+3) '\n'.join([''.join(['*' for i in range(i + 1)]) for i in range(5)])
+=> "*\n**\n***\n****\n*****"
+print("*\n**\n***\n****\n*****")
+"""
 print('\n'.join([''.join(['*' for i in range(i + 1)]) for i in range(5)]))
 print('-----')
 

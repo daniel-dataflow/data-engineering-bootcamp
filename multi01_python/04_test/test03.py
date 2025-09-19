@@ -21,3 +21,12 @@ for i in students:
     final_sum = sum(int(i['kor']), int(i['eng']), int(i['math']))
     print(f"총점 :  {final_sum} 	 평균 : {final_sum / len(students):.2f}")
 
+"""
+for student in students:
+    name = student['name'].replace("'", "")
+    print(f"[student['name']}]")
+    score = list(filter(lambda x:type(x) == int, student.values()))
+    score_sum = sum(score)
+    score_avg = score_sum / len(score))
+    print(f"총점 : {scotr_sum} \t 평균 : {score_avg:.2f}")   
+"""
