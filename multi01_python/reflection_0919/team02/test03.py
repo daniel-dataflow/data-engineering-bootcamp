@@ -15,10 +15,24 @@
 """
 
 def prime_number(i: int) -> str:
-    pass
+    for j in range(1, i):
+        n = i % j
+
+    if n == 0:
+        print(f"{i}은 소수가 아닙니다.")
+    else:
+        print(f"{i}은 소수가 맞습니다.")
+
+    return
+
 
 def play() -> None:
-    pass
+    number = int(input("원하시는 숫자를 입력하세요(-1을 입력하면 종료합니다): "))
+    if number == -1:
+        pass
+    else:
+        prime_number(number)
+
 
 if __name__ == "__main__":
-    pass
+    play()

@@ -15,3 +15,15 @@ emergency	                   result
 (입출력 예 설명)
 emergency가 [30, 10, 23, 6, 100]이므로 응급도의 크기 순서대로 번호를 매긴 [2, 4, 3, 5, 1]를 return합니다.
 """
+
+
+def solution(emergency):
+    # emergency 리스트를 내림차순으로 정렬합니다.
+    sorted_emergency = sorted(emergency, reverse=True)
+
+    # 원래 emergency 리스트의 각 원소(e)가 정렬된 리스트에서 몇 번째 인덱스에 있는지 찾아 1을 더합니다.
+    return [sorted_emergency.index(e) + 1 for e in emergency]
+
+if __name__ == '__main__':
+    emergency = [30, 10, 23, 6, 100]
+    print(solution(emergency))

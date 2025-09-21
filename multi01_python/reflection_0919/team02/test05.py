@@ -13,7 +13,30 @@ from random import randint
 """
 
 def resident_number(**kwargs) -> None:
-    pass
+
+    year_cut_str = kwargs['year'][2:]
+    year_int = int(kwargs['year'])
+    end_num = str(randint(100000, 999999))
+
+
+    if (year_int < 2000):
+        if (kwargs["gender"] == "남"):
+            g = '1'
+        else:
+            g = '2'
+    else:
+        if (kwargs["gender"] == "남"):
+            g = '3'
+        else:
+            g = '4'
+
+    return print(f"주민등록번호 : {year_cut_str + kwargs['month'] + kwargs['day']}-{g + end_num}")
+
 
 if __name__ == "__main__":
-    pass
+    year = input("몇 년도에 태어나셨습니까? : ")
+    month = input("몇 월에 태어나셨습니까? : ")
+    day = input("몇 일에 태어나셨습니까? : ")
+    gender = input("성별은 무엇입니까?(남/여) : ")
+
+    resident_number(**{"year": year, "month": month, "day": day, "gender": gender})
