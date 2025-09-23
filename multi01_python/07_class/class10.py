@@ -24,9 +24,9 @@ class Child(Parent):
         self.name = "child"
 
 if __name__ == "__main__":
-    child = Child() # Child()라고 쓰면 객체화 되고-> child init 호출 --> child new 호출  -> parent init 호출 -> parent new 호출
-                    # -> Object -> 리턴으로 부모객체 만들어짐 -> 리턴으로 자식객체가 만들어짐 -> 인스턴스 함수를 초기화
-                    # -> super().__init__() -> parent init 호출 프린트-> child init 호출 프린터
+    child = Child() # Child()라고 쓰면 객체화 되고-> child init 호출 --> child new 호출 -> parent new 호출
+                    # -> Object -> 리턴으로 부모객체 만들어짐 -> 리턴으로 자식객체가 만들어짐 -> init 안에 변수(인스턴스)를 초기화
+                    # -> super().__init__()통해 -> parent init 호출 프린트-> child init 호출 프린터
     child.prn01()
     child.prn02()
 
