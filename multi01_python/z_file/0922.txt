@@ -1,0 +1,137 @@
+QR 찍으세요!!
+
+팀별로 자리 이동!
+
+
+conda config --show channels
+
+conda config --add channels conda-forge
+
+conda config --set channel_priority strict
+
+conda config --remove channels defaults
+
+conda config --show channels
+
+
+
+C:\Users\student\miniconda3\.condarc
+
+vi .condarc
+
+
+\07_class
+  class01.py
+  class02.py
+  class03.py
+  class04.py
+  class05.py
+  class06.py
+  class07.py
+  class08.py
+  class09.py
+  class10.py
+  class11.py
+  class12.py
+  class13.py
+  class14.py
+
+
+
+
+
+
+
+
+
+
+
+
+Object Oriented Programming (OOP) language
+- 특징
+  추상화
+  상속
+  다형성
+  캡슐화
+- 원칙 : SOLID
+
+객체 : instance = class를 가지고 memory에 실제로 적재한 구현체
+
+class 클래스명 :
+
+  # 객체 생성 / 변수 초기화
+  def __init__(self):
+    # self : instance
+    self.변수 = 값 
+  # 속성 (field)
+  변수 = 값
+
+  # 기능 (method)
+  @property
+  @변수.setter
+  @staticmethod
+
+  # private : __
+
+reflection
+
+
+OOP : 기능별로 객체를 나누어서 작성
+object(객체) : class를 가지고 memory에 실제 구현한 구현체 => instance
+class : 틀, 설계도. 속성 / 기능
+
+class 클래스명 (상속할 클래스, ....) : 
+	# 클래스 전체에서 사용할 수 있는 변수
+	변수 = 값	
+
+	def __new__(cls, *args, **kwargs):
+		# 객체 생성
+		return super().__new__(cls, *, **)
+
+	def __init__(self):
+		# 객체의 변수 초기화
+
+		# private : class 외부에서 사용 X
+		self.__변수
+
+	# getter, setter
+	@property
+	@변수.setter
+	# decorator
+	@staticmethod : class.method() -> 
+	@classmethod : class.method() -> 현재 실행하고 있는 class의 정보를 가져올 수 있다!
+
+
+
+
+변수 = 클래스명()
+
+상속 : 부모의 모든 것을 자식이 가져와서 사용할 수 있어요!
+
+	# super() : 부모 객체
+
+	# 상속 시 객체 생성 순서
+	# 자식 __init__() -> __new__() -> __new__() => 항상 부모가 먼저 생성!!!
+
+	# override (재정의) : 부모의 것을 가져와서, 내가 필요한 기능으로 "덮어쓰기"
+
+	# 다중 상속 O -> method resolution order (mro)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

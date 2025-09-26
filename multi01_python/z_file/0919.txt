@@ -1,0 +1,96 @@
+python
+- 객체 지향 언어
+- interpreter 언어 -> if __name__ == "__main__": -> 
+- 동적 타입 언어 : 실행 시 변수 안의 값의 형태가 결정된다! = 타입 추론
+- type : 
+- 연산자
+- function
+
+def 함수명(parameter) :
+    명령...
+     return 값
+
+함수명(arguments)
+
+lambda -> list comprehension
+
+scope -> lexical scope (closure)
+
+recursion -> 종료 조건 필수!!!!
+
+- module : import / from import
+
+pip
+
+- io : with
+
+
+
+
+
+dongheon.dev
+
+
+
+
+리플렉션 / 리트리벌
+
+공유폴더
+- reflection_0919.zip 
+-> 여러분들이 제출한 파일 정리
+=> 압축 해제 후, python workspace에 복붙하시면 편해요
+
+python
+- 객체 지향 언어 : !!!!
+- 동적 타입 언어 : 실행 시 변수안에 들어있는 값의 형태를 추론!
+- interpreter 언어 : 코드를 한 줄 씩 실행하더라.
+
+> type : 
+> operator : 우선순위
+> function : 기능 : 입력 -> 처리 -> 출력
+def 함수(변수):
+[indent] 명령어
+
+함수(값)
+
+*args / **kwargs
+
+lambda 
+
+scope -> closure
+
+recursion
+
+> module
+
+import / as / from import
+
+pip
+(Pypi)
+
+
+> io : with
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

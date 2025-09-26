@@ -1,0 +1,57 @@
+python
+
+변수 = 값
+
+
+\02_opr
+  opr01_operation.py
+  opr02_input.py
+\03_control
+  control01_if.py
+  control02_true_false.py
+  control03_match.py
+  control04_for.py
+  control05_while.py
+  control06_break_continue.py
+  control07_comprehension.py
+
+\04_function
+  func01.py
+  func02.py
+  func03.py
+  func04.py
+  func04_1.py
+  func05_lambda.py
+
+  coffee_machine.py
+  cafe.py
+
+
+python
+- type
+- operator : python 연산자 우선순위
+- function : 입력 -> 가공 -> 출력 : 기능
+	argument
+	parameter
+
+    *args / **kwargs
+
+	list comprehension -> syntax sugar
+	lambda -> 익명 함수 표현식
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

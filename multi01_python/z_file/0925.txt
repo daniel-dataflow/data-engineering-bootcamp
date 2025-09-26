@@ -1,0 +1,224 @@
+QR
+
+python
+OOP -> Object : class를 통해 memory에 실제 적재된 구현체 instance
+class : 설계도 -> 속성 / 기능
+- 특징 : 추상화, 상속, 다형성, 캡슐화
+
+type : 값의 형태 -> 동적 타입 언어
+interpreter
+
+C:\Users\student\miniconda3
+
+conda env list
+
+conda activate multi01
+
+conda deactivate
+
+연산자
+
+function : 기능 (입력 -> 처리 -> 출력)
+
+def 함수명(parameter) :
+	# 처리
+	return 값
+
+함수명(argument)
+
+*args / **kwargs
+
+lambda 표현식 : 익명 함수 표현식 -> 1회용으로 간단하게 사용할 때.
+
+closure : lexical scope
+
+module : 기능들의 집합.
+
+class 클래스명 (부모클래스 ... ):
+	def __new__(self, *args, **kwargs):	
+		return super().__new__(...)
+
+	def __init__(self):
+
+	def __call__(self, name):
+	
+
+클래스명()
+= 객체 -> 객체(name)
+
+
+iterator -> iterable.__iter__()
+iterable : 순서대로 값을 하나씩 가져올 수 있다.
+
+generator : __next__() 가 호출되면 yield 뒤의 값을 전달
+-> lazy evaluation
+
+enum type
+
+enumerate()
+
+decorator : 기능 추가 -> @함수 @클래스 => closure로 
+
+exception : 프로그램이 비 정상적으로 종료되는 것을 방지!
+try:
+
+except ???:
+
+except ???:
+
+except ???:
+
+else:
+
+finally:
+
+io -> with
+
+thread : process 안에서의 작업 단위
+process : program을 실행해서, memory에 실제로 구현된 구현체
+program : code로 작성된 실행 파일
+
+Thread(target=?, args=(?,))
+
+class 클래스(Thread):
+	def run(self):
+		# 구현
+
+
+Thread.start()
+Thread.join() : 내가 (thread) 끝날 때 까지 다른 thread를 대기
+
+\12_concurrency
+  conc09_process.py
+  conc10.py
+  conc11.py
+  conc12.py
+  conc13.py
+  conc14.py
+  conc15.py
+  conc16_coroutine.py
+  conc17.py
+  conc18.py
+  conc19_asyncio.py
+  conc20.py
+  conc21.py
+  conc22.py
+  conc23.py
+  conc24.py
+
+
+
+
+
+
+
+
+프로젝트 주제 찾는법
+
+github.com
+
+python cli
+
+
+
+
+thread : 작업 단위
+process : 프로그램의 구현체
+program
+
+
+multi threading vs multi processing
+cpu 연산이 많이 필요한 경우 : multi processing (GIL 때문 -> 각각의 process가 작업을 처리)
+	* GIL 때문 : Global Interpreter Lock -> thread를 많이 만들어도, 결국은 single thread로 작업하는 것과 마찬가지다....
+io / network : multi threading -> process를 memory에 적재하는 시간!!!
+
+ThreadPoolExecutor
+ProcessPoolExecutor
+-> 하나의 객체로 여러 thread/ process를 관리 => future ==> 많은 기능을 사용할 수 있다.
+
+coroutine : 같이 실행되는 녀석!!
+-> generator도 coroutine중 하나.
+=> asyncio 를 통해 구현한다!!!!
+
+def 앞에 async
+	async한 함수 안에서 await을 붙이자! => coroutine
+
+	# 비동기로 하고 싶다!!!
+	awaitable 한 객체 -> task
+	coroutine, task, future, __await__() 구현한 객체(반드시 iterator를 리턴!)
+
+
+
+
+
+
+
+
+numpy
+pandas
+visual (graph)
+
+
+
+reflection
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

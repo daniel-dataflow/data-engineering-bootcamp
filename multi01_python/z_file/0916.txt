@@ -1,0 +1,46 @@
+IDE : pycharm
+
+Text Editor : visual studio code
+
+c:\workspaces\multi01_python
+\01_type
+  type01_none.py
+  type02_number.py
+  type03_list.py
+  type04_tuple.py
+  type05_str.py
+  type06_set.py
+  type07_dict.py
+  type08_mutable_immutable.py
+  type09_conversion.py
+  type10_print.py
+
+>> python
+interpreter / compiler
+
+변수 = 값
+
+- None : 없다.
+- Numbers : 숫자
+- Sequence : list, set, str, dict
+=> mutable vs immutable
+
+
+
+
+공유폴더에 "개발108영단어" 넣어뒀습니다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

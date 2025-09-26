@@ -1,0 +1,190 @@
+QR !!
+
+
+python -> OOP : 객체(object) : class를 통해 memory에 실제로 구현된 구현체 = instance
+class : 변수(field) 속성 / 함수(method) 기능
+type - 
+연산자
+function
+module
+io -> with 
+class
+__init__ -> __new__ -> super().__new__
+metaclass
+dataclass
+@decorator 
+exception
+
+try:
+	# 예외가 발생할 수 도 있는 코드
+except 특정 예외:
+	# 특정 예외가 발생하면 실행 할 코드
+else:
+	# 특정 예외가 발생하지 않으면 
+finally:
+	# 예외 발생 여부와 상관 없이 "무조건" 실행할 코드
+
+10_iterator
+  iter01.py
+  iter02.py
+  iter03.py
+11_generator
+  gen01.py
+  gen02.py
+  gen03.py
+  gen04.py
+  gen05_enumerate01.py
+  gen05_enumerate02.py
+  type_enum01.py
+  type_enum02.py
+
+
+
+
+
+iterable : 순서대로 객체 재부의 값을 하나씩 꺼내올 수 있다.
+iterator : iterable 한 객체 = 순서대로 객체 내부의 값을 하나씩 꺼내올 수 있는 객체
+-> __iter__ , __next__
+
+generator : yield 하고 있다가 __next__가 호출이 되면 값을 "생성"
+-> yield from : generator가 다른 generator를 호출
+
+
+
+
+
+
+1: 53
+
+12_concurrency
+  conc01_thread.py
+  conc02.py
+  conc03.py
+  conc04.py
+  conc05.py
+  conc06.py
+  conc07.py
+  conc08.py
+
+iterator -> iterable 한 객체들은 __iter__ , __next__ 가지는데, __iter__() 호출하면 iterator 라는 객체 리턴되더라.
+=> __next__() 가 호출되면 내부의 값을 하나씩 꺼내오더라!!!
+* iterable : 순서대로 객체 내부의 값을 하나씩 가져올 수 있다.
+
+generator -> yield를 만나면 기다립니다. (lazy evaluation) -> __next__()가 호출되면, yield 뒤의 값을 전달해 주더라.
+
+enumerate() : collection 객체의 item들을 (index, item) 형태로 리턴시켜
+
+enum type -> 상수를 가지고 있는 객체
+class Color(Enum):
+	RED = 1
+	BLUE = 2
+	GREEN = 3
+
+Color.RED
+Color.RED.name => RED
+Color.RED.value => 1
+
+* enum type 왜?
+ 
+thread : (process 안에서) 작업 단위
+process : program을 실제로 memory에 적재한 구현체
+program : (code 작성) 실행 파일 
+
+변수 = Thread(target=??, args=(??))
+
+class 클래스명(Thread):
+	def run(self):
+		# 작동 할 코드
+
+변수.start()
+# start가 run을 호출한대....
+
+daemon thread : thread를 도와주는 thread
+
+* Thread.join() : ????
+
+* GIL : ???
+
+5:02
+
+
+reflection
+
+
+python - 
+OOP : Object -> class를 가지고 memory에 실제 구현된 구현체 (instance)
+class : 설계도 (속성-변수, 기능-함수#메서드)
+- 특징 : 추상화, 상속, 다형성, 캡슐화
+- 원칙 : SOLID
+dataclass : data를 저장
+
+type : 값의 형태 -> 동적 타입 언어
+연산자
+function : 기능 = 입력 (arg, param) -> 처리 -> 출력 return
+*args, **kwargs
+-> closure (lexical scope, lexical environment)
+module : 기능 집합 -> import (as, from import)
+
+decorator : @함수/@클래스
+
+iterable : 순서가 있고, 순서대로 값을 가지고 올 수 있다.
+iterable 한 객체 = __iter__(), __next__() -> __iter__() : iterator 리턴
+iterator : __next__() 호출되면 갮을 순서대로 끄내올거야.
+
+generator : 호출하면, yield 뒤에 있는 값을 생성해서 전달,
+generator 내부에서 다른 generator 를 호출 하는 방법 : yield from 
+
+enumerate()  : iterable한 객체 -> (index, item) 리턴
+
+enum type : 상수 값들을 가지고 있는.
+
+thread : (process 안에서) 작업 단위
+process : program이 실제로 memory 에 올라가서 만들어진 구현체 (실행되고 있는)
+program : 실행할 수 있는 파일 (code로 구현된!)
+
+2가지 방법
+Thread(target=??., args=[???])
+
+class 클래스명(Thread):
+	def run(self):
+		# 구 현
+
+daemon thread : thread를 보조하는 thread
+
+Thread.join() : ???
+
+GIL : ????
+
+# cpu (memory) 작업을 할 때는 thread 하나 마나...
+# io / network 작업을 할 때는 thread 여러개 하면 빨라지더라!!!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

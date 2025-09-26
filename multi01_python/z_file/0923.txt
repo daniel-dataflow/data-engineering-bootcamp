@@ -1,0 +1,125 @@
+QR 찍어주세요!!
+
+
+
+python
+- type
+- operator
+- control : 반복 / 조건
+- function
+- module
+- io
+- class 
+  "객체(object)" = memory 실제 구현된 구현체 -> class : 속성 / 기능
+
+\07_class
+  class15.py
+  class16.py
+  class17.py
+  class18.py
+  class19.py
+  class20.py
+  class21.py
+  class22.py
+
+
+OOP
+- Object : class를 가지고 memory에 실재로 적재한 구현체! -> instance
+- class : 객체를 만들기 위한 설명서
+
+class 클래스명 (상속할 부모클래스) :
+
+	# 속성 : 변수 -> class var / instance var
+
+	# 기능 : 메서드 -> @classmethod / @staticmethod / instance method
+	# 변수를 __ private => getter / setter
+
+	# __init__ -> __new__ -> super().__new__ 
+	# !!!! 부모 객체가 먼저 만들어진다!!
+	
+	# override (재정의)
+
+	# 다중상속 : mro -> 메서드 탐색 순서
+	
+	# 추상 클래스 (abstract class) : abstract method -> 객체화 불가!
+	# 추상 메서드 : 자식 클래스에서 반드시 구현!!!
+	
+
+	# metaclass : class를 만들어주는 class
+	# singleton pattern : memory에 객체를 단 하나만 만들자!!
+
+
+
+
+\08_decorator
+  deco01.py
+  deco02.py
+  deco03.py
+  deco04.py
+  deco05.py
+  deco06.py
+  deco07.py
+  deco08.py
+  deco09.py
+  deco10.py
+\09_exception
+  exception01.py
+  exception02.py
+  exception03.py
+  exception04.py
+  exception_gawi_bawi_bo.py
+reflection
+
+python
+변수 = 값 -> 값의 형태 (type)
+- None : singleton
+
+연산자
+
+function -> closure
+
+module
+
+io -> with
+
+class : OOP
+
+@decorator
+
+exception
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

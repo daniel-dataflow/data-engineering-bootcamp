@@ -1,0 +1,111 @@
+python
+- type -> 실행 될 때
+- operator -> 연산자 우선순위
+- function -> 기능 (입력 -> 처리 -> 출력)
+    lambda 
+
+\04_function
+  func06_scope.py
+  func07_closure.py
+  func08_recursion.py
+  func09_hint.py
+\05_module
+  module01.py
+  module02.py
+  module03.py
+  module04.py
+  module05.py
+  module06.py
+  module07.py
+  
+  \mymodule
+    mytest.py
+  
+  module08.py
+  module09.py
+
+opencv-python
+
+pip list
+
+
+\06_io
+  io01.py
+  io02.py
+  io03.py
+  io04.py
+  io05.py
+  io06.py
+  io07.py
+  io08.py
+
+
+
+
+
+
+
+
+function 
+  type hint (lint)
+  recursion
+  closure
+  global / nonlocal
+
+module : "만들어 놓은 기능" 
+  import ?? as ?
+  from ?? as !
+
+input / output -> with 구문
+ 
+** utf-8 encoding !!!
+
+
+4: 50
+
+
+MLP 에 과제 제출 올렸습니다! 
+내일 오전 9시 전에 종료됩니다!!
+
++
+
+MLP에 매니저님 공지에 하트 표시 클릭해주면 아마도 매니저님이 좋아하시지 않을까...???
+
+블로깅 하는 법
+-> 오늘 배운 내용 (개념) => 느꼈는지?
+    오류메세지
+
+
+python
+-> interpreter 언어 => 코드를 한 줄 씩 읽어드려서 기계어로 번역하여 실행
+-> 동적타입언어 => 실행 시 파이썬이 값의 타입을 추론하더라.
+- type : 
+- operator
+- 제어문
+- function : 입 -> 처 -> 출 : 기능 
+     *args / **kwargs
+     lambda 
+     scope -> closure
+     recursion
+- module : 
+     pip
+- io : with
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
