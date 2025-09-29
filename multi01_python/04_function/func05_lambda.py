@@ -61,6 +61,7 @@ print(list(map_test))
 print(list(map(lambda x: x.upper(), char)))
 
 # filter
+
 print(filter(lambda x: x > 1, num))
 print(list(filter(lambda x: x > 1, num)))
 
