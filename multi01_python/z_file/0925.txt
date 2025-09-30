@@ -164,6 +164,47 @@ reflection
 
 
 
+python -> OOP : class -> memory -> instance
+class : 속성, 기능
+class() -> __init__() -> __new__() -> super().__new__()
+instance() -> __call__()
+- 특징 : 
+다중상속 => mro
+
+type
+연산자
+함수 def -> *args / **kwargs
+제어문 -> 조건 / 반복
+io -> with
+try:
+except ?:
+else:
+finally:
+
+
+thread : process 내부의 작업 단위
+process : program을 실행시켜서 memory에 구현체
+program : 실행할 수 있는 파일 (code)
+
+ThreadPoolExecutor -> future
+
+coroutine : 같이 실행 ( generator)
+
+asyncio -> async / await
+awaitable : coroutine, future, task, __await__()
+
+
+
+numpy / pandas
+
+
+
+
+
+
+
+
+
 
 
 

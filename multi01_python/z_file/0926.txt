@@ -1,0 +1,167 @@
+QR !!!
+
+숙제! callback!
+
+python -> OOP : 객체를 기능별로 나눠서 작성 -> class를 기반으로 memory 실제 구현된 구현체
+class : 속성 기능 => 변수 함수(메서드)
+변수 : 값의 형태 -> type 실행할 때 정해 = 동적 타입 언어
+함수 : 기능 (입력 parameter (arguments) -> 처리 -> 출력 return) => *args, **kwargs
+-> closure
+
+객체 연산 -> __??__ : sepcial method / magic method
+
+조건문 : if / match 
+반복문 : while / for
+
+io -> with 
+
+__init__ -> __new__ -> super().__new__
+
+@decorator : closure 형태!! -> function / class
+
+iterator : iterable 한 객체 . __iter__(), __next__()
+generator : yield -> __next__() / send
+
+thread : process 안의 "작업 단위"
+process : memory 실제로 적재된 구현체 (실행된)
+program : (code 로 이루어진) 실행할 수 있는 파일
+
+GIL -> cpu 연산은 thread VS process ? process가 좋드라..
+io/network -> process가 memory에 적재되는 시간을 고려!!!
+
+ThreadPoolExecutor (ProcessPoolExecutor) -> future
+
+generator -> coroutine 중 일부
+
+asyncio -> async / await => awaitable : task, coroutine, future, __await__()
+
+\13_numpy
+
+# 만일 터미널에서 가상환경에 접속이 안되어 있을 시!!
+conda activate multi01
+
+pip install numpy
+
+pip install jupyter
+
+jupyter notebook
+
+np01.ipynb
+
+ipynb = interactive
+	    python
+	    note
+	    book
+
+# MarkDown
+
+[shift] + [enter]
+
+* markdown syntax
+
+[ctrl] + [c]
+
+
+jupyter notebook 사용
+-> ipython을 실행 커널 (서버)
+=> 파일.ipynb
+
+------
+
+numpy : science / computing
+-> ndarray : n dimensional array
+
+np02.ipynb
+np03.ipynb
+card_ex.ipynb
+
+github.com -> dongheon-dev
+
+csv -> comma split
+# tsv -> tab split
+json -> JavaScript Object Notation
+
+
+import numpy as np
+-> ndarray
+
+
+
+
+
+
+
+
+reflection
+
+
+
+
+회사????
+
+- 스타트업 : 시리즈 a
+- 엑셀
+ 
+
+
+
+
+
+python/
+
+데이터 분석
+numpy : science / computing library
+data => ndarray (n dimensional array) => 행렬 => 행렬 연산을 통해 데이터를 분석!
+
+pandas library (numpy 확장)
+
+
+EDA (data 어떻게 생겼는데?) -> 머신러닝 학습
+
+jupyter notebook -> cell
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

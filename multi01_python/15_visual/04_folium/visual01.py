@@ -1,0 +1,8 @@
+import folium
+
+
+# https://www.google.co.kr/maps/dir/''/%EC%84%9C%EC%9A%B8%ED%8A%B9%EB%B3%84%EC%8B%9C+%EA%B4%91%EC%A7%84%EA%B5%AC+%EB%8A%A5%EB%8F%99%EB%A1%9C+195-16+%EB%A9%80%ED%8B%B0%EC%BA%A0%ED%8D%BC%EC%8A%A4+%EC%84%B8%EC%A2%85%EB%8C%80/data=!3m1!4b1!4m13!4m12!1m5!1m1!1s0x357ca50007befb21:0x8892754ec6bbe866!2m2!1d127.0733985!2d37.5481533!1m5!1m1!1s0x357ca50007befb21:0x8892754ec6bbe866!2m2!1d127.0733985!2d37.5481533?entry=ttu&g_ep=EgoyMDI1MDkyNC4wIKXMDSoASAFQAw%3D%3D
+# 127.0733985 37.5481533
+my_loc = folium.Map(location=[37.5481533, 127.0733985], zoom_start=100)
+
+my_loc.save("visual01.html")

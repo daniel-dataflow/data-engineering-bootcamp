@@ -1,0 +1,126 @@
+qr !!
+
+
+
+분석
+
+numpy : ndarray (행렬)
+pandas : series (one dimensional ndarray + index) / dataframe (2 dim ndarray + index + column)
+
+matplotlib : figure -> ax
+
+hist : histogram - 도수분포표 "그래프"
+boxplot : 
+bar : 막대그래프
+
+
+
+15_visual
+  02_seaborn
+    visual01.py
+    visual02.py
+    visual03.py
+    visual04.py
+    visual05.py
+    visual06.py
+    visual07.py
+    visual08.py
+    visual09.py
+    visual10.py
+    visual11.py
+    visual12.py
+03_plotly
+    visual01.py
+    visual02.py
+04_folium
+    visual01.py
+    visual02.py
+    visual03.py
+    starbucks.json
+05_wordcloud
+    visual01.py
+    webtoons.json
+    kakao.png
+    Goyang.ttf
+    visual02.py
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+data visulization
+-> data 자체를 탐색
+
+numpy : ndarray
+pandas : series / dataframe
+
+matplotlib
+seaborn
+plotly
+
+
+conda activate multi01
+
+(multi01) C:\Users\student>
+pip install plotly
+
+우리 지금 뭐하고 있나요???
+우리 지금 데이터 분석 하고 있어요.
+데이터 분석 하기 위해서, 데이터 자체가 어떻게 생겼는지 확인하고 있어요.
+데이터를 확인하기 위해서 numpy 라는 library를 사용했어요.
+
+numpy는 데이터를 n개의 dimension을 가진 행렬로 만들었어요. 이걸 ndarray 라고 해요.
+ndarray 중요해요!!
+numpy를 기반으로 pandas 라는 library도 사용해봤어요.
+
+pandas는 numpy의 ndarray를 두가지 타입으로 만들었어요.
+series 라는 타입은 하나의 dimension을 가진 ndarray + index 래요.
+dataframe 이라는 타입은 두개의 dimension을 가진 ndarray + index + column 이래요.
+
+data를 시각화(visualization) 하기 위해서 matplotlib 라는 library도 사용해 봤어요,.
+matplotlib 라는 library 는 figure 라는 객체를 가지고, ax를 나눴대요. -=> subplots 라고 해요.
+
+matplotlib를 기반으로 seaborn 이라는 library 도 만들었대요.
+dataset도 제공해 주더라구요.
+
+plotly 라는 library도 봤는데, interactive 하게 만들어져 있대요. 얘로는 dashboard도 만들 수 있대요.
+
+지도를 사용하기 위해서 folium 이라는 library 도 봤어요. marker도 찍을 수 있구요, popup도 만들 수 있어요.
+
+마지막으로, 글자의 값을 통해 글자 크기가 지정되는 wordcloud library도 사용해 봤어요.
+이미지를 ndarray로 사용하더라구요!~!!@
+
+reflection
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

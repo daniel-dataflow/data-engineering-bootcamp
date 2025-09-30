@@ -1,0 +1,109 @@
+>> 이동헌 강사
+나이 100살
+
+
+>> 부탁할 내용
+1. 대답 잘해주기
+2. 수업시간 준수 !!! -> 9시 정각에 출석
+3. 예의 지키기
+4. 욕설 금지
+5. 복습 / 예습 -> 질문 많이 하기!!!!!!!
+6. 모르는 단어 꼭 찾아서 정리하기 -> 블로그 (github 블로그, velog, 티스토리, ....)
+--> 오답노트 (오류 메시지)
+7. 건강 챙기기 -> 8시간
+
+
+>> ppt 제공 / 코드 X
+
+
+>> win + r -> \\10.10.0.220
+
+
+>> 커리큘럼
+
+(기초)
+python
+
+(데이터 분석)
+머신러닝
+딥러닝
+
+(웹)
++ html, css, javascript
+크롤링
+스트림릿
+
+(기초)
+데이터베이스 - mysql, postgresql, mongodb, redis
+
+
+(데이터 엔지니어)
+리눅스
+하둡
+스파크
++제플린 노트북
+에어플로우
+카프카
++ 엘라스틱 서치
+
+(dev ops)
+도커
++ 쿠버네티스
+
+(웹)
+django
+
+
+>> 시간표 : 9 ~ 6시 
+첫 시간 : 이전 시간까지의 내용 복습 
+수업
+마지막 시간 : 복습시간
+
+
+>> 오픈채팅 (de04 검색)
+https://open.kakao.com/o/gCpYalSh
+
+
+>> 자격증 선물
+정보처리기사, 빅데이터 분석기사, adsp, ...
+(컴활, itq, )
+
+
+>> 도움되는 사이트
+https://typing.io/
+https://pythontutor.com/
+https://www.kocw.net/home/index.do
+https://www.kmooc.kr/
+
+---
+https://yozm.wishket.com/
+https://okky.kr/
+
+---
+각종 회사 기술블로그들
+
+---
+>> 알고리즘
+https://www.acmicpc.net/
+https://programmers.co.kr/
+
+
+10:06
+
+사물함 사용 가능!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

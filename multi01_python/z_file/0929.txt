@@ -1,0 +1,79 @@
+QR!!
+
+numpy : "ndarray"
+
+.ipynb : ipython / jupyter notebook  "cell"
+
+
+14_pandas
+  pd01.ipynb
+  pd02.ipynb
+  card_ex.ipynb
+\15_visual
+  \01_matplot
+    visual01.py
+    visual02.py
+    visual03.py
+    visual04.py
+    visual05.py
+    visual06.py
+    visual07.py
+    visual08.py
+    visual09.py
+
+
+pandas : data alanysis for python
+-> numpy
+=>    Series : one dimensional + index
+	DataFrame : 2 dim + index + columns (table)
+"data"
+
+matplotlib : visual 
+-> figure => ax ==> graph (plot)
+
+**내일 아침 9시 전까지**
+pandas\card_ex.ipynb 에서 card 라는 df 가지고 그래프 5개 이상 -> df 에서 내가 어떤 데이터에 주목!!
+-> 자기이름.zip 슬랙 업로드!
+
+
+
+reflection
+
+
+
+
+* 우리는 지금....
+  1) miniconda를 설치
+  2) conda-forge로 저장소 변경
+하여 사용중입니다!!
+
+conda config --show channels
+
+pip install -> python
+conda install -> python, c, c++, ...
+
+python
+--
+분석
+numpy : ndarray (행렬) 
+pandas : series (one dimensional ndarray + index) / dataframe (2 dim, + index + column) - table
+visualization : matplotlib -> figure / subplot 
+
+pip install streamlit
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
