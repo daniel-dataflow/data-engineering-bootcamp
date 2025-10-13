@@ -1,0 +1,8 @@
+q: 해당 로그를 분리해보자
+20231016112353 Oct 16 03:06:49 logcenter rsyslogd-2177
+20231012100744 <22>Oct 12 10:02:39 logcenter postfix/pickup[14501]: 312B2237C3: uid=0 from=<root>
+20231012100807 <78>Oct 12 10:03:02 logcenter CROND[14129]: (root) CMD (/home/dirlog.sh > /dev/null)
+20231012100744 Oct 12 10:02:39 logcenter postfix/pickup[14501]: 312B2237C3: uid=0 from=<root>
+
+a:
+([^\s]*)\s(<([\d]*)>)?(.*(?:\n|$))

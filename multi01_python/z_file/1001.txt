@@ -1,0 +1,27 @@
+QR!
+
+REFLECTION!
+
+
+
+
+pip list --format=freeze > requirements.txt
+
+pip install -r requirements.txt
+
+
+공유폴더에 책 4권 pdf 올려놨어요~
+
+
+
+
+
+
+
+
+
+
+
+
+
+
