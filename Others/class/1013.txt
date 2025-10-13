@@ -1,0 +1,167 @@
+QR !!
+
+
+python
+
+변수 = 값
+type : None, Number, Sequence(str, list, tuple), set, dictionary
+operation
+
+control
+- 조건 : if ~ else / match ~ case
+- 반복 : for / while
+
+function : argument / parameter
+*args, **kwargs
+scope
+lexical scope -> closure
+
+*.py ++++
+-> module
+
+io -> with
+
+Object Oriented Programming -> class => instance
+- 추상화
+- 상속
+- 다형성
+- 캡슐화
+
+mro
+
+metaclass
+
+__....__ : special method 
+
+@dataclass
+
+@decorator
+
+try:
+
+except:
+
+iterator
+
+generator -> yield -> coroutine -> asyncio
+
+thread / process
+
+-------------
+
+분석
+
+conda create -n multi02 python
+y
+
+conda activate multi02
+
+pip install jupyter
+
+visual studio code
+text editor
+
+ide
+
+extension
+- python
+- jupyter
+
+
+
+
+
+
+c:\workspaces\multi02_data_science
+   ml00_eda.ipynb
+
+
+conda activate multi02
+
+jupyter notebook --generate-config
+
+# C:\Users\student\.jupyter
+
+# ctrl + f
+notebook_dir
+
+# 주석 해제 후 경로 설정
+c.ServerApp.notebook_dir = 'C:\workspaces\multi02_data_science'
+
+
+jupyter notebook
+
+
+
+
+slack.으로 제출!!
+ml00_eda_자기이름.ipynb
+# score.csv 가지고 최대한 할 수 있는 많은 통계 분석
+
+----
+
+지도학습
+y = f(x)
+
+x, y 제공 -> 모델이 완성 후, x만 주면 y를 예측
+
+# 강화학습
+https://gymnasium.farama.org/
+
+ml01_error.ipynb
+ml02_gradient_descent.ipynb
+ml03_linear_regression.ipynb
+
+=======
+
+# 검사하는 숙제
+ml00_eda_자기이름.ipynb
+-> score.csv 가지고 기초통계 공부하기!
+
+# 검사 안하는 숙제
+모집단 / 표본집단
+평균, 편차, 표준편차, 분산, 상대도수(누적상대도수)
+
+
+
+reflection
+
+EDA : data가 어떻게 생겨먹었는지!!
+
+Machine Learning
+- 지도학습  : 문제 (X) 와 답 (Y)
+  -> 예측 linear regression -> 데이터가 연속적으로 있다. => 가장 잘 표현할 수 있는 "선" W * X + b
+      -> loss (cost) function : model이 예측한 값 <-> 실제 Y 값 (오차) => mean squared error (mse)
+          optimizer : W, b 변경 -> gradient descent (경사 하강법) => learning rate (하강하는 간격)
+          학습 (...)
+          예측
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
