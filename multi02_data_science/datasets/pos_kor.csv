@@ -1,0 +1,20 @@
+POS,English,Korean
+FW,Foreign word,외래어
+IN,Preposition or subordinating conjunction,전치사 종속접속사
+JJ,Adjective,형용사
+JJR,Adjective : comparative,형용사 : 비교급
+JJS,Adjective : superlative,형용사 : 최상급
+NN,Noun : singular or mass,명사 : 단수형
+NNS,Noun : plural,명사 : 복수형
+NP,Proper noun : singular,고유명사 : 단수형
+NPS,Proper noun : plural,고유명사 : 복수형
+PP,Personal pronoun,인칭 대명사
+PP$,Possessive pronoun,소유 대명사
+RB,Adverb,부사
+RBR,Adverb : comparative,부사 : 비교급
+RBS,Adverb : superlative,부사 : 최상급
+VB,Verb : base form,동사 : 원형
+VBD,Verb : past tense, 동사 : 과거형
+VBG,Verb : gerund or present participle,동사 : 현재분사
+VBN,Verb : past participle,동사 : 과거분사
+VBZ,Verb : 3rd person singular present,동사 : 3인칭 현재 단수
