@@ -1,0 +1,90 @@
+QR !!
+
+
+scikit learn (sklearn)
+
+linear reagression (선형 회귀 분석)
+
+# EDA 
+# 1. dataset 준비
+# 2. train / test -> train : 학습용 / test : 검증용
+# 3. model 선택
+# 4. model 학습
+# 5. 예측 검증
+
+
+home03_linear.ipynb
+home03_linear_polynormial.ipynb
+home04_overfitting.ipynb
+home05_logistic.ipynb
+
+
+ml07_overfitting.ipynb
+ml08_ridge.ipynb
+ml09_lasso.ipynb
+ml10_elastic_net.ipynb
+ml11_logistic_regression.ipynb
+ml12.ipynb
+ml13_metrics.ipynb
+ml14.ipynb
+
+
+
+
+
+1:57
+
+MLP에 매니저님 글 확인!
+-> 맞으면 "확인완료" 댓글
+
+
+
+
+
+reflection
+
+
+machine learning
+- 지도학습
+   - 예측 : linear regression
+   - 분류 : logistic regression
+
+=> x, y -> model : fit() => x -> 학습된 model : predict
+
+x -> 다항식 (Polynormial Features) 
+Feature = X
+
+training set에 과적합 (과대적합) overfitting = 학습한 데이터는 너무 잘 맞추는데. 일반화했을 때 정확도가 떨어지더라.
+
+=> 방지하기 위해서.. Ridge (L2) / Lasso (L1) / ElasticNet (L2 + L1) (regularization 정규화 모델들)
+L2 : W 값을 제한
+L1 : 일부 W값을 0 ( = Feature Selection)
+
+
+Metrics (평가지표)
+- MSE : 오차 제곱 평균
+- MAE : 오차 절대값 평균
+- RMSE : 오차 제곱 평균의 제곱근
+- R squared : 예측값 분산 / 실제값 분산 -> 1에 가까울수록 정확도가 높다.
+
+혼돈행렬 (confusion matrix)
+...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
