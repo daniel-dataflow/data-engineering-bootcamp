@@ -1,0 +1,102 @@
+QR !!
+
+
+home05_logistic.ipynb
+-> 몸무게, 키 : 성별
+
+home06_logistic_metrics.ipynb
+-> 위에서 만든 모델을 평가해보자
+
+home07_logistic_metrics_scaler.ipynb
+-> 몸무게, 키의 척도를 통일하자 (스케일링) 
+     -> 다시 모델 만들자
+          -> 다시 평가해보자
+
+home08_svc.ipynb
+home09_svc_valid.ipynb
+
+ml15_scaler.ipynb
+
+Y : 아파트 집값 
+X : 위치, 대중교통, 역세권, 학군, 평수, 방의 갯수, 화장실 갯수, 지어진 년도, 편의시설, 
+
+
+ml16_svm.ipynb
+ml17.ipynb
+ml18_validation.ipynb
+ml19.ipynb
+
+
+
+
+
+metrics :
+	MSE
+	RMSE
+	R-squared
+	MAE
+
+	confusion matrix : TP, FP, TN, FN
+	precision : TP / (TP+FP)
+	recall : TP / (TP + FN) = TPR	
+	FPR : FP / (FP + TN)
+
+	threshold -> 높아지면 / 낮아지면
+
+	f1 score : precision, recall 의 조화평균 -> 데이터의 불균형
+
+	ROC -> AUC
+
+Feature Scaling : 척도
+- 표준화 -> StandardScaler (평0/분1)
+- 정규화 - MinMaxScaler (0 ~ 1) -> 이상치 민감!
+
+Support Vector Machine : hyperplane을 통해 분류 
+	-> kernel trick!
+
+validation : training set을 일정 갯수로 나누어, 훈련 중간중간 검증을 한다! (train, valid)
+	-> k-fold cross validation
+
+hyperparameter tuning
+
+
+숙제!!!
+home03_linear_polynormial.ipynb : 다항식으로 바꿔서 (Polynormial Features) -> 몸무게를 가지고 키를 예측하자.
+home04_overfitting : LinearRegression, Ridge, Lasso, ElasticNet 학습 및 비교 -> score, coef_, intercept_
+home05_logistic : 몸무게와 키를 통해서 성별 예측!
+home06_logistic_metrics : 위에서 예측한 모델을 평가해보자!
+home07_logistic_metrics_scaler : 몸무게와 키를 scaling 해서 모델 만들고 예측하고 평가까지
+home08_svc : penguin data 가지고 어떤 종인지 분류하자!
+home09_svc_valid : 위의 모델을 가지고 교차검증하자
+
+
+
+reflection
+
+
+
+Machine Learning : 기계 학습 (data가 주어지면 그 데이터의 관계식을 model이 스스로 학습)
+- Supervised Learning : 지도 학습 (X-문제, Y-정답) Y = W * X + b
+  - 예측 (Linear Regression) -> 
+    분류 (Logistic Regression) -> 
+
+* metrics 
+
+* feature scaling
+
+* validation : k-fold cross validation
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
