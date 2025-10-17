@@ -1,0 +1,33 @@
+cm = confusion_matrix(y_test["gender"], y_test["predict"])
+ConfusionMatrixDisplay(cm).plot()
+
+cm.ravel()
+
+# 남학생 기준 (남학생이 맞다 / 틀리다)
+TP, FN, FP, TN = cm.ravel()
+precision = TP / (TP + FP)
+recall = TP / (TP + FN)
+
+print(precision)
+print(precision_score(y_test["gender"], predict, average=None)[0])
+
+print(recall)
+print(recall_score(y_test["gender"], predict, average=None)[0])
+
+my_f1_score = 2 * ((precision * recall) / (precision + recall))
+
+# 여학생 기준 (1과 0이 뒤집혔으니까 거꾸로)
+TN, FP, FN, TP = cm.ravel()
+precision = TP / (TP + FP)
+recall = TP / (TP + FN)
+
+print(precision)
+print(precision_score(y_test["gender"], predict, average=None)[1])
+
+print(recall)
+print(recall_score(y_test["gender"], predict, average=None)[1])
+
+my_f1_score = 2 * ((precision * recall) / (precision + recall))
+
+print(my_f1_score)
+print(f1_score(y_test["gender"], predict, average=None)[1])
