@@ -1,0 +1,24 @@
+** 깃허브 특강 (2일차) **
+점심 : 11시50분 ~ 1시(꼭!)
+종료 : 17시51분
+
+** 깃 **
+1. 누가 ? 리누스 토르발즈. 리눅스 1991~~ 어제..  www.kernel.org --> 소스코드 관리의 필요성. git 
+2. 깃 설치 + GUI 소스 트리
+3. 깃 개념
+   - 작업 디렉터리, 스테이지, 저장소
+   - 버전 비교, 작업 되돌리기
+4. 리눅스 명령어
+   - WSL >> 리눅스 배포판 (Ubuntu)
+   - 리눅스 기본 명령어 : pwd, cd, touch, cp, mv, mkdir, rmdir, rm -rf, rm -f, cat, vi
+
+
+cafe.naver.com/githubStudy  --> 강의문서(1.3) --> git@git
+
+퀴즈 : 깃허브에 second-repo 저장소 만들기.
+  소스트리와 연동하기 + 클론하기.
+  pc에서 커밋 2회하고 Push하기.
+
+
+https://cafe.naver.com/githubStudy  --> 수업 중 코드 --> 헤더1
+

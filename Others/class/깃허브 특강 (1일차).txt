@@ -1,0 +1,61 @@
+** 깃허브 특강 (1일차) **
+점심 : 11시50분 ~ 1시(꼭!)
+종료 : 17시51분
+
+- 강의 대상 : 깃/깃허브를 처음 학습하는 수강생.
+- 미니 특강
+   . 리눅스(Linux) : 설치 + 기본 명령어 --->  WSL(Windows Subsystem for Linux)
+* 명령 프롬프트(DOS) ---> Windows 1.0 --> 3.1 --> 95 --> 98  --> ME  (16bit)
+Unix >> NT 4.0 >> Windows 2000 >> XP (32bit)
+	>> Vista >>7 >> 8  >> 10 (64bit만) >> 11  >> (12)  (32bit/64bit)
+
+** 명령 프롬프트 (50개) >> 파워셸 (수천개) >> Linux를 윈도에 포함.
+** BASH  셸 (수천개)
+
+cafe.naver.com/githubStudy  --> 자료실 --> 강의문서(1.3) --> 1~8번, 맥 설치  --> git@git
+
+** 32bit/64bit  구분 **
+CPU : 32bit.  Intel  80286, 80386, 80486, 80586 ==> x86 == x32  == i386  == i586
+         64bit.  Intel  Core-i7/5/3, Pentium, Celeron, Atom  ==> x64 == x86_64
+
+** 폴더 (=디렉터리) 경로 구분자 **
+Window(=Dos) :  백슬래시   C:\gitStudy\Test1  -->  코딩 "C:\\gitStudy\\Test1"
+			==> C:/gitStudy/Test1 --> 코딩 "C:/gitStudy/Test1"
+Unix(=Mac=Linux) : 슬래시   /user/gitStudy/Test1  --> 코딩 "/user/gitStudy/Test1"
+
+
+** WSL (Windows Subsystem for Linux)
+. Windows 10. 1주년 기념으로 시작.
+. 1.0 --> 2.6....  
+. Windows 11 기준으로  Microsoft Store에서도 배포 중....
+
+** 설치
+(1) [Windows 기능]에서 'Linux용 하위 시스템' 체크  --> 재부팅
+(2) 명령 프롬프트(파워셸)  wsl  --install  -d  --no-distribution
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
