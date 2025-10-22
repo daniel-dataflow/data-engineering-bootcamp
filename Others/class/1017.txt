@@ -1,0 +1,131 @@
+QR
+
+공유폴더
+home06_일부분
+
+ml20_naive_bayes.ipynb
+ml21.ipynb
+ml22_knn.ipynb
+
+발표! 11:30
+1. KNN 이 뭔지 설명
+2. ml22 파일 내용 전체 설명
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+AI -> Machine Learning
+{입력->처리->출력} / {입력,출력 -> model이 처리하는 부분을 자동으로 만들게 해주고 싶다!}
+
+X, Y -> model (Y = W * X + b) -> 예측
+
+- Supervised Learning : X(문제, feature), Y(정답, target)를 제공
+  - 예측 (Linear Regression)
+	Ridge Lasso ElasticNet
+  - 분류 (Logistic Regression)
+	SVM -> kernel trick
+
+* Scaler - StandardScaler
+	   - MinMaxScaler
+
+* (train, valid), test : 
+
+* hyper parameter tuning
+
+
+
+
+
+
+
+
+
+
+machine learning
+- 지도학습 : 
+	예측 -> LinearRegression, Ridge, Lasso, ElasticNet
+	분류 -> LogistiicRegression, SVM, NaiveBayes, K-NN
+- 비지도학습
+
+
+reflection
+
+
+ml23.ipynb
+ml24_decision_tree.ipynb
+ml25.ipynb
+
+4: 15
+
+pip install graphviz
+
+
+
+AI 
+- Machine Learning
+  - Supervised Learning
+	- LinearRegression 
+	- LogisticRegression : SVM, Naive Bayes, KNN, Decision Tree
+
+
+
+# EDA : 탐색적 데이터 분석
+
+1. dataset 준비
+- feature scaling
+
+2. data 분할
+
+3. model 선택
+- hyperparameter tuning
+
+4. 학습
+- validataion => 
+
+5. 평가 및 예측
+- metrics
+
+reflection
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

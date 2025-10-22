@@ -1,0 +1,93 @@
+QR !!!
+
+
+A I -> Machine Learning
+지도학습 : 
+  - 예측 (Linear regression) : Ridge(L2), Lasso(L1), ElasticNet (L2 + L1)
+  - 분류 (Logistic regression) : SVM, KNN, Naive Bayes, Decision Tree -> linear regression도 할 수 있더라..
+
+비지도학습 : 
+
+mse, rmse, mae, r-squared
+
+gradiant descent
+
+polynormial features
+
+Scaler
+- 표준화 : Standard Scaler (평균 0, 분산1)
+- 정규화 : MinMax Scaler (데이터를 0 ~ 1 사이)
+
+validation
+-> k-fold cross validation
+
+hyperparameter tuning
+
+
+confusion matrix
+- precision : true라고 예측한 것들 중 실제 true
+- recall : 실제 true 중 모델이 예측한 true => TPR
+=> threshold : 오른쪽 -> 정밀도 높아진다. / 왼쪽 -> 재현율 높아진다
+FPR : 실제 False중 False라고 예측한 것
+
+ROC -> AUC
+
+ml26_ensemble.ipynb
+ml27.ipynb
+ml28.ipynb
+ml29.ipynb
+ml30.ipynb
+
+-----------
+
+
+Ensemble : 성능이 낮은 여러 개의 모델을 결합하여 성능을 높히는 기법
+- random forest
+- gradient boosting
+- XGboost
+- lightgbm
+
+//
+
+voting
+bagging
+boosting
+stacking
+
+지도학습 :  X, Y 
+비지도학습 : X
+
+
+reflection
+
+ml31_pca.ipynb
+ml32.ipynb
+
+ensemble
+- voting
+- bagging (random forest)
+- boosting (gradient boosting -> xgboost -> lightgbm)
+- stacking
+
+비지도
+- 특성공학 : 특성의 개수를 줄이자 -> 지도학습 하자
+     PCA (주성분 분석)
+- clustering (군집)
+
+
+reflection
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
