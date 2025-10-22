@@ -77,6 +77,17 @@ ensemble
 
 reflection
 
+Ensemble : 성능이 낮은 여러 개의 모델들을 결합해서 더 나은 성능을 기대
+- voting 
+- bagging
+- boosting 
+- stacking 
+
+비지도학습 unsupervised learning
+- feature engineering
+    feature extraction
+
+
 
 
 
