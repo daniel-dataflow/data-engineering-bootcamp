@@ -1,0 +1,67 @@
+QR !!
+
+
+A I
+Machine Learning : loss function(cost function), gradient descent, polynormial features, scaling
+- supervised learning : 
+	Linear Regression - Ridge, Lasso, ElasticNet
+	Logistic Regression - svm, naive bayes, knn, decision tree, ensemble (bagging, voting, boosting, stacking)
+- Unspervised learning :
+	feature engineering - feature selection(filter, wrapper, embedded) / feature extraction (pca)
+	clustering
+
+
+
+homework\
+	home10.ipynb
+	home11.ipynb
+
+ds01_ml\
+	ml33_t_sne.ipynb
+	ml34_kmeans.ipynb
+	ml35_aggolmerative.ipynb
+	ml36_mean_shift.ipynb
+	ml37_dbscan.ipynb
+	ml38.ipynb
+	ml39_encoding.ipynb
+
+
+
+reflection
+~ 4:10
+
+
+------------------------------
+
+M L : 
+
+supervised learning
+- 예측 Linear Regression  : 
+- 분류 Logistic Regression : SVM, KNN, Naive Bayes, Decision Tree, Ensemble (bagging, voting, boosting, stacking)
+
+- metrics : mse, mae, rmse, r-squared / confusion matrix(tp, tn, fp, fn), precision, recall, threshold, tpr, fpr, roc, auc 
+
+
+unspervised learning
+- feature engineering : feature selection (filter, wrapper, embedded) / feature extraction (pca)
+- clustering : k-means(분할), agglomerative(계층), mean shift, dbscan (밀도)
+	-> k means 에서 최적의 k : elbow graph
+
+- metrics : ari, nmi, silhouette 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
