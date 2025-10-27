@@ -1,0 +1,87 @@
+QR !!
+
+Machine Learning : 
+
+- supervised learning : 
+	예측
+	분류 -> Deep Neural Network = Deep Learning
+- unspervised learning :
+	군집 (clustering)
+	특성 공학 (feature engineering)
+		- feature selection
+		- feature exctraction 
+
+
+
+
+
+
+
+
+
+ml40_neural_network.ipynb
+ml41.ipynb
+ml42_pipeline.ipynb
+ml43_save.ipynb
+ml44_load.ipynb
+
+
+ds01_ml
+ds02_dl\
+	dl01_perceptron.ipynb
+	dl02_activation.ipynb
+
+conda create -n multi02_tensor python=3.9
+y
+conda activate multi02_tensor
+pip install jupyter
+
+# vscode 껏다가 다시 켜주세요!
+
+dl03_tensorflow.ipynb
+dl03_tensorflow_hidden.ipynb
+dl04_linear.ipynb
+dl05_classification.ipynb
+
+
+
+
+
+
+	0	1	2	3	4	5	6	7	8	9
+3  -   0	0	0	1	0	0	0	0	0	0
+9 	0	0	0	0	0	0	0	0	0	1
+
+
+deep learning = deep neural network = multi layer perceptron
+-> perceptron : activation function(입력 (X ) * 가중치 (W) + 편향 (bias)) => layer ==> input  - hidden - output
+* sigmoid
+* softmax
+
+reflection
+
+deep learning = deep neural network = multi layer perceptron
+perceptron : 
+layer : 
+loss : 
+optimizer : 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

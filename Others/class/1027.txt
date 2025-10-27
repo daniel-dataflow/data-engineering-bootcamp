@@ -1,0 +1,81 @@
+QR!!
+
+
+Machine Learning
+- supervised learning : 
+	= linear regression
+	= logistic regression 
+ 	>> metrics : mse, rmse, mae, r-squared, confusion matrix,...
+- unspervised learning : 
+	= feature engineering
+	= clustering
+
+-------
+
+Deep Learning = Deep Neural Network = Multi Layer Perceptron
+activation function (sigmoid : 이진 분류 0 ~ 1 / softmax : 다중분류 [, , , , ])
+
+
+model = Sequential()
+
+model.add(Dense( ))
+model.add(Dense( ))
+model.add(Dense( ))
+
+model.compile (loss="" , optimizer = "")
+* categorical_crossentropy
+
+
+dl06.ipynb
+
+
+
+Deep Learning (tensorflow2) -> classification
+
+<> BackPropagation (오류 역전파 / 오차역전파) -> tensorflow2 에서는 자동으로 되는 중...
+
+dl07_dropout.ipynb
+dl08_dropout_early_stopping.ipynb
+dl09_optimizer.ipynb
+dl10_checkpoint.ipynb
+dl11.ipynb
+dl12_save.ipynb
+dl13_load.ipynb
+
+
+aihub
+공공데이터포털
+서울시 열린데이터
+허깅페이스
+구글 데이터셋
+
+Machine Learning -> Deep learning
+
+
+예고!!
+NL (자연어처리)
+- pos tagging, stemming / lemmatization, bow
+  ngram, cosine similarity, tf-idf, topic modeling
+=> RNN, LSTM, GRU
+
+CNN (이미지처리)
+- opencv를 활용한 이미지 전처리
+=> convolution layer / pooling layer
+=> 전이학습
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
