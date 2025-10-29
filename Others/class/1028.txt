@@ -1,0 +1,98 @@
+QR !!!
+
+Machine Learning
+
+- 지도학습
+	예측
+	분류
+
+- 비지도학습
+	feature engineering
+	clustering 군집
+
+
+
+
+ds03_nl\
+	nl01_eda.ipynb
+	nl02.ipynb
+	nl03.ipynb
+	nl04.ipynb
+	nl05_pos.ipynb
+	nl06_stemming_lemmatization.ipynb
+	nl07_bow.ipynb
+	nl08_n_gram.ipynb
+	nl09_cosine_similarity.ipynb
+	nl10_tf_idf.ipynb
+	nl11_lda.ipynb
+
+
+
+
+
+topic  1 : didn(0.60) worst(0.57) nothing(0.55) actors(0.48) actually(0.47) minutes(0.46) want(0.41) funny(0.41) script(0.39) re(0.39) 
+
+topic  2 : book(1.39) original(0.63) version(0.48) king(0.45) van(0.39) match(0.38) monster(0.38) series(0.37) jane(0.36) read(0.33) 
+
+topic  3 : gets(0.45) guy(0.41) wife(0.41) police(0.39) plays(0.35) doesn(0.32) murder(0.31) himself(0.31) down(0.30) crime(0.30) 
+
+topic  4 : young(0.80) father(0.67) mother(0.61) family(0.61) woman(0.59) wife(0.42) girl(0.41) son(0.40) old(0.39) beautiful(0.35) 
+
+topic  5 : show(2.15) series(0.96) tv(0.76) funny(0.68) episode(0.67) now(0.63) years(0.63) kids(0.62) saw(0.58) old(0.54) 
+
+topic  6 : work(0.39) director(0.38) us(0.38) world(0.33) without(0.32) may(0.32) own(0.31) audience(0.30) between(0.30) real(0.29) 
+
+topic  7 : war(1.50) american(0.90) world(0.65) years(0.49) history(0.48) documentary(0.48) us(0.48) western(0.44) country(0.40) our(0.40) 
+
+topic  8 : horror(1.77) killer(0.57) gore(0.50) house(0.45) dead(0.44) blood(0.44) pretty(0.36) scary(0.35) night(0.34) effects(0.30) 
+
+topic  9 : action(1.54) game(0.87) effects(0.67) fi(0.54) sci(0.53) space(0.49) fight(0.49) special(0.47) star(0.44) earth(0.36) 
+
+topic  10 : cast(0.87) role(0.76) music(0.75) performance(0.72) comedy(0.64) actors(0.56) excellent(0.50) actor(0.48) performances(0.42) musical(0.39) 
+
+오늘 공부했던거 정리 한번 해볼까요???
+
+NLP
+
+corpus
+형태소 분석 - lemma / stem
++ 품사 (POS tagging)
+
+bow
+
+n-gram
+
+cosine similarity
+
+tf - idf
+
+LDA
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

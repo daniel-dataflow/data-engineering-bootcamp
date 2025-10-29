@@ -1,0 +1,86 @@
+QR !!
+
+
+
+
+Machine Learning
+
+- 지도 학습	-> W * X + b -> (h Y) : loss -> optimizer (GD)
+	예측
+	분류
+	matrics :
+
+- 비지도 학습
+	feature engineering
+	clustering
+	metrics : ari nmi
+	
+-----
+
+Deep Learning (= Deep Neural Network = Multi Layer Perceptron)
+
+activation : sigmoid / softmax
+
+loss : crossentropy
+----
+
+Natural Language Processing
+
+nl12_rnn.ipynb
+nl13_lstm.ipynb
+nl14_gru.ipynb
+
+ds04_vision\
+	cv01.ipynb
+	cv02.ipynb
+	cv03.ipynb
+	cv04.ipynb
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
