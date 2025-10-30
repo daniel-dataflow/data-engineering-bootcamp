@@ -1,0 +1,107 @@
+QR !!
+
+
+Machine Learning
+
+- 지도학습
+	예측 Linear Regression
+	분류 Logistic Regression : SVM, KNN, naive bayes, decision tree, ensemble,
+	metrics : 
+
+- 비지도학습
+	feature engineering : selection , extraction
+	clustering : k means , agglomerative, mean shift, dbscan
+	mterics : ari, nmi, silhouette
+
+Deep Learning ( = D N N = M L P)
+
+- RNN -> LSTM -> GRU
+
+- CNN ?
+
+cv05.ipynb
+cv06.ipynb
+cv07.ipynb
+cv08.ipynb
+cv09.ipynb
+cnn01.ipynb
+
+convolution neural network wiki
+
+
+
+convolution neural network
+
+convolution layer : kernel 합성곱 -> feature map (kernel 수 만큼 = feature map의 channel이 kernel 수)
+pooling layer : feature map의 특징을 도드라지게 만들자
+
+(convolution + pooling) 반복 : feature extraction -> 특징을 도드라지게 + 특성의 개수 줄어들게
+fully connected layer -> 결과 
+
+* zero padding : 원본의 크기와 feature map의 크기를 같게 만들고 싶어서, 원본의 바깥에 0을 채우자
+
+
+
+
+~ 3:20
+
+
+
+
+
+cnn02_cifar.ipynb
+cnn03_cifar.ipynb
+
+
+오늘은 뭘 배웠을까요????
+
+오늘은 computer vision의 한 영역인 이미지 처리를 배웠어요!
+그 중에서 Convolutional Neural Network를 배웠는데
+CNN은 Convolution layer 와 Pooling layer를 반복하면서 feature extraction을 한대요!
+
+Convolution layer는 kernel을 곱해서 featuer map을 만들고
+feature map은 h * w * channel의 shape을 가져요.
+channel의 수는 kernel의 개수에요!
+
+만일, 원본의 크기와 feature map의 크기가 같게 마늗ㄹ고 싶으면, zero-padding
+
+특징을 도드라지게 만드는 layer = pooling layer
+- Max Pooling
+- Average Pooling
+
+feature의 수를 줄여나갈 수 있구요
+
+fully connected layer에 전달해 준대요 -> Flatten -> hidden layer -> output layer
+
+
+RNN : Recurrent -> 자연어
+CNN : Convolution -> 이미지
+
+-----
+
+전이 학습
+
+tensorflow 1.x -> 
+
+pytourch -> 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
