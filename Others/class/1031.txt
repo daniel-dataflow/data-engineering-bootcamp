@@ -1,0 +1,73 @@
+QR !!
+
+
+
+Convolution Neural Network
+
+{convolution layer  + pooling layer } * n + fully connected layer (Flattne() + ... + Output Layer)
+
+Convolution layer : input * kernel = feature map (kernel 갯수 만큼의 channel)
+   zero padding : kernel을 곱하면서 데이터의 크기가 줄어들게 되는데, 숫자 0으로 외곽을 채워서 크기가 줄어드는 것을 방지
+
+Pooling layer : 압축 -> 특징을 도드라지게 
+
+
+
+
+
+cnn04_transfer_learning.ipynb
+
+ds05_tensor1\
+
+conda create -n multi02_tensor1 python==3.7
+
+
+conda activate multi02_tensor1
+
+pip install tensorflow==1.15
+
+pip uninstall protobuf
+pip install protobuf==3.20.3
+
+pip install jupyter
+
+ds06_pytorch\
+	ts01_tensor.ipynb
+	ts02.ipynb
+
+
+conda create -n multi02 python
+
+Machine Learning
+  지도학습 -> 
+	예측
+	분류
+
+  비지도학습
+	feature engineering
+	clustering
+
+Deep Learning
+
+- RNN
+
+- CNN
+
+
+
+4:5
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
