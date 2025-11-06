@@ -1,0 +1,580 @@
+{
+  "images": [
+    {
+      "id": 0,
+      "file_name": "apple_fuji_S_26-56.png",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": 1,
+      "file_name": "apple_fuji_L_26-53.png",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": 2,
+      "file_name": "persimmon_booyu_L_76-34_4DI45.png",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": 3,
+      "file_name": "apple_fuji_L_26-57.png",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": 4,
+      "file_name": "persimmon_booyu_M_76-29_4DI45.png",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": 5,
+      "file_name": "apple_fuji_M_26-61.png",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": 6,
+      "file_name": "apple_fuji_M_26-53.png",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": 7,
+      "file_name": "pear_chuhwang_S_25-84.png",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": 8,
+      "file_name": "persimmon_booyu_L_76-30_5DI90.png",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": 9,
+      "file_name": "apple_fuji_M_26-55.png",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": 10,
+      "file_name": "pear_chuhwang_S_25-82.png",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": 11,
+      "file_name": "apple_fuji_L_26-62.png",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": 12,
+      "file_name": "persimmon_booyu_S_76-32_2FR45.png",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": 13,
+      "file_name": "apple_fuji_L_26-58.png",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": 14,
+      "file_name": "persimmon_booyu_S_76-27_2FR45.png",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": 15,
+      "file_name": "pear_chuhwang_S_25-81.png",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": 16,
+      "file_name": "persimmon_booyu_M_76-33_3FR90.png",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": 17,
+      "file_name": "pear_chuhwang_S_25-86.png",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": 18,
+      "file_name": "persimmon_booyu_M_76-32_2FR45.png",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": 19,
+      "file_name": "persimmon_booyu_L_76-32_2FR45.png",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": 20,
+      "file_name": "apple_fuji_M_26-59.png",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": 21,
+      "file_name": "pear_chuhwang_S_25-85.png",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": 22,
+      "file_name": "persimmon_booyu_L_76-27_2FR45.png",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": 23,
+      "file_name": "apple_fuji_S_26-62.png",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": 24,
+      "file_name": "apple_fuji_L_26-60.png",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": 25,
+      "file_name": "persimmon_booyu_M_76-28_3FR90.png",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": 26,
+      "file_name": "persimmon_booyu_L_76-25_5DI90.png",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": 27,
+      "file_name": "persimmon_booyu_L_76-29_4DI45.png",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": 28,
+      "file_name": "persimmon_booyu_L_76-31_1TOP.png",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": 29,
+      "file_name": "apple_fuji_M_26-62.png",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": 30,
+      "file_name": "persimmon_booyu_M_76-31_1TOP.png",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": 31,
+      "file_name": "pear_chuhwang_S_25-90.png",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": 32,
+      "file_name": "apple_fuji_S_26-59.png",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": 33,
+      "file_name": "pear_chuhwang_S_25-89.png",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": 34,
+      "file_name": "apple_fuji_M_26-56.png",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": 35,
+      "file_name": "persimmon_booyu_M_76-25_5DI90.png",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": 36,
+      "file_name": "apple_fuji_L_26-56.png",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": 37,
+      "file_name": "apple_fuji_M_26-60.png",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": 38,
+      "file_name": "apple_fuji_L_26-61.png",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": 39,
+      "file_name": "persimmon_booyu_M_76-30_5DI90.png",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": 40,
+      "file_name": "apple_fuji_L_26-59.png",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": 41,
+      "file_name": "pear_chuhwang_S_25-87.png",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": 42,
+      "file_name": "persimmon_booyu_S_76-29_4DI45.png",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": 43,
+      "file_name": "persimmon_booyu_S_76-34_4DI45.png",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": 44,
+      "file_name": "persimmon_booyu_S_76-33_3FR90.png",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": 45,
+      "file_name": "apple_fuji_M_26-58.png",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": 46,
+      "file_name": "apple_fuji_S_26-61.png",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": 47,
+      "file_name": "persimmon_booyu_L_76-26_1TOP.png",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": 48,
+      "file_name": "apple_fuji_S_26-60.png",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": 49,
+      "file_name": "persimmon_booyu_L_76-33_3FR90.png",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": 50,
+      "file_name": "apple_fuji_S_26-58.png",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": 51,
+      "file_name": "persimmon_booyu_M_76-34_4DI45.png",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": 52,
+      "file_name": "persimmon_booyu_S_76-28_3FR90.png",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": 53,
+      "file_name": "apple_fuji_M_26-54.png",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": 54,
+      "file_name": "pear_chuhwang_S_25-83.png",
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "id": 55,
+      "file_name": "persimmon_booyu_S_76-31_1TOP.png",
+      "width": 1000,
+      "height": 1000
+    }
+  ],
+  "annotations": [
+    {
+      "id": 0,
+      "image_id": 4,
+      "category_id": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        1000.0,
+        1000.0
+      ],
+      "area": 1000000.0,
+      "iscrowd": 0
+    },
+    {
+      "id": 1,
+      "image_id": 5,
+      "category_id": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        1000.0,
+        1000.0
+      ],
+      "area": 1000000.0,
+      "iscrowd": 0
+    },
+    {
+      "id": 2,
+      "image_id": 6,
+      "category_id": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        1000.0,
+        1000.0
+      ],
+      "area": 1000000.0,
+      "iscrowd": 0
+    },
+    {
+      "id": 3,
+      "image_id": 9,
+      "category_id": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        1000.0,
+        1000.0
+      ],
+      "area": 1000000.0,
+      "iscrowd": 0
+    },
+    {
+      "id": 4,
+      "image_id": 16,
+      "category_id": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        1000.0,
+        1000.0
+      ],
+      "area": 1000000.0,
+      "iscrowd": 0
+    },
+    {
+      "id": 5,
+      "image_id": 18,
+      "category_id": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        1000.0,
+        1000.0
+      ],
+      "area": 1000000.0,
+      "iscrowd": 0
+    },
+    {
+      "id": 6,
+      "image_id": 20,
+      "category_id": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        1000.0,
+        1000.0
+      ],
+      "area": 1000000.0,
+      "iscrowd": 0
+    },
+    {
+      "id": 7,
+      "image_id": 25,
+      "category_id": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        1000.0,
+        1000.0
+      ],
+      "area": 1000000.0,
+      "iscrowd": 0
+    },
+    {
+      "id": 8,
+      "image_id": 29,
+      "category_id": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        1000.0,
+        1000.0
+      ],
+      "area": 1000000.0,
+      "iscrowd": 0
+    },
+    {
+      "id": 9,
+      "image_id": 30,
+      "category_id": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        1000.0,
+        1000.0
+      ],
+      "area": 1000000.0,
+      "iscrowd": 0
+    },
+    {
+      "id": 10,
+      "image_id": 34,
+      "category_id": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        1000.0,
+        1000.0
+      ],
+      "area": 1000000.0,
+      "iscrowd": 0
+    },
+    {
+      "id": 11,
+      "image_id": 35,
+      "category_id": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        1000.0,
+        1000.0
+      ],
+      "area": 1000000.0,
+      "iscrowd": 0
+    },
+    {
+      "id": 12,
+      "image_id": 37,
+      "category_id": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        1000.0,
+        1000.0
+      ],
+      "area": 1000000.0,
+      "iscrowd": 0
+    },
+    {
+      "id": 13,
+      "image_id": 39,
+      "category_id": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        1000.0,
+        1000.0
+      ],
+      "area": 1000000.0,
+      "iscrowd": 0
+    },
+    {
+      "id": 14,
+      "image_id": 45,
+      "category_id": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        1000.0,
+        1000.0
+      ],
+      "area": 1000000.0,
+      "iscrowd": 0
+    },
+    {
+      "id": 15,
+      "image_id": 51,
+      "category_id": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        1000.0,
+        1000.0
+      ],
+      "area": 1000000.0,
+      "iscrowd": 0
+    },
+    {
+      "id": 16,
+      "image_id": 53,
+      "category_id": 1,
+      "bbox": [
+        0.0,
+        0.0,
+        1000.0,
+        1000.0
+      ],
+      "area": 1000000.0,
+      "iscrowd": 0
+    }
+  ],
+  "categories": [
+    {
+      "id": 0,
+      "name": "특상",
+      "supercategory": "grade"
+    },
+    {
+      "id": 1,
+      "name": "상",
+      "supercategory": "grade"
+    },
+    {
+      "id": 2,
+      "name": "중",
+      "supercategory": "grade"
+    }
+  ]
+}
