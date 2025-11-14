@@ -1,0 +1,19 @@
+# YOLOv5 과일 품질 등급 분류
+
+path: ../../data/processed/yolo
+train: images/train
+val: images/val
+test: images/test
+
+nc: 9
+
+names:
+  0: 사과_특상
+  1: 사과_상
+  2: 사과_중
+  3: 배_특상
+  4: 배_상
+  5: 배_중
+  6: 감_특상
+  7: 감_상
+  8: 감_중

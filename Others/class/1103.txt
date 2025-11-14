@@ -1,0 +1,86 @@
+QR !!!
+
+
+
+
+Python
+type : 값의 형태 -> 모든 타입과 기타 등등이 객체다.
+opr 
+제어문 : 조건 if ~ else, match ~ case / 반복 for , while
+module: library > package > module
+io : with
+class -> instance : (object)
+OOP
+- 추상화
+- 상속
+- 다형성
+- 캡슐화
+
+decorator : @~
+
+exception : try ~ except ~ finally
+
+iterator -> iterable
+generator -> yield
+
+thread : 
+process : 
+program : 
+
+awaitable : coroutine, task, future, __await__
+
+
+Machine Learning
+super~
+	Linear reagression
+	Logistic regession
+
+un super~
+	feature engineering
+	cluster
+
+Deep Learning (= Deep Neural network = Multi Layer perceptron)
+
+activation 
+
+cross entropy
+
+- NLP
+
+- Computer Vision
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

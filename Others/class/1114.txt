@@ -1,0 +1,40 @@
+QR!
+
+팀장님들은 ppt, py파일 제출 (지금)
+오후 1시부터 발표 시작 
+(그 전에 발표준비 할 것!)
++
+오늘 일일보고서는 수업 종료 전까지
+
+
+
+Machine Learning -> loss, optimizer, scaling
+- 지도학습 : linear regression , logistic regression
+
+- 비지도학습 
+
+>> metrics
+
+
+---
+
+Deep Learning 
+- Perceptron (tensor) + activation function
+
+- NLP 
+
+- vision
+
+
+
+
+
+
+
+
+
+
+
+
+
+
