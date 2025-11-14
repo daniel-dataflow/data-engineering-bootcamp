@@ -1,0 +1,32 @@
+이창주
+1. Data 새로 생성하는 문제에 대해 협의(건수 문제)
+2. FastText Model을 적용하여 code(PyTorch)를 완성, 실행, 평가
+3. Data Migration : 건수 문제를 해결했고, 다음 작업 중...
+4. FastText Model을 적용하여 code(TensorFlow 2)을 개발 중...
+5. 분석 계획 보고서(sample)를 팀장에게 전달
+
+박주언
+1. 팀 미팅
+   - 현재 진행사항 협의 및 작업 업무 분담
+     . 3개의 모델 각자 작업 분담( Word2vec, Fasttext, sRoBERTa)
+
+2. word2vec 적용 프로그램 작성 중
+   - pytorch로 작업 수행
+     Accuracy: 0.5
+     Precision: 0.5
+     AUROC: 0.37760000000000005
+     Cosine Similarity: 0.5649788126726082
+     Pearson r: -0.205183461555577
+                 precision    recall  f1-score   support
+
+         0.0         0.5000    0.9600    0.6575        50
+         1.0         0.5000    0.0400    0.0741        50
+
+    accuracy                              0.5000       100
+   macro avg     0.5000    0.5000    0.3658       100
+weighted avg     0.5000    0.5000    0.3658       100
+
+김민지
+1. 허깅페이스에서 SRoBERTa 한국어 학습된 모델 찾음
+2. SRoBERTa에 가짜뉴스 탐지 학습/결과 확인
+3. 분석 계획 보고서 초안 작성

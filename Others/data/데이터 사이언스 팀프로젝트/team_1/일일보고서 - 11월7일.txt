@@ -1,0 +1,29 @@
+이창주
+1. 금일 작업
+   가. 임무1(Dataset)의 변환 작업 완료→mission1_train_reinforcement.csv
+   나. [논문]Bag of Tricks for Efficient Text Classification.pdf를 파악 중...
+2. 익일 작업
+   가. [논문]Bag of Tricks for Efficient Text Classification.pdf를 파악 예정
+   나. FastText Model을 적용하여 code를 작성하여 학습 예정
+
+박주언
+1. Coding Convention 초안 작성 
+   - 07_coding_convention-whiplash
+
+2. 메인 논문 검토
+   - 딥러닝 기법을 이용한 가짜뉴스 탐지
+
+3. word2vec 적용 프로그램 작성
+   - word2vec - CNN
+   - 결과 
+     * 임무 1
+      . accuracy : 0.43
+      . precision : 0.4492753623188406
+      . AUROC : 0.47440000000000004
+     * 임무 2
+      . accuracy : 0.55
+      . precision : 0.6666666666666666
+      . AUROC : 0.5929951690821256
+
+김민지
+- 결석

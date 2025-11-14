@@ -1,0 +1,23 @@
+이창주
+1. FastText Model로 구현된 source를 epochs 및 batch_size 매개 변수의 값을 달리하여 실행, 결과를 저장(실행 결과(뉴스 데이터 학습을 통한 가짜 분류)-fake_FastText_cci10000.xlsx)
+2. 하기 문서를 작성, 공유
+   가. 분석 계획 보고서('가짜 news 탐지 자동화') 0.5.xlsx
+   나. Data 명세서('가짜 news 탐지 자동화') 0.1.xlsx
+3. 유사도를 높이기 위해 FastText 및 SRoBERTa Model를 혼합하여 hybrid로 source를 구현, 실행 중...(epochs=5)
+
+박주언
+1. 팀 미팅
+   - 현재 진행사항 협의 및 작업 업무 분담
+     . 3개의 모델 각자 작업 분담( Word2vec, Fasttext, sRoBERTa)
+
+2. word2vec 적용 프로그램 작성 중
+   - word2vec 로 작업 수행
+     : auroc가 낮아 개선 작업중
+   - FastText Base 논문 검토 및 프로그램밍
+
+김민지
+1. 파일 네이밍 컨벤션 확정
+2. 분석 계획 보고서 작성
+3. 임무1 데이터 SRoBERTa에 학습 후 결과 확인
+4. 임무2 데이터 SRoBERTa 학습중
+5. BERT를 RoBERTa로 학습시키는 방법 학습중

@@ -1,0 +1,32 @@
+이창주
+1. 'FastText + SRoBerta'를 적용한 source로 수정해서 실행했으나, Memory의 부족으로 실행 실패 함.(원격 접속으로 Desktop로 실행 예정)
+2. 분석 결과 보고서를 작성할 수 있게 내용 만들어 전달
+3. 분석 계획 보고서, Data 명세서의 양식을 수정함.
+4. FastText로 만든 source의 결과인 Cosine 유사도의 graph값을 다른 Model로 한 것처럼 맞추기 위해 source를 수정, 실행했으나 역시 Memory의  부족으로 실행 실패 함.(원격 접속으로 Desktop로 실행 예정)
+
+박주언
+1. 프로젝트 산출물 작성 및 제출
+   - 분석 결과 보고서 외 3종 작성 
+
+2. word2vec 적용 프로그램 수행
+    - 업무2 데이터 셋 작업
+     Word2vec            
+     Batch size   512         
+     epochs   10         
+     accuracy   0.61         
+     precision   0.620689655         
+     auroc   0.68115942         
+     Pearson r   0.285972817         
+            
+                precision      recall       f1-Score   supoort
+     0                 0.6056              0.7963       0.688   54
+     1                 0.6207              0.3913         0.48   46
+     accuracy                                     0.61   100
+     macro avg   0.6132              0.5938         0.584   100
+     weighted avg   0.6126              0.61               0.5923   100
+
+김민지
+1. 분석 결과 보고서 서론, SRoBERTa 부분 작성
+2. 분석 결과 보고서 최종 통합
+3. SRoBERTa 임무1, 임무2 2차 학습을 통해 모델의 가짜뉴스 탐지 성능을 높임
+4. 모델이 탐지한 가짜뉴스와 진짜 뉴스에 대한 코사인 유사도 시각화 그래프 생성
