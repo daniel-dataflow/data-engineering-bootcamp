@@ -1,0 +1,12 @@
+#3. 입력을 받아서 List를 오름차순으로 정렬하시오.
+v_1 = input('원하는 첫번째 단어:')
+v_2 = input('원하는 두번째 단어:')
+v_3 = input('원하는 세번째 단어:')
+v_4 = input('원하는 네번째 단어:')
+v_words = list()
+v_words.append(v_1)
+v_words.append(v_2)
+v_words.append(v_3)
+v_words.append(v_4)
+v_sorted_words = sorted(v_words)
+print(v_sorted_words)

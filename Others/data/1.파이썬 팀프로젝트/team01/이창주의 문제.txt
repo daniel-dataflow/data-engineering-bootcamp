@@ -1,0 +1,29 @@
+1. 입력을 받아서 소수인지, 아닌지 판별 결과를 표현하시오.
+v_number = input('원하는 숫자(소수인지 판별):')
+if f_is_prime(int(v_number)):
+   print('소수입니다.')
+else:
+   print('소수가 아닙니다.')
+2. 입력을 받아서 중복 문자를 제거하시오.(순서는 유지)
+v_string = input('중복으로 alphabet가 있는 영단어:')
+v_result = ''
+for v_char in v_string:
+3. 입력을 받아서 List를 오름차순으로 정렬하시오.
+v_1 = input('원하는 첫번째 단어:')
+v_2 = input('원하는 두번째 단어:')
+v_3 = input('원하는 세번째 단어:')
+v_4 = input('원하는 네번째 단어:')
+4. 입력을 받아서  문장 내에서 각 단어가 나오는 빈도를 나타내시오.
+v_sentence = input('원하는 한 문장:')
+v_word_count = {}
+for v_word in v_sentence.split():
+5. 입력을 받아서 체 학생 중 최고 점수를 받은 학생명과 점수를 출력하시오.
+v_student = {}
+while True:
+   v_key = input('학생명을 입력하시오.(종료:q):')
+   if v_key == 'q':
+      break
+   v_value = input(f'{v_key}의 점수를 입력하시오.:')
+6. 원하는 년도와 월을 입력을 받아서 Python에서 제공하는 기능으로 달력을 출력하시오.
+v_year = input('년도:')
+v_month = input('월:')
