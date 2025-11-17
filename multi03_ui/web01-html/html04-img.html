@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <h1>이미지</h1>
+
+    <h2>&lt;img&gt; 속성들</h2>
+
+    <!--
+    / : 최상위
+    ./ : 현재 위치 (현재 파일과 동일 위치)
+    ../ : 상위 위치
+    -->
+    <img src="./images/pika.png" alt="image" width="40px", height="40px">
+    <!-- 
+        pt : 포인트 (1pt = 약0.72인치)
+        px : 픽셀 (해상도 별 상대크기)
+        %, em : 지정 / 상속 등에 대한 백분율 (상대크기)
+    -->    
+
+    <h2>이미지에 링크 걸기</h2>
+
+    <a href="index.html">
+        <img src="images/pika.png" alt="img">
+    </a>
+
+    <h2>이미지의 일부분에 링크 걸기 : 이미지 맵</h2>
+    <img src="images/pika.png" alt="img" width="100px" height="100px" usemap="#my">
+
+    <map name="my">
+        <area shape="rect" coords="25, 25, 75, 75" href="index.html" alt="index">
+    </map>
+
+</body>
+</html>

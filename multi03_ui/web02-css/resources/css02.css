@@ -1,0 +1,77 @@
+/* 타입 */
+
+pre {
+    text-align: center;
+}
+
+/* id */
+
+#selector01 {
+    color: pink;
+}
+#selector02 {
+    color: blue;
+}
+
+/* class */
+.selector-cls {
+    background-color: yellow;
+    color: red;
+}
+
+/* 전체 */
+* {
+    color: black;
+}
+
+/* 자식 */
+#atc > p {
+    color: skyblue;
+}
+#atc > div > p {
+    background-color: black;
+    color: white;
+}
+
+/* 인접 */
+span + pre {
+    background-color: green;
+    color: white;
+}
+
+/* 후손 */
+#atc2 span{
+    color: blue;
+}
+
+/* 속성 선택지 */
+p[title] {
+    background-color: purple;
+}
+
+/* title 속성이 값이 a인 요소만 찾아서 
+background-color를 grey로 바꿔보자! */
+p[title="a"] {
+    background-color: grey;
+}
+
+/* 가상 클래스 선택자 */
+a:link{
+    color: green;
+    font-size: 20pt;
+}
+a:visited{
+    background-color: violet;
+    color: yellowgreen;
+}
+a:hover{
+    font-size: 100pt;
+}
+a:active{
+    background-color: black;
+    color: white;
+}
+input:checked{
+    width: 100px;
+    height: 100px;
+}

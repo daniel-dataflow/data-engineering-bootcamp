@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="html-form-result.html" method="get">
+        <fieldset>
+            <legend>회원가입</legend>
+            <p>
+                ID: <input type="text" name="id">
+            </p>
+            <p>
+                PW: <input type="password" name="pw">
+            </p>
+            <p>
+                email 수신 여부<br>
+                <input type="radio" name="rdo" value="y">Y <br>
+                <input type="radio" name="rdo" value="n">N
+            </p>
+            <p>
+                관심 분야<br>
+                <input type="checkbox" name="db" value="database">Data Base
+                <br>
+                <input type="checkbox" name="ds" value="science">Data Science
+                <br>
+                <input type="checkbox" name="de" value="music">Data Engineering
+            </p>
+            <p>
+                하고싶은 말
+                <br>
+                <textarea name="ect" cols="30" rows="10"></textarea>
+            </p>
+            <p>
+                <input type="button" value="그냥 버튼">
+                <br>
+                <input type="reset" value="취소">
+                <br>
+                <input type="submit" value="전송">
+                <br>
+                <button>전송</button>
+            </p>
+        </fieldset>
+    </form>
+</body>
+</html>
