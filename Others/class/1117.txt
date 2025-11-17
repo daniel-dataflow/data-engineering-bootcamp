@@ -1,0 +1,88 @@
+QR !!!
+
+팀별로 자리 이동!!
+1 : 박주언, 정수아, 한대성
+2 : 곽동원, 김민지, 김소영
+3 : 강지연, 안호용, 이주형, 이창주
+
+----
+
+workspaces \
+  multi03_ui \
+    web01-html \
+      index.html
+
+html:5
+
+vsc -> extensions -> live server
+
+http://127.0.0.1:5500/web01-html/index.html
+
+html01-start.html
+
+10:02
+
+web01-html \
+	images \
+		img.png
+슬랙에 매니저님 공지 (채용설명회) 확인!
+
+http://127.0.0.1:5500/web01-html/html-form-result.html
+?
+id=%E3%85%81%E3%84%B4%E3%85%87%E3%84%B9
+&
+pw=asdf
+&
+rdo=y
+&
+db=database
+&
+ds=science
+&
+etc=%E3%85%81%E3%84%B4%E3%85%87%E3%84%BB%E3%84%B4%E3%85%87%E3%84%B9%E3%84%B4%E3%85%81%E3%85%87%E3%84%B9
+
+
+
+
+multi03_ui
+	web01-html
+
+	web02-css \
+		resources \
+			css01.css
+			css02.css
+		index.html
+		css02-selector.html
+
+
+
+http://127.0.0.1:5500/web02-css/index.html
+
+
+
+
+
+w3c.org
+
+w3schools.com
+
+mdn
+
+
+HTML : HyperTextMarkupLanguage
+CSS : Cascading StyleSheet
+
+
+Web 접근성
+CSS 우선순위
+속성 선택자 (여러가지 연산자)
+
+reflection
+
+
+
+
+
+
+
+
