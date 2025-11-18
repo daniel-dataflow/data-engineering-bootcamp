@@ -1,0 +1,38 @@
+## 함수
+
+
+## 변수
+SIZE = 5
+stack = [None for _ in range(SIZE)]
+top = -1
+
+## 메인
+print('바닥 :', stack)
+# Push
+top +=1
+stack[top] = '커피'
+print('바닥 :', stack)
+top +=1
+stack[top] = '녹차'
+print('바닥 :', stack)
+top +=1
+stack[top] = '꿀물'
+print('바닥 :', stack)
+# Pop
+data = stack[top]
+stack[top] = None
+top -= 1
+print('팝-> :', data)
+print('바닥 :', stack)
+data = stack[top]
+stack[top] = None
+top -= 1
+print('팝-> :', data)
+print('바닥 :', stack)
+data = stack[top]
+stack[top] = None
+top -= 1
+print('팝-> :', data)
+print('바닥 :', stack)
+
+
