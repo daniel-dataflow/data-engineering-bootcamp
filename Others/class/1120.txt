@@ -1,0 +1,113 @@
+QR !!
+
+
+Hyper Text Markup Language (HTML) : document를 작성하기 위해 Tag 를 사용하여 data를 구조화 하는 언어
+Cascading StyleSheet (CSS) : data의 위치, 크기, 생상 등을 지정
+
+
+
+web02-css\
+	resources\
+		font\
+			Goyang.ttf
+
+
+
+
+
+
+http://127.0.0.1:5500/web02-css/
+
+~55분
+https://codepen.io/
+
+
+lorem ipsum
+
+
+
+multi03_ui \
+	web01-html\
+	web02-css\
+	web03-js\
+		resources\
+			js01.js
+		index.html
+
+http://127.0.0.1:5500/web03-js/
+
+함수형 프로그래밍 (패러다임)
+
+4:05
+
+
+
+
+Hyper Text Markup Language
+Cascading StyleSheet
+
+JavaScript -> document + event
+
+var 변수 = 값;
+let 변수 = 값;
+const 상수 = 값;
+
+var 변수;
+let 변수;
+변수 = 값;
+변수 = 값;
+
+// const 상수;
+
+var : function scope -> hoisting => 전역변수로 사용 시 window 객체 prop -> X
+let, const : block scope
+
+제어문
+- 조건 : if, switch
+
+	if ~ else if
+
+	switch ~ case : fall through (break 필요)
+
+- 반복 : for, while
+
+	for (초기값 ; 조건식 ; 증감식)
+
+	while(조건)
+
+	do ~ while(조건) : do 안의 명령을 먼저 실행 -> 조건을 나중에 판별
+
+예외처리
+	try ~ catch
+
+
+
+reflection
+
+HTML - <tag property="">data</tag>
+
+<form action="요청 경로(주소)" method="요청 방법(get, post)">
+
+
+	<?? name="a" value="b">
+
+	<input type="submit" />
+</form>
+
+
+url ? a = b & ...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

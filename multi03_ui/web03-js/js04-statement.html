@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        button {
+            width: 150px;
+        }
+    </style>
+
+    <script>
+        const season = "가을";
+
+        function ifTest() {
+            if(season == "봄") {
+                console.log("벚꽃엔딩");
+            } else if(season == "여름") {
+                console.log("바다의 왕자");
+            } else if(season == "가을") {
+                console.log("가을 아침");
+            } else if(season == "겨울") {
+                console.log("눈의 꽃");
+            } else {
+                alert("봄, 여름, 가을, 겨울 중에서 선택해 주세요!")
+            }
+        }
+
+        function switchTest() {
+            // fall through
+            switch(season) {
+                case "봄":
+                    console.log("봄 봄 봄");
+                    break;
+                case "여름":
+                    console.log("여름 안에서");
+                    break;
+                case "가을":
+                    console.log("가을이 오면");
+                    break;
+                case "겨울":
+                    console.log("징글벨");
+                    break;
+                default:
+                    alert("봄, 여름, 가을, 겨울 중에서 선택해 주세요!!");
+            }
+        }
+
+        function forTest() {
+            // for (변수 선언; 조건식; 증감식) { 반복할 명령문 }
+            for(let i = 0; i < 10; i++) {
+                console.log(i);
+            }
+
+            // 구구단
+            for (let k = 2; k<= 9; k++){
+                console.log(`=== ${k}단 ===`);
+                for (let l = 1;  l <= 9; l++){
+                    console.log(`${k} * ${l} = ${k*l}`);    
+                }
+            }
+        }
+
+        function whileTest() {
+            let i = 0;
+            while(i < 10) {
+                console.log(i++);
+            }
+            
+            let j = 10;
+            // do 안의 명령을 무조건 한 번은 실행
+            // 이후에 조건 확인
+            do {
+                console.log(j++);
+            } while(j < 10);
+        }
+
+        function errorTest() {
+            try {
+                console.log("1");
+                banana;
+                console.log("2");
+            } catch(e) {
+                console.log(e);
+                console.log("3");
+            } finally {
+                console.log("4");
+            }
+        }
+
+
+    </script>
+
+</head>
+<body>
+    
+    <button onclick="ifTest();">if</button>
+    <br>
+    <button onclick="switchTest();">switch</button>
+    <br>
+    <button onclick="forTest();">for</button>
+    <br>
+    <button onclick="whileTest();">while</button>
+    <br>
+    <button onclick="errorTest();">try catch</button>
+    
+
+
+</body>
+</html>

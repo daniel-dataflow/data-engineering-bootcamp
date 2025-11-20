@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <script>
+        let x = 10;
+        let y = 4;
+
+        //산술 (+, -, *. /. %)
+        console.log(x + y);
+        // console.log(x - y);
+        // console.log(x * y);
+        // console.log(x / y);
+        // console.log(x % y);
+
+        // 증감 연산자
+        // 전위 연산자 : 연산자를 변수 앞에 붙여서 -> 연산을 먼저 하게 되고, 값을 나중에 리턴한다.
+        console.log(++x);
+        // 후위 연산자 : 연산자를 변수 뒤에 붙여서 -> 값을 먼저 리턴하게 되고, 연산을 나중에 하게 된다.
+        console.log(x++);
+
+        console.log(x);
+        console.log(y);
+
+        const result = x++ + --y + y++ + ++x; 
+        //            12 
+        //                     3  
+        //                         3 
+        //                                14
+        console.log(result); // 32
+        console.log(x);      // 14 
+        console.log(y);      // 4
+
+        // 할당
+        x += y
+        // x = x + y
+        console.log(x);
+
+        // 비교
+        let num = 3;
+        const str = "3";
+
+        // == 자바스크립트는 타입추론 언어이기 때문에 값만 보기 때문에 숫자와 문자는 같은 것으로 인식한다.
+        console.log(num == str); // true
+        console.log(num != str); // false
+
+        // === 타입으로 구분해서 비교한다.
+        console.log(num === str); // false
+        console.log(num !== str); // true
+
+        num = 10;
+        console.log(num > str); // true
+        
+        // 논리
+        // |, &  : bit 연산(가볍게 사용해야 할 때- 기계나 게임 개발시)
+        const and = true && false; // false
+        const or = true || false; // true
+        const not = !true; // false
+        console.log(and, or, not);
+        
+        // 삼힝
+        // 변수  = 조건 ? 참일때 리턴값 : 거짓일 때 리턴값;
+        const age = 100;
+        const isAdult = age >= 19 ? true : false;
+        console.log(isAdult);
+
+    </script>
+        
+    
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        div > h1 {
+            font-style: italic;
+            font-variant: small-caps;
+            font-weight: bold;
+
+            font-size: 25px;
+            line-height: 500%;
+
+            font-family: "궁서";
+        }
+        @font-face {
+            font-family: "Goyang";
+            /* 맥 */
+            src: url('resources/font/Goyang.otf');
+            /* 윈도우 */
+            /* src: url('resources/font/Goyang.ttf'); */
+        }
+
+        div + h1 {
+            font: italic small-caps bold 25px/500% Goyang;
+        }
+        /*
+            font : [font-style] [font-variant] [font-weight] font-size[/line-height] font-family
+            ** font-size, font-family는 반드시 포함!
+        */
+    </style>
+
+</head>
+<body>
+    
+    <div>
+        <h1>Data engineer bootcamp : 2025-09-15 개강</h1>
+    </div>
+
+    <h1>Data engineer bootcamp : 2025-09-15 개강</h1>
+
+</body>
+</html>
