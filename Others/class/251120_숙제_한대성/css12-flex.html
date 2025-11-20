@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        #container {
+            margin: 1%;
+            display: flex;
+            border: 1px solid red;
+            width: 500px;
+            height: 500px;
+
+
+            /* 기본값 */
+            /* justify-content: start */
+            /* 가운데 정렬 */
+            /* justify-content: center; */
+            /* 맨끝을 기준으로 박스의 갯수에 맞춰 간격배열 */
+            /* justify-content: space-between; */
+            /* 맨끝에서 일정 거리를 둔 상태에서 박스의 갯수에 맞춰 간격배열 */
+            /* justify-content: space-around; */
+            /* 맨끝에서 일정 거리를 좀 더 둔 상태에서 박스의 갯수에 맞춰 간격배열 */
+            /* justify-content: space-evenly; */
+            /* 칸에 맞춰서 갯수에 맞겍 간격 배열 */
+            /* justify-content: space-between; */
+
+            /* flex-flow (방향 + 줄 넘기기) */
+            /* 박스가 컨테이너를 넘어가면 줄 바꿈 */
+            /* flex-flow: row wrap; */
+            /* 순서 뒤집기 */
+            /* flex-flow: row-reverse nowrap; */
+            /* 세로정렬 오른쪽부터 왼쪽으로 */
+            /* flex-flow: column wrap-reverse;  */
+            /* 세로정렬 왼쪽부터 오른쪽으로 */
+            /* flex-flow: column wrap; */
+
+            /* Flex 컨테이너 내의 개별 Flex 아이템들을 교차축을 따라 정렬한다. */
+            /* 기본 값 */
+            /* align-items: stretch; */
+            /* 박스를 컨테이너 상하 정렬 */
+            /* align-items: center; */
+            /* 박스를 컨테이너 상단에 붙여 정렬 */
+            /* align-items: start; */
+            /* 박스를 컨테이너 하단에 붙여 정렬 */
+            /* align-items: end; */
+
+             /* 여러 줄의 Flex 아이템들을 교차축을 따라 정렬다.  */
+            /* 작동 안됨 확인 불가 */
+            /* align-content: start; */
+            /* align-content: center; */
+            /* align-content: space-between; */
+            /* align-content: space-around; */
+            
+        }
+
+        .box {
+            margin: 1%;
+            border: 1px solid blue;
+            text-align: center;
+            font-size: 50pt;
+            width: 100px;
+            height: 100px;
+
+            /* 기본값 */
+            /* align-self: stretch; */
+            /* 박스 범주 내에서 가운데 정렬 */
+            /* align-self: center; */
+            /* 박스 범주 내에서 상단 정렬 */
+            /* align-self: start; */
+            /* 박스 범주 내에서 하단 정렬 */
+            /* align-self: end; */
+
+            /* order: 0; */
+            /* order: 3; */
+            /* order: -1; */
+            /* order: 2; */
+        }
+
+        /* 
+            flexible box layout
+            - container
+                justify-content
+                flex-flow (flex-direction + flex-wrap)
+                align-items
+                align-content
+            - box
+                flex (flex-grow, flex-shrink, flex-basis)
+                align-self
+                order
+        */
+    </style>
+
+</head>
+<body>
+    <div>
+        <h2><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Flexible_box_layout" target="_blank">MDN 참고하기</a></h2>
+    </div>
+    
+    <div id="container">
+        <div class="box">1</div>
+        <div class="box">2</div>
+        <div class="box">3</div>
+        <!-- <div class="box">4
+            <div class="box">5</div>
+        <div class="box">6</div>
+        <div class="box">7</div>
+        <div class="box">8</div>
+        <div class="box">9</div>
+        </div> -->
+        
+    </div>
+
+</body>
+</html>
