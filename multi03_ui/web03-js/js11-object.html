@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+
+</head>
+<body>
+    
+    <pre onclick="ObjectMain();">
+        객체 (reference type)
+        - property : 속성
+        - function : 기능 (method)
+        - this : 객체 내부의 속성이나 기능을 정의
+        - prototype : 생성되어 있는 객체의 확장
+    </pre>
+
+    <pre onclick="symbolMain()">
+        symbol (primitive type)
+        - 상숭 정의
+        - 속성 은닉 (private)
+    </pre>
+
+    <script>
+        function object01() {
+            this.name = "홍길동";
+            const phone ="010-1234-5678";
+            this.getPhone = () => {return phone;} 
+        }
+
+        // object literal(객체)
+        let obj02 =  {
+            name : "kim-sd",
+            getPhone : function() {return "010-2222-3456"}
+        }
+
+        // key 와 value의 이름이 같으면 생략 가능
+        const name ="이순신";
+        const phone = "010-3333-4567";
+        const obj03 = {
+            name,
+            phone
+        }
+
+        const obj04 = {
+            name : "이동헌",
+            phone() {
+                return "010-4444-5678";
+            }       
+        }
+
+        object01.prototype.addr = () => {return "suwon";}
+        
+        function ObjectMain() {
+            // 함수를 가지고 객체 생성
+            const obj01 = new object01(); // object01 함수가 클래스처럼 객체를 만들기 위한 설계도처럼 사용됨
+            // this :  객체
+            console.log(obj01.name);
+            console.log(obj01.getPhone);
+            console.log(obj01.getPhone()); // getPhone 실행되어 변수 값을 가져 올수 있다.
+            console.log(obj01.phone); // const 중괄호의 값을 벗어나면 가져올 수 없다.
+
+            console.log(obj02.name);
+            console.log(obj02.getPhone());
+
+            console.log(obj03["name"]);
+            console.log(obj03["phone"]);
+
+            console.log(obj04["name"]);
+            console.log(obj04["phone"]());
+            console.log(obj04.phone());
+
+            console.log(obj01.addr());
+
+        }
+
+        function symbolMain() {
+            // 상수 내에서 유일한 값을 만들고 싶을 때 만든다.
+            const symbol01 = Symbol();
+            // const symbol02 = new Symbol();
+            // Symbol은 new 사용불가!
+
+            const symbol02 = Symbol();
+
+            console.log(symbol01 == symbol02);
+
+            const RED = "red";
+            const red = "red";
+            console.log(RED == red);
+
+            const BLUE = Symbol("blue");
+            const blue = Symbol("blue");
+            console.log(BLUE == blue);
+
+            const COLOR = {
+                RED : Symbol("red"),
+                BLUE : Symbol("blue"),
+                GREEN : Symbol("green")
+            };
+            console.log(COLOR.RED);
+
+            // property 은닉
+            const user = {id:""}
+            const password = Symbol();
+
+            user.id = "dongheon";
+            user[password] = 1234;
+
+            // console.log(user.id);
+            // console.log(user[password]);
+
+            // for ~ in : for property in object
+            for (let item in user) {
+                console.log(item);
+            }
+            console.log(Object.keys(user));
+
+            console.log(Reflect.ownKeys(user));
+
+            // 전역 Symbol - 싱글톤처럼 여기 저기에서 사용 할 수 있도록 한다.
+            const class01 = Symbol.for("engineer");
+            const class02 = Symbol.for("engineer");
+            console.log(class01 == class02);
+            console.log(class01);
+
+            console.log(Symbol.keyFor(class01));
+            
+        }
+    </script>
+</body>
+</html>

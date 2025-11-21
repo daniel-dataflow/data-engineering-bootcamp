@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script>
+        function jsType() {
+            let variable01 = "문자";
+
+            console.log(variable01 + "의 타입 : " + typeof(variable01));
+
+            variable01 = 10;
+            console.log(variable01 + "의 타입 : " + typeof(variable01));
+
+            variable01 = true;
+            console.log(variable01 + "의 타입 : " + typeof(variable01));
+
+            // python에서의 None
+            variable01 = null;
+            console.log(variable01 + "의 타입 : " + typeof(variable01));
+
+            let variable02;
+            console.log(variable02 + "의 타입 : " + typeof(variable02));
+
+            variable02 = Symbol("symbol");
+            // console.log(variable02 + "의 타입 : " + typeof(variable02));
+            console.log(typeof(variable02));
+
+            // 1+e24
+            variable02 = 1000000000000000000000000;
+            console.log(variable02 + "의 타입 : " + typeof(variable02));
+            // n붙이면
+            variable02 = 1000000000000000000000000n;
+            console.log(variable02 + "의 타입 : " + typeof(variable02));
+
+            variable02 = {};
+            console.log(variable02 + "의 타입 : " + typeof(variable02));
+
+            variable02 = function(){
+                console.log("function type");
+            }
+            console.log(variable02 + "의 타입 : " + typeof(variable02));
+
+            variable02 = ["array", "type"];
+            console.log(variable02 + "의 타입 : " + typeof(variable02));
+
+            variable02 = /hello/;
+            console.log(variable02 + "의 타입 : " + typeof(variable02));
+            
+        }
+    </script>
+
+</head>
+<body>
+    
+    <dd>
+        <dt onclick="jsType();">type</dt>
+        <dd>
+            <dt>primitive</dt>
+            <dd>String</dd>
+            <dd>Number</dd>
+            <dd>Boolean</dd>
+            <dd>Null</dd>
+            <dd>Undefined</dd>
+            <dd>Symbol</dd>
+            <dd>BigInt</dd>
+        </dd>
+        <dd>
+            <dt>reference</dt>
+            <dd>Function</dd>
+            <dd>Object</dd>
+            <dd>Array</dd>
+            <dd>RegExp</dd>
+        </dd>
+    </dd>
+
+</body>
+</html>

@@ -1,0 +1,60 @@
+QR !!
+
+Hyper Text Markup Language HTML5 - tag 구조화 -> document
+Cascading Style Sheet CSS3 - 
+Javascript - event 
+
+
+
+String
+
+"???" != new String("???") 
+	   => character sequence
+
+Number
+new ?? X
+isNaN 
+
+Boolean
+=> false가 되는 조건들!!
+
+null != undefined
+
+function
+arrow function : (param)=>{expression, statements}
+closure : lexical scope/environment
+function literal -> callback
+
+object
+
+new function
+{
+key: value,
+}
+
+symbol
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+</head>
+<body>
+    
+    <script>
+        // false가 되는 경우!!!
+        /*
+            javascript type 들의 boolean 변환
+            1. false 인 경우  : 0 , "", null, undefined, NaN
+            2. true 인 경우   : 나머지 다 
+        */
+
+       if (0) {
+           console.log("0 is true");
+       } else {
+           console.log("0 is false");
+       }
+
+       if ("") {
+           console.log(" '' is true");
+       } else {
+           console.log(" '' is false");
+       }
+
+       if (null) {
+           console.log("null is true");
+       } else {
+           console.log("null is false");
+       }
+
+
+       let test;
+       if (test) {
+           console.log("undefined is true");
+       } else {
+           console.log("undefined is false");
+       }
+
+       if (NaN) {
+           console.log("NaN is true");
+       } else {
+           console.log("NaN is false");
+       }
+       
+
+    </script>
+
+
+</body>
+</html>

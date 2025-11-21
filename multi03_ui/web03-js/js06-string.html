@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script>
+        function string01(){
+            // literal 형태로 생성
+            const str01 = "string";
+            // object 형태로 생성
+            const str02 = new String("type");
+
+            console.log(str01);
+            console.log(str02);
+
+            // + 연산자 사용
+            const str03 = str01 + " " + str02;
+            console.log(str03);
+            console.log(typeof(str03));
+
+            // concat 사용
+            const str04 = str01.concat(" ", str02, " concat");
+            console.log(str04);
+
+            // 배열 객체의 join()
+            const joinStr = ["5", "10", "15", "20"].join("+");
+            console.log(joinStr);
+
+            // string + 다른타입 = ?
+            const str05 = "10" + 4;
+            console.log(str05);
+            console.log(typeof(str05));
+
+            const str06 = new String("string");
+
+            if (str06 == "string"){
+                console.log("str06은 string 맞음!");
+            } else {
+                console.log("str06은 string 아님!");
+            }
+
+            if (str06 === "string"){
+                console.log("str06은 string 맞음!");
+            } else {
+                console.log("str06은 string 아님!");
+            }
+        }
+
+        function string02(){
+            const names = "홍길동 이순신 유재석 강호동 홍길동";
+
+            console.log(names.indexOf("홍길동"));
+            console.log(names.lastIndexOf("홍길동"));
+            console.log(names.indexOf("김길동"));
+        }
+
+        function string03(){
+            const sentence = "hello, world! hello, javascript!";
+            // "hello, javascript" 만 추출
+            const startIndex = sentence.indexOf("!");
+            const endIndex = sentence.lastIndexOf("!");
+            const result01 = sentence.substring(startIndex+1, endIndex);
+            console.log(result01);
+
+            const result02 = sentence.split("!");
+            console.log(result02);
+            console.log(result02[1]);
+            
+            // String = Character Sequence
+            // 문자열 = 문자 하나하나의 집합이다.
+        }
+
+        function string04(){
+            const name = "이동헌";
+            const addr = "수원";
+            console.log(`${name} 님은 ${addr} 에 살고 있습니다!`);
+
+            const i = 10;
+            const j = 20;
+            console.log(`${i} + ${j} = ${i + j}`);
+
+            console.log(`여러 줄
+            출력도
+            가능해요!!`);
+        }
+    </script>
+
+</head>
+<body>
+    
+    <p onclick="string01();">string 연결</p>
+    <p onclick="string02();">string 검색</p>
+    <p onclick="string03();">string 추출</p>
+    <p onclick="string04();">template literal</p>
+
+</body>
+</html>

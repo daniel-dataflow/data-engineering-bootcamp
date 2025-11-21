@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script>
+        function number01() {
+            const num01 = 100;
+            const num02 = Number(200.3);
+            console.log(num01);
+            console.log(num02);
+            console.log(num01 + num02);
+
+            console.log(typeof num01);
+            console.log(typeof num02);
+
+            const min = Number.MIN_SAFE_INTEGER; //상수의 값의 변수는 모두 대분자로 표현해준다.
+            const max = Number.MAX_SAFE_INTEGER;
+            console.log(min + " ~ " + max); // 이 숫자까지는 사용할 수 있다.
+            
+        }
+
+        function number02() {
+            console.log(Number("100") + 1);
+            console.log(Number("100.1")+1);
+
+            console.log(Number(null));
+            console.log(Number(""));
+            
+            console.log(parseInt("100")); // 문자를 정수로 변경해줌
+            console.log(parseInt("101.1"));
+
+            console.log(parseInt("10", 2)); // 자리, 2진수
+            console.log(parseInt("10", 8)); // 자리, 8진수
+            console.log(parseInt("10", 16)); // 자리, 16진수
+
+            console.log(parseFloat("3.14") + 1); // 문자를 실수로 변경해줌
+            console.log(parseFloat("1.e-2") + 1);
+        }
+
+        function number03() {
+            // NaN : Not a Number
+            console.log(NaN);
+            console.log((parseInt("a")));
+
+            // Number("b") -> NaN
+            // isNaN(Number("b")) - > 숫자가 아니면  True / 숫자이면 False
+            if (isNaN(Number("b"))){
+                console.log("숫자가 아닙니다.");
+            } else {
+                console.log("숫자입니다.");
+            }
+        }
+
+    </script>
+
+</head>
+<body>
+
+    <p onclick="number01()">number<p>
+    <p onclick="number02()">형 변환<p>
+    <p onclick="number03()">isNaN<p>
+    
+</body>
+</html>

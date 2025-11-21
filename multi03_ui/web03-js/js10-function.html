@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script>
+        function func01() {
+            alert("함수 입니다.");
+        }
+
+        function func02(i, j) {
+            alert(i + " + " + j + " = " + (i + j));
+        }
+
+        const func03 = function() {
+            alert("이름이 없는 함수 입니다.");
+        }
+        console.log(func03);
+
+        // 화살표 함수
+        const func04 = () => {
+            alert("익명함수와 비슷합니다만 this가 다르게 동작헤요!화살표 함수 입니다.");
+        }
+        /*
+            // 표현식 - 리턴되는 값들이 있는애들, 자동으로 리턴 받으세요
+            () => expression
+            param => expression // 파라미터가 1개이면 () 생략 가능
+            (param) => expression // () 사용해도 문제 없다.
+            (param, ...) => expression // 파라미터 2개 이상이면 () 있어야 함
+
+            // 명령문 - 한줄 이상인 경우는 {} 사용해야함
+            () => {statements}
+            param => {statements}
+            (param) => {statements}
+            (param, ...) => {statements}
+
+            * {} 없이 사용하면 암시적 리턴 / {} 있으면 return 명시!
+    
+        */
+
+        function func05(){
+            // hoisting 아래에서 함수를 실행했지만 위에서 호출이 가능하다.
+            inner();
+
+            function inner(){
+                alert("내부 함수 입니다.");
+            }
+        }
+
+        function func06(){
+         (function exec(name){
+            alert(name + "함수가 바로 실행되어 버렸어요.");
+         })("즉시 실행");   
+        }
+
+        function functionLiteral(literal){
+            // callback : 역할 (내가 원하는 상황에서 함수를 실행시키기 위한 기능)
+            // function literal : 표현
+            literal("함수도 값이에요!");
+        }
+        function func07(){
+            functionLiteral((msg) =>{alert(msg);}); // 간단하게 전달할려면 이렇게 화살표 함수를 전달한다.(callback)
+        }
+        /*
+        function func07(){
+            const funcVal = (msg) =>{alert(msg);}
+            functionLiteral(funcVal); // 화살표 함수를 전달한다.
+        }
+        */
+
+        // 2. 실행 진행
+        function closureFunc(val){ 
+            //alert("closureFunc 실행됨")
+            const suffix = "님 , 안녕하세요!"
+
+            // 3.(실행된게 아니라 선언됨!)
+            function innerFunc() { // 5 함수가 실행되고 끝났다.
+                //alert("innerFunc 실행됨")
+                // lexical scope (lexical environment)
+                alert(val + suffix);
+            }
+
+            // 4.(선언된 innerFunc가 리턴됨)
+            return innerFunc; 
+        }
+        //                    1.closureFunc함수실행 
+        //                    5.innerFunc담겨져서 옴
+        // 7.cloureTest01이 함수실행 == innerFunc가 함수실행 
+        const closureTest01 = closureFunc("홍길동"); 
+
+        // 클릭을 할경우에 실행된다. closureTest01와 실행 순서가 다르다.
+        function closureTest02(val) {
+            //alert("closureTest02 실행됨")
+            // innerFunc(val) == innerFunc
+            // innerFunc(val)() == innerFunc()
+            closureFunc(val)();
+        }
+
+        function func08() {
+            console.log(arguments);
+        }
+
+        function func09(i, ...j) { 
+            console.log(i);
+            console.log(j);
+
+            // ...은 rest parameter(나머지 매개변수)라고 한다.
+        }
+
+        function func10() {
+            const name = "한대성";
+            const addr = "서울";
+
+            // tagged template : 함수로 template literal을 parsing
+            function hello(str, ...exp){
+                console.log(str);
+
+                result = `${exp[0]}님 안녕하세요.`;
+                if (exp.length > 1) {
+                    result += ` ${exp[1]}에 거주하시는군요.`;
+                }
+                return result;
+            }
+
+            console.log(hello`${name}${addr}`);
+
+            
+            function greetings(str, name, addr){
+                console.log(str);
+                console.log(name);
+                console.log(addr);
+                return str[0] + name + str[1] + addr + str[2];
+            }   
+            console.log(greetings`${name}님 안녕하세요. ${addr}에 거주하시는군요`);
+        }
+
+    </script>
+
+</head>
+<body>
+
+    <h1>function</h1>
+
+    <p onclick="func01();">명시적 함수</p>
+    <p onclick="func02(1, 2);">파라미터</p>
+    <p onclick="func03();">익명 함수</p>
+    <p onclick="func04();">화살표 함수</p>
+    <p onclick="func05();">내부 함수</p>
+    <p onclick="func06();">즉시 실행 함수</p>
+    <p onclick="func07();">함수 리터럴</p>
+    <!-- 6. (click event 발생)-->
+    <p onclick="closureTest01();">클로져 : 외부 함수에 접근 가능</p>
+    <p onclick="closureTest02('김선달');">클로저 : 외부 함수에 접근 가능</p>
+    <p onclick="func08('a', 'b', 'c', 'd');">arguments</p>
+    <p onclick="func09('a', 'b', 'c', 'd');">rest parameter</p>
+    <p onclick="func10();">tagged template</p>
+
+    
+</body>
+</html>
