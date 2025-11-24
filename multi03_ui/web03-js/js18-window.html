@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <pre>
+        window
+        - 전역 객체 (global scope)
+        - DOM / BOM
+        - browser (document +  frame)
+    </pre>
+
+    <script>
+        console.dir(window);
+        console.log(window.document.getElementsByTagName("pre"));
+        window.console.log("console.log도 사실 window꺼!");
+
+        var variable = "이렇게 쓰면 window 꺼가 되버려요 ㅠㅠ";
+        console.log(variable);
+    </script>
+</body>
+</html>

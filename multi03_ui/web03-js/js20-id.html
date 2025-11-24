@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        a > img {
+            width: 50px;
+            height: 50px;
+        }
+        #gallery {
+            width: 200px;
+            height: 200px;
+        }
+        p {
+            width: 350px;
+            height: 250px;
+        }
+        img {
+            vertical-align: middle;
+        }
+        a {
+            text-decoration: none;
+        }
+    </style>
+
+    <script>
+        let num = 1;
+
+        function prevGallery() {
+            num--;
+            if (num < 1) {
+                num = 6;
+            } 
+            document.getElementById("gallery").src = "resources/images/img0" + num + ".png";
+            
+            // event bubbling 막기
+            return false;
+        }
+
+        function nextGallery() {
+            num++;
+            if (num > 6) {
+                num = 1;
+            } 
+            document.getElementById("gallery").src = "resources/images/img0" + num + ".png";
+            
+            // event bubbling 막기
+            return false;
+        }
+    </script>
+
+</head>
+<body>
+    <div id="galleryWrap">
+        <p>
+            <a href="https://www.naver.com" onclick="return prevGallery()">
+                <img src="resources/images/arrowleft.png" alt="이전 그림">
+            </a>
+            
+            <img src="resources/images/img01.png" alt="gallery" id="gallery">
+
+            <a href="#next" onclick="return nextGallery()">
+                <img src="resources/images/arrowright.png" alt="다음 그림">
+            </a>
+        </p>
+    </div>
+</body>
+</html>

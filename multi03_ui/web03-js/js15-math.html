@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>    
+
+    </script>
+</head>
+<body>
+
+    <button onclick="randomNum();">난수</button>
+    <br>
+    <button onclick="randomBGR();">배경색</button>
+    <br>
+    <button onclick="randomCircle();">원 그리기</button>
+    <br>
+    <button onclick="circleArea();">원의 넓이 / 둘레</button>
+    <br>
+    원의 넓이 :<span id="area"></span>
+    <br>
+    원의 둘레 :<span id="len"></span>
+    <br>
+    <br>
+    <div id="circle"></div>
+
+    <style>
+        #circle {
+            border: 1px solid red;
+            display: none;
+        }
+        button {
+            width: 200px;
+        }
+    </style>
+
+    <script>
+        function randomNum() {
+            // Math.random() : 0 <= x < 1
+            // Math.floor() : 정수로 맞추기
+            // Math.round() : 정수로 맞추기
+            // Math.ceil() : 정수로 맞추기
+            const min = 10;
+            const max = 100;
+            const ran = Math.round(Math.random() * (max - min) + min);
+            console.log(ran);
+            
+        }
+
+        function randomBGR() {
+            const rnum =function(){
+                return Math.round(Math.random() * 256);
+            }
+
+            /*
+             function rnum(){
+                return Math.round(Math.random() * 256);
+            }
+            */
+
+            // style color : rgb(256, 256, 256)
+            document.body.style.backgroundColor = "rgb(" +rnum()+ ", "+ rnum() +", "+rnum()+")";
+            console.log(document.body.style.backgroundColor);
+        }
+
+        function randomCircle() {
+            const rnum = Math.floor(Math.random() * 200);
+            const circle = document.getElementById("circle");
+            
+            circle.style.width = rnum + "px";
+            circle.style.height = rnum + "px";
+            
+            circle.style.borderRadius = Math.floor(rnum / 2) + "px";
+            
+            circle.style.display = "block";
+            console.log(circle.style.width);
+        }
+
+        function circleArea() {
+            const circleWidth = document.getElementById("circle").style.width;
+            
+            const r2 = parseInt(circleWidth);
+            console.log(`지름 : ${r2}`);
+            
+            const r = Math.floor(r2 / 2);
+            console.log(`반지름 : ${r}`);
+
+            // 원의 넓이  = pi * r(반지름)^2
+            const area = Math.PI * r ^2;
+            document.getElementById("area").innerHTML = Math.round(area);
+            
+
+
+            // 원의 둘레 = 2 * pi * r(반지름)
+            const len = 2 * Math .PI * r2;
+            document.getElementById("len").innerHTML = Math.round(len);
+        }
+
+
+    </script>
+    
+</body>
+</html>

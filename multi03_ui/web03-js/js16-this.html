@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <pre>
+        this 
+        - 전역에서의 this : 전역 객체
+        - 함수 안에서의 this :  전역 객체
+        - 객체 안에서의 this :  객체의 주소
+        - 생성자함수 안에서의 this :  객체의 주소
+        - 화살표함수 안에서의 this :  상위 scope의 this
+        - this 바인딩
+    </pre>
+
+    <script>
+        // 전역에서의 this
+        console.log(this);
+
+        // 함수 안에서의 this
+        function func() {
+            console.log(this);
+        }
+        func();
+        console.log(`--> func (${typeof(func)})`);
+
+        // 객체 안에서의 this
+        const user = {
+            name : "daeSung",
+            me : function() {
+                console.log(this);
+            }
+        };
+        user.me();
+
+        // 생성자함수 안에서의 this : 그 객체를 참조하고 있다.
+        function People() {
+            this.name = "daeSung";
+            this.age = 100;
+            this.prn = function() {
+                console.log(this);
+            }
+        }
+        const daeSung = new People();
+        daeSung.prn();
+
+        // 화살표함수 안에서의 this : 나의 상위 객체를 찾는다.
+        function Monster() {
+            this.name = "dragon";
+            this.age = 10000;
+            this.attack = () => {console.log(`${this.name}이 공격합니다.`);};
+        }
+        const dragon = new Monster();
+        dragon.attack();
+
+        // 화살표함수 안에서의 this : 상위 scope의 this를 찾는다.
+        const test = {
+            name : "test",
+            inner: function() {
+                const name = "inner";
+                const prn = () => {console.log(this.name);};
+                prn();
+            }
+        }
+        test.inner();
+
+        // this 바인딩(상속)
+        function outer() {
+            this.name = "outer";
+            function inner() {
+                const name = "inner";
+                console.log(`${this.name}`);
+            }
+            inner();
+        }
+        outer();
+
+        // method chaining
+        const obj = {
+            result : 0,
+            add : function(num) {
+                this.result += num;
+                return this;
+            },
+            multiply : function(num) {
+                this.result *= num;
+                return this;
+            }
+        }
+        console.log(obj.add(10).add(20).add(30).multiply(2).result);
+        console.log(obj.add(10));
+ 
+
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        function date01() {
+            const today = new Date();
+            console.log(today.toDateString());
+            console.log(today.toLocaleDateString());
+            console.log(today.toLocaleString());
+            console.log(today.toLocaleTimeString());
+            
+            const datOfWeek = ["일", "월", "화", "수", "목", "금", "토"];
+            const year = today.getFullYear();
+            const month = today.getMonth() + 1; //월만 0부터 시작한다.
+            const date = today.getDate();
+            const day = today.getDay();
+
+            console.log(`${year}년 ${month}월 ${date}일 ${datOfWeek[day]}요일`);
+            
+        }
+
+        function date02() {
+            const year = 2025;
+            const month = 9;
+            const date = 15;
+            const start = new Date(year, month-1, date);
+            console.log(start);
+        }
+
+        function date03() {
+            const birthday = new Date();
+
+            birthday.setFullYear(2025);
+            birthday.setMonth(11-1);
+            birthday.setDate(12);
+            
+            console.log(birthday);
+
+            const today = new Date();
+            
+            // getTime() : 특정 시간이  "1970.01.01 00시 00분 00초"로부터 몇 ms가 지났는지를 의미하는 숫자 값
+            // 1970.01.01 00시 00분 00초 : UTC (협정세계시) 세계 모든 나라가 표준으로 정한 시간이 시작되는 기준
+            const result = (birthday.getTime() - today.getTime()) / (1000 * 60 * 60 * 24);
+            console.log(`지난 일수는 ${parseInt(result)}일 입니다.`);
+        }
+        
+    </script>
+</head>
+<body>
+    <p onclick="date01();">오늘 날짜</p>
+
+    <p onclick="date02();">특정 날짜</p>
+
+    <p onclick="date03();">d-day</p>
+</body>
+</html>
