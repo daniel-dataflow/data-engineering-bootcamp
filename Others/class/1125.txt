@@ -1,0 +1,54 @@
+QR !! 
+
+HTML : HTTP
+CSS 
+JavaScript -> Document Object Model => css selector
+
+
+15:05
+
+위도 37.54810985008207, 경도 127.07312123062447
+
+
+js31-timer-자기이름.html
+로 슬랙에 제출!
+
+제출하신 분들은 복습!!
+
+
+
+
+reflection
+
+
+
+function(){} 과 ()=>{}은 기본적으로 동일. 단, 내부에서 this가 사용될 시 다름
+
+foreach : 배열객체의 item 하나하나를 순회
+
+setInterval(func, time); -> time은 ms
+
+item.classList.toggle("active");					// 배열(img tag들이 들어가있는) 의 자식요소 하나하나의 class를 토글
+ 									// active 없으면 class="active" 있으면 class="" 형태로 변환 (켰다 껐다 하려고)
+interval = setInterval(()=>{
+  const div = document.querySelector("#menu");
+  const child = document.querySelector(".active");    // class의 값이 active인 자식요소 하나 선택 (가장 위에꺼)
+  if (child != null) {
+    div.appendChild(child);					// 해당 자식요소를 div의 가장 마지막 자식으로 append 
+  }									// -> 가장 위의 자식요소를 가장 마지막 자식으로 이동
+}, 50);
+
+const alt = document.querySelectorAll("img")[2].alt;	// 2번지 (5개 중 가운데)
+
+
+
+
+
+
+
+
+
+
+
+
+

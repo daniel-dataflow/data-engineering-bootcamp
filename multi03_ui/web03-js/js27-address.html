@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+    <script>
+        function tableVal(){
+            // 폼 전체를 가져와라
+            const doc = document.forms[0];
+            // console.log(typeof(doc));
+            // console.log(typeof(doc.id)); 
+            // console.log(doc.id);
+            // 폼 안의 입력 칸에 있는 아이디에 있는 값을 가져오기
+            const vals = [doc.id.value, doc.pw.value, doc.addr.value, doc.phone.value];
+            // console.log(vals);
+            
+            // 전체 입력 값에 따라 입력 여부 체크
+            // 유효성 거ㅓㅁ사
+            for(let i = 0; i < vals.length; i++){
+                // 널값, 빈값, 언디파인드 값이 있는지 체크
+                if(vals[i] == null || vals[i]=="" || vals[i]==undefined){
+                    alert("모두 다 입력해 주세요!!");
+                    return;
+                }
+            }
+            // 값이 있는 경우 자식요소의 가장 마지막(appendChild)에 새로운 줄에 생성함수를 통해 tbody에 입력
+            document.getElementById("addtr").appendChild(createRow(vals));
+        }
+    
+        // 
+        function createRow(vals){
+            // 행 만들기 <tr></tr>
+            const tr = document.createElement("tr");
+            /*
+            
+            
+            */
+            for(var i = 0;i<vals.length;i++){
+                // 열 만들기
+                const td = document.createElement("td");
+                // 열에 값 추가
+                td.textContent=vals[i];
+                // 행에 열 추가
+                tr.appendChild(td);
+            }
+            // 삭제 행 만들기
+            const dTd = document.createElement("td");
+            // 삭제버튼을 기존의 작성된 행에서 안에 붙여주기
+            dTd.innerHTML="<input type='button' value='삭제' onclick='delRow(this)'>";
+            // 행에 삭제 열 추가
+            tr.appendChild(dTd);
+            
+            // 만들어진 행 반환
+            return tr;
+        }
+    
+        function deleteVal(){
+            // document에서 addtr 아이디로 된 항목 가져오기
+            const tbody = document.getElementById("addtr");
+            // 마지막 child 항목까지 순차적으로 모두 삭제하기
+            while(tbody.hasChildNodes()) { 
+                tbody.removeChild(tbody.lastChild ); 
+            } 
+    
+        }
+        
+        function delRow(ele){
+            // 선택된 행 가져오기
+            const delTr = ele.parentNode.parentNode;
+            // console.log(delTr);
+            const tbody = document.getElementById("addtr");
+            // console.log(tbody);
+            // 테이블에서 삭제
+            tbody.removeChild(delTr);
+        }
+    
+    </script>
+    
+</head>
+<body>
+      
+	<form>
+		<table id="intable">
+			<tr>
+				<td>아이디:</td>
+				<td><input type="text" name="id"/></td>
+			</tr>
+			<tr>
+				<td>비밀번호:</td>
+				<td><input type="text" name="pw"/></td>
+			</tr>
+			<tr>
+				<td>주소:</td>
+				<td><input type="text" name="addr"/></td>
+			</tr>
+			<tr>
+				<td>전화번호:</td>
+				<td><input type="text" name="phone"/></td>
+			</tr>
+		</table>
+		<input type="button" value="추가" onclick="tableVal();" />
+		<input type="button" value="전체삭제" onclick="deleteVal();" />
+	</form>
+	
+	<div id="addtable">
+		<table border="1" id="ctb">
+			<col width="100px"/>
+			<col width="100px"/>
+			<col width="300px"/>
+			<col width="200px"/>
+			<col width="100px"/>
+			<thead>
+				<tr>
+					<th>아이디</th>
+					<th>비밀번호</th>
+					<th>주소</th>
+					<th>전화번호</th>
+					<th>삭제</th>
+				</tr>
+			</thead>
+			<tbody id="addtr">
+			</tbody>
+		</table>
+	</div>
+
+</body>
+</html>

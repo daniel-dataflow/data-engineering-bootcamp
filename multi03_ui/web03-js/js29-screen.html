@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <script>
+        console.log(screen);
+
+        // 전체 화면 크기
+        console.log(screen.width);
+        console.log(screen.height);
+        // 사용 가능한 화면 크기 : 실제 화면 크기
+        console.log(screen.availWidth);
+        console.log(screen.availHeight);
+
+        console.log(navigator);
+        console.log(navigator.userAgent);
+        console.log(navigator.language);
+        console.log(navigator.geolocation); // 지오로케이션 객체
+        
+        navigator.geolocation.getCurrentPosition((position) => {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+            
+            console.log(`위도 : ${latitude}, 경도 : ${longitude}`);
+        });
+    </script>
+</body>
+</html>

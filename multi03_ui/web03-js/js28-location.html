@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script>
+        /*
+            Browser Object Model (BOM)
+            - window
+            - location
+            - history
+            - navigator
+            - screen
+            - XMLHttpRequest 
+            ...
+        */
+
+        // location.reload() : 서버에 다시 나 자신을 재 요청하겠다.
+        function locationTest() {
+            // location.reload();
+            // console.log(location.href);
+
+            // index - > js28 -> google
+            // location.href = "https://www.naver.com";
+            // location.assign("https://www.google.com"); // location.href와 완전 동일
+
+            // index - >(js28)naver
+            location.replace("https://www.naver.com"); // 전 단계의 기록을 없애버린다.
+        }
+
+        function historyTest() {
+            // history.back(); // 뒤로
+            // history.forward(); // 앞으로
+            
+            // 음수 : 이전 페이지 / 양수 : 다음 페이지
+            history.go(-2); // 2개 전으로
+        }
+    </script>
+    
+</head>
+<body>
+    
+    <button onclick="locationTest();">location</button>
+    <br>
+    <button onclick="historyTest();">history</button>
+
+</body>
+</html>

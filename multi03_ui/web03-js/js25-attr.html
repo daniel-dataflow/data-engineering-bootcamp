@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        img {
+            vertical-align: middle;
+            width: 300px;
+            height: 300px;
+        }
+        a {
+            font-size: 30px;
+            text-decoration: none;
+        }
+    </style>
+
+    <script>
+        // window.onload 로딩이 모두 다 된 이후에 실행해줘
+        window.onload =function() {
+            const anchors = document.querySelectorAll('a');
+            const img = document.querySelector('img');
+            let count = 1;
+
+            anchors[0].addEventListener("click", () => {
+                const imgAlt = img.getAttribute("alt");
+
+                if (imgAlt == "img01") {
+                    count = 4;
+                    img.setAttribute("alt", "img04");
+                    img.setAttribute("src", "resources/images/img04.png");
+                } else {
+                    img.setAttribute("alt", "img0" + (--count));
+                    img.setAttribute("src", "resources/images/img0" + count + ".png");
+                }
+            });
+
+            anchors[1].addEventListener("click", () => {
+                const imgAlt = img.getAttribute("alt");
+
+                if (imgAlt == "img04") {
+                    count = 1;
+                    img.setAttribute("alt", "img01");
+                    img.setAttribute("src", "resources/images/img01.png");
+                } else {
+                    img.setAttribute("alt", "img0" + (++count));
+                    img.setAttribute("src", "resources/images/img0" + count + ".png");
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+    
+    <div>
+        <a href="#" id="lt">◀︎</a>
+        <img src="resources/images/img01.png" alt="img01">
+        <a href="#" id="rt">▶︎</a>
+    </div>
+
+</body>
+</html>

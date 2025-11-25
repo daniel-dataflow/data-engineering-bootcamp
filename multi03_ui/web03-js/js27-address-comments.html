@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+    <script>
+        function tableVal(){
+            const doc = document.forms[0];
+
+            const vals = [doc.id.value, doc.pw.value, doc.addr.value, doc.phone.value];
+
+			// 유효성 검사
+            for(let i = 0; i < vals.length; i++){
+                if(vals[i] == null || vals[i]=="" || vals[i]==undefined){
+                    alert("모두 다 입력해 주세요!!");
+                    return;
+                }
+            }
+            /*
+				<tr>
+					<td> 홍길동 </td>
+					<td> 1234 </td>
+					<td> 서울 </td>
+					<td> 01012345678 </td>
+					<td><input type='button' value='삭제' onclick='delRow(this)'></td>
+				</tr>
+			*/
+            document.getElementById("addtr").appendChild(createRow(vals));
+        }
+    
+        function createRow(vals){
+			// <tr></tr>
+            const tr = document.createElement("tr");
+
+			/*
+				<tr>
+					<td> 홍길동 </td>
+					<td> 1234 </td>
+					<td> 서울 </td>
+					<td> 01012345678 </td>
+				</tr>
+			*/
+            for(var i = 0;i<vals.length;i++){
+				// <td>홍길동</td>
+                const td = document.createElement("td");
+                td.textContent=vals[i];
+                tr.appendChild(td);
+            }
+			// <td></td>
+            const dTd = document.createElement("td");
+			// <td><input type='button' value='삭제' onclick='delRow(this)'></td>
+            dTd.innerHTML="<input type='button' value='삭제' onclick='delRow(this)'>";
+			
+			/*
+				<tr>
+					<td> 홍길동 </td>
+					<td> 1234 </td>
+					<td> 서울 </td>
+					<td> 01012345678 </td>
+					<td><input type='button' value='삭제' onclick='delRow(this)'></td>
+				</tr>
+			*/
+            tr.appendChild(dTd);
+            
+            return tr;
+        }
+    
+        function deleteVal(){
+            const tbody = document.getElementById("addtr");
+            while(tbody.hasChildNodes()) { 
+                tbody.removeChild(tbody.lastChild ); 
+            } 
+    
+        }
+        
+		/*
+			<tr>
+				<td> 홍길동 </td>
+				<td> 1234 </td>
+				<td> 서울 </td>
+				<td> 01012345678 </td>
+				<td><input type='button' value='삭제' onclick='delRow(this)'></td>
+			</tr>
+		*/
+		// this : <input type='button' value='삭제' onclick='delRow(this)'>
+		// ele : <input type='button' value='삭제' onclick='delRow(this)'>
+        function delRow(ele){
+			// delTr : input -> td -> tr
+            const delTr = ele.parentNode.parentNode;
+            const tbody = document.getElementById("addtr");
+            tbody.removeChild(delTr);
+        }
+    
+    </script>
+    
+</head>
+<body>
+      
+	<form>
+		<table id="intable">
+			<tr>
+				<td>아이디:</td>
+				<td><input type="text" name="id"/></td>
+			</tr>
+			<tr>
+				<td>비밀번호:</td>
+				<td><input type="text" name="pw"/></td>
+			</tr>
+			<tr>
+				<td>주소:</td>
+				<td><input type="text" name="addr"/></td>
+			</tr>
+			<tr>
+				<td>전화번호:</td>
+				<td><input type="text" name="phone"/></td>
+			</tr>
+		</table>
+		<input type="button" value="추가" onclick="tableVal();" />
+		<input type="button" value="전체삭제" onclick="deleteVal();" />
+	</form>
+	
+	<div id="addtable">
+		<table border="1" id="ctb">
+			<col width="100px"/>
+			<col width="100px"/>
+			<col width="300px"/>
+			<col width="200px"/>
+			<col width="100px"/>
+			<thead>
+				<tr>
+					<th>아이디</th>
+					<th>비밀번호</th>
+					<th>주소</th>
+					<th>전화번호</th>
+					<th>삭제</th>
+				</tr>
+			</thead>
+			<tbody id="addtr">
+			</tbody>
+		</table>
+	</div>
+
+</body>
+</html>

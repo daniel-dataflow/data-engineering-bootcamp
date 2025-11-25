@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script>
+        function createEle() {
+
+            // 1. div 객체 생성
+            const div = document.createElement("div");
+
+            // (첫번째 방법)
+            // // 2-1. style 객체
+            // const attr = document.createAttribute("style");
+            // attr.nodeValue = "border:1px solid red;";
+            // // 2-2. div에 style 속성 추가
+            // div.setAttributeNode(attr);
+
+            // (두번째 방법)
+            div.setAttribute("style", "border:1px solid blue;");
+
+            // 3-1. text node 생성
+            const txt = document.createTextNode("element 생성");
+            // 3-2. text node 추가
+            div.appendChild(txt);
+
+            // 4. document (문서)에 추가
+            document.body.appendChild(div);
+        }
+    </script>
+</head>
+<body>
+    
+    <button onclick="createEle();">create element</button>
+
+</body>
+</html>

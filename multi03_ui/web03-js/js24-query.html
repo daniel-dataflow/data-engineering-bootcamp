@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+
+    </script>
+
+</head>
+<body>
+    
+    <input type="radio" name="rdo" value="img01.png">img01
+    <br>
+    <input type="radio" name="rdo" value="img02.png">img02
+    <br>
+    <input type="radio" name="rdo" value="img03.png">img03
+    <br>
+    <button onclick="createImg();">이미지 생성</button>
+    <button onclick="deleteImg();">이미지 삭제</button>
+
+    <div id="imgView"><img src=""></div>
+
+    <style>
+        #imgView, img{
+            width: 300px;
+            height: 300px;
+        }
+    </style>
+    <script>
+        function createImg() {
+            // css selector -> name 속성이 있는데, 그 속성의 값이 rdo인 
+            const radios = document.querySelectorAll("[name='rdo']");
+            let pathToImg = "";
+
+            for (let i = 0; i < radios.length; i++) {
+                if (radios[i].checked) {
+                    pathToImg = "resources/images/"+radios[i].value;
+                    break;
+                }
+            }
+
+            const img = document.createElement("img");
+            img.setAttribute("src", pathToImg);
+            const div = document.getElementById("imgView");
+            const child = document.querySelector("#imgView > img");
+
+            div.replaceChild(img, child);
+        }
+
+        function deleteImg() {
+            document.querySelector("#imgView").innerHTML = "<img src=''>";
+            // document.querySelector("#imgView") = div
+            // <div>innerHTML</div> : 자식요소 부분에 코드를 넣겠다.
+            // <div>innerText</div> : 문자열을 넣겠다
+        }
+    </script>
+
+</body>
+</html>

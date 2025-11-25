@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+    <style type="text/css">
+        img{
+            width: 150px;
+            height: 150px;
+            float: left;
+        }
+        
+        #menubox{position: relative;}
+        #menu{overflow: auto;}
+    
+        .sel{
+            width: 140px;
+            height: 140px;
+            border: 5px dotted yellow;
+            position: absolute;
+            left: 300px;
+        }
+        
+        button{
+            width: 150px;
+            height: 50px;
+            margin-left: 300px;
+        }
+    </style>
+    
+    <script>
+        // 웹페이지가 시작 될때 addEventListener 지정된 이벤트가 대상에 전달될 때마다 호출되는 함수를 설정합니다.
+        window.addEventListener("load", () => {
+
+            console.log('5초 후 실행합니다.');
+            // 5초 후 이벤트가 시작된다.
+            const btnClick = setTimeout(()=>{
+                document.querySelector("button").click();
+                }, 5000);
+
+            // 버튼을 클릭했을 때 이벤트를 발생시킨다.
+            document.querySelector("button").addEventListener("click", function() {
+                // 모든 이미지를 가져다가 담는다.
+                const images = document.querySelectorAll("img");
+
+                // 모든 이미지를 토글하여 각 이미지의 classList를 active로 바꿔준다. 
+                Array.from(images).forEach((item)=>{
+                    item.classList.toggle("active");
+                })
+
+                let interval;
+                // this.textContent가 start이면
+                if (this.textContent === "start") {
+                    // this.textContent를 stop로 바꾸기
+                    this.textContent = "stop";
+                    // 0.05시간 지연을 두고 반복적으로 함수를 실행 (옆으로 이동)
+                    interval = setInterval(()=>{
+                        // id menu의 div를 찾아서 div 변수에 넣어준다.
+                        const div = document.querySelector("#menu");
+                        // div에서 class active를 가지는 요소를 찾아서 child 변수에 넣어준다.
+                        const child = document.querySelector(".active");
+                        
+                        // child가 null이 아니면 
+                        if (child != null) {
+                            // div 안에 child를 추가한다.
+                            div.appendChild(child);
+                        }
+                    }, 50);
+                // this.textContent가 stop이면
+                } else {
+                    // 발생했던 interval를 지운다. (멈춘다))
+                    clearInterval(interval);
+                    // this.textContent를 start로 바꾼다.
+                    this.textContent = "start";
+                    // 3번째(정가운데) 위치한 이미지를 변수에 담는다.
+                    const alt = document.querySelectorAll("img")[2].alt;
+                    // 선택된 이미지를 메세지창으로 안내한다.
+                    alert(`선택된 이미지 : ${alt}`);
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    
+	<h1>timer</h1>
+	
+	<div id="menubox">
+		<div class="sel"></div>
+		<div id="menu">
+			<img alt="img01" src="resources/images/img01.png">
+			<img alt="img02" src="resources/images/img02.png">
+			<img alt="img03" src="resources/images/img03.png">
+			<img alt="img04" src="resources/images/img04.png">
+			<img alt="img05" src="resources/images/img05.png">
+            <img alt="img06" src="resources/images/img06.png">
+            <img alt="img07" src="resources/images/img07.png">
+            <img alt="img08" src="resources/images/img08.png">
+            <img alt="img09" src="resources/images/img09.png">
+		</div>
+		<button>start</button>
+	</div>
+	
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        function searchPar() {
+            // document -> html -> body-> h1, div, btn -> div -> p p p ->"p"
+            const child02 = document.getElementsByTagName("p")[1];
+            const div = child02.parentNode;
+
+            console.log(div);
+            console.log(div.nodeName);
+            div.style.backgroundColor = "yellowgreen";
+        }
+        function searchChi() {
+            const div = document.getElementsByTagName("div");
+            console.log(div);
+            console.log(div[0].childNodes);
+            // console.dir(div[0].childNodes);
+
+            // p (child02) 배경색을 바꿔보자.
+            const child02 = div[0].childNodes[3];
+            child02.style.backgroundColor = "blue";
+
+            console.log(div[0].children);
+        }
+    </script>
+</head>
+<body>
+    <h1>부모탐색, 자식탐색</h1>
+
+    <div>
+        <p>child01</p>
+        <p>child02</p>
+        <p>child03</p>
+    </div>
+
+    <button onclick="searchPar();">부모탐색</button>
+    <button onclick="searchChi();">자식탐색</button>
+    
+
+
+</body>
+</html>

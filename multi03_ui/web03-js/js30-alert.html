@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        
+        window.addEventListener("load", () => {
+            const paragraphs = document.querySelectorAll('p');
+
+            paragraphs[0].addEventListener("click", () => {
+                alert("단순 대화창");
+            });
+            paragraphs[1].addEventListener("click", () => {
+                if (confirm("배경을 파란색으로 바꿀까요?")) {
+                    document.body.style.backgroundColor = "blue";
+                } else {
+                    document.body.style.backgroundColor = "";
+                }
+            });
+            paragraphs[2].addEventListener("click", () => {
+                const fruit = prompt("좋아하는 과일을을 입력해주세요.");
+                if (fruit === null) {return;}
+                alert(`${fruit} (을)를 좋아하시는군요!!`);
+            });
+        });
+    </script>
+</head>
+<body>
+    <p>alert</p>
+    <p>confirm</p>
+    <p>prompt</p>
+</body>
+</html>

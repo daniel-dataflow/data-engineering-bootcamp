@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0px;
+            padding: 0px;
+        }
+        div {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 200px;
+            height: 200px;
+            border: 1px solid red;
+        }
+        div p {
+            border: 1px solid blue;
+            width: 100px;
+            height: 100px;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+
+    <script>
+        // window.onload : html이 읽힉고 난 이후에 function 실행
+        onload = function() {
+            const anchors = document.querySelectorAll('a');
+            const paragraphs = document.querySelectorAll('p');
+            const divisions = document.querySelectorAll('div');
+
+            /*
+                이벤트 전파 (bubbling)
+                    각 객체가 서로 포함관걔 (중첩) 인 경우,
+                    객채 중 하나에 이벤트가 발생하면 중첩된 객체들도 이벤트가 전파된다.
+
+                이벤트 역전파 (capturing)
+                    최 상위 객체로부터 거꾸로 전파
+
+                이벤트 전파를 막는 방법
+                    - stopPropagation() : 이벤트 전파 막기
+                    - preventDefault() : 이벤트에 의한 기본 동작 막기
+            */
+
+            // bubbling
+            // anchors[0].onclick()
+            // addEventListener(event, func)
+            anchors[0].addEventListener("click", () => {alert("a click!");});
+            // paragraphs[0].addEventListener("click", () => {alert("p click!");});
+            paragraphs[0].addEventListener("click", (e) => {
+                alert("p click!");
+                // 다음의 이벤트가 전달되지 않게 한다. 하지만 기본 동작은 된다.
+                // e.stopPropagation();
+                // a태그의 기본동작은 막아버린다.
+                // e.preventDefault();
+            });
+            divisions[0].addEventListener("click", () => {alert("div click!");});
+
+            // capturing
+            anchors[1].addEventListener("click", () => {alert("a click!");});
+            paragraphs[1].addEventListener("click", () => {alert("p click!");}, true);
+            divisions[1].addEventListener("click", () => {alert("div click!");}, true);
+
+
+        }
+    </script>
+</head>
+<body>
+    
+    <div>
+        <p>
+            <a href="https://www.naver.com">클릭!</a>
+        </p>
+    </div>
+
+    <div>
+        <p>
+            <a href="https://www.google.com">클릭!</a>
+        </p>
+    </div>
+
+</body>
+</html>
