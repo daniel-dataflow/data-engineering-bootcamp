@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <button onclick="ajaxTest();">ajax</button>
+
+    <table border="1" id="tb"></table>
+
+    <script>
+        function ajaxTest() {
+            const xhr = new XMLHttpRequest();
+            
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    const respText = xhr.responseText;
+
+                    // console.log(respText); // json 데이터를 문자형태로
+
+                    // JSON.parse() : json 데이터를 객체(obj)로 변환
+                    // JSON.stringify() : 객체(obj)를 json 데이터로 변환
+                    const jsonToObj = JSON.parse(respText);
+
+                    // console.log(jsonToObj); // json 데이터를 객체로 변환
+
+                    createTable(jsonToObj);
+                    
+                }
+            }
+            xhr.open("GET", "emplist.json");
+            xhr.send();
+        }
+
+        function createTable(data) {
+            const table = document.getElementById("tb");
+
+            // 초기화 시켜줘. 안쓰게 되면 append를 연속적으로 하기 때문에 그것을 방지 하기 위해서.
+            table.innerHTML = "";
+
+            // console.log(data.ROWSET);
+            // console.log(data["ROWSET"]);
+            const rows = data.ROWSET.ROW;
+
+            const keys = Object.keys(rows[0]);
+            // console.log(keys);
+
+            const tr = document.createElement("tr");
+            // for in : index, value
+            // for of : value
+            for (const key of keys) {
+                const th = document.createElement("th");
+                th.appendChild(document.createTextNode(key));
+                tr.appendChild(th);
+            }
+            table.appendChild(tr);
+
+            for (const row of rows) {
+                const tr = document.createElement("tr");
+                // Object.entries : key, value 짤라서 가져올 수 있다.
+                for (const [key, val] of Object.entries(row)) {
+                    const td = document.createElement("td");
+                    td.appendChild(document.createTextNode(val));
+                    tr.appendChild(td);
+                }
+                table.appendChild(tr);
+            }
+                    
+        }
+
+    </script>
+
+</body>
+</html>

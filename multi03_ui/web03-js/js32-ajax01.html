@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+
+        function createTable(data) {
+            const table = document.getElementById("tb");
+            
+            table.innerHTML = "";
+
+            // XML : eXtensible Markup Language :  확장 가능한 마크업 문법
+            // console.log(data);
+            const rows = data.getElementsByTagName("ROW");
+
+            const tr = document.createElement("tr");
+            for (let i = 0; i <  rows[0].children.length; i++) {
+                const th = document.createElement("th");
+                th.appendChild(document.createTextNode(rows[0].children[i].nodeName));
+                tr.appendChild(th);
+            }
+            table.appendChild(tr);
+
+            for (let i=0; i < rows.length; i++) {
+                const tr = document.createElement("tr");
+                for (let j = 0; j < rows[i].children.length; j++) {
+                    const td = document.createElement("td");
+                    td.appendChild(document.createTextNode(rows[i].children[j].textContent));
+                    tr.appendChild(td);
+                }
+                table.appendChild(tr);
+            }
+        }
+
+        function ajaxTest() {
+            const xhr = new XMLHttpRequest();
+
+            xhr.onreadystatechange = function() {
+                if(xhr.readyState === 4 ) {
+                    if(xhr.status === 200) {
+                        // console.log(xhr.responseXML);
+                        const respXML = xhr.responseXML;
+
+                        createTable(respXML);
+                    } 
+                }
+            }
+
+            // 서버에 요청하고 있다
+            xhr.open("GET", "emplist.xml");
+            // 요청 하겠다.
+            xhr.send();
+
+            console.log("비동기는 기다리지 않아요...")
+        }
+
+        /*
+        XMLHttpRequest :  http를 통한 데이터 송수신 지원
+        
+        onreadystatechange
+        - readyState
+            0 : uninitialized - 실행(load)되지 않음
+            1 : loading - 로드 중
+            2 : loaded - 로드 완료
+            3 : interactive - 통신 중
+            4 : complete - 통신 완료
+
+        - status
+            200 : OK (성공)
+            400 : bad request
+            401 : unauthorized
+            403 : forbidden
+            404 : not found
+            500 : internal server error - 서버 예외         
+        */
+
+    </script>
+</head>
+<body>
+    
+    <pre>
+        ajax : asynchronous javascript and xml
+        - xml : extensible markup language
+        - json : javascript object notation
+    </pre>
+
+    <button onclick="ajaxTest();">ajax</button>
+
+    <table border="1" id="tb"></table>
+
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <pre>
+        fetch
+        - promise 기반
+        - http method (get, post, put, delete, ...) 지원
+        - cors 내장
+    </pre>
+
+    <table border="1" id="tb"></table>
+
+    <script>
+
+        const pre = document.querySelector("pre");
+
+        pre.addEventListener("click", () => {
+            // fetch (ressource[, options])
+            // 생략되면 method="get"으로 동작!
+
+            fetch("emplist.json", {method: "GET"})
+            .then((resp) =>{return resp.json();})
+            .then((data) => {createTable(data);})
+            .catch((e) => {console.error(e);})
+            .finally(() => {console.log("끝!")});
+        });
+
+        function createTable(data) {
+            const table = document.getElementById("tb");
+
+            // 초기화 시켜줘. 안쓰게 되면 append를 연속적으로 하기 때문에 그것을 방지 하기 위해서.
+            table.innerHTML = "";
+
+            // console.log(data.ROWSET);
+            // console.log(data["ROWSET"]);
+            const rows = data.ROWSET.ROW;
+
+            const keys = Object.keys(rows[0]);
+            // console.log(keys);
+
+            const tr = document.createElement("tr");
+            // for in : index, value
+            // for of : value
+            for (const key of keys) {
+                const th = document.createElement("th");
+                th.appendChild(document.createTextNode(key));
+                tr.appendChild(th);
+            }
+            table.appendChild(tr);
+
+            for (const row of rows) {
+                const tr = document.createElement("tr");
+                // Object.entries : key, value 짤라서 가져올 수 있다.
+                for (const [key, val] of Object.entries(row)) {
+                    const td = document.createElement("td");
+                    td.appendChild(document.createTextNode(val));
+                    tr.appendChild(td);
+                }
+                table.appendChild(tr);
+            }
+                    
+        }
+
+    </script>
+</body>
+</html>

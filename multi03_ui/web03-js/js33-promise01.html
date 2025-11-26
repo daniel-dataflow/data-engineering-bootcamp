@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <pre>
+        비동기 작업의 순서
+        - 비동기 작업은 결과를 기다리지 않는다.
+    </pre>
+
+    <pre>
+        callback hell
+        - 비동기 작업을 순차적으로 실행하고 싶을 때, callback 함수의 중첩이 생긴다.
+        - callback 함수의 중첩이 너무 많아지는 것을 의미
+    </pre>
+
+    <pre>
+        promise
+        상태
+        - pending : 작업이 대기중
+        - fulfilled : 작업이 성공
+        - rejected :  작업이 실패
+    </pre>
+
+    <pre>
+        후속 처리 method
+        - .then : promise 가 fullfilled 일 때 실행
+        - .catch :  promise 가 rejected 일 때 실행
+        - .finally : promise 의 상태와 상관없이 무조건 실행
+    </pre>
+
+
+    <script>
+        const pre = document.querySelectorAll("pre");
+
+        pre[0].addEventListener("click", asyncFunc);
+        pre[1].addEventListener("click", callbackHell);
+        pre[2].addEventListener("click", promiseFunc01);
+        pre[3].addEventListener("click", promiseFunc02);
+
+        function asyncFunc() {
+            console.log("시작");
+
+            setTimeout(() => {
+                console.log("1");
+            }, 1000);
+
+            setTimeout(() => {
+                console.log("2");
+            }, 1000);
+
+            setTimeout(() => {
+                console.log("3");
+            }, 1000);
+
+            setTimeout(() => {
+                console.log("4");
+            }, 1000);
+
+            console.log("끝");
+        }
+
+        function callbackHell() {
+            console.log("시작");
+            setTimeout(() => {
+                console.log("1");
+                setTimeout(() => {
+                    console.log("2");
+                    setTimeout(() => {
+                        console.log("3");
+                        setTimeout(() => {
+                            console.log("4");
+                            console.log("끝");
+                        }, 1000);
+                    }, 1000);
+                }, 1000);
+            }, 1000);
+        }
+
+        function promiseFunc01() {
+            function job() {
+                // Promise 생성 -  return값이 promise 객체이다.
+                // - 연결해줄 수 있다. 메소드 체인닝이 가능하다.
+                return new Promise((resolve) => {
+                    setTimeout(() => {resolve();}, 1000);
+                });
+            }
+
+            // .than()를 이용해 비동기 작업의 순서를 보장한다.
+            // 비동기 : 응답을 기다리지 않고 다른 작업을 진행한다.
+            job()
+                .then(() => {
+                    console.log("시작");
+                    return job();
+                })
+                .then(() => {
+                    console.log("1");
+                    return job();
+                })
+                .then(() => {
+                    console.log("2");
+                    return job();
+                })
+                .then(() => {
+                    console.log("3");
+                    return job();
+                })
+                .then(() => {
+                    console.log("4");
+                    return job();
+                })
+                .finally(() => {
+                    console.log("끝");
+                });
+        }
+
+        function promiseFunc02() {
+            let count = 0;
+            function job() {
+                // resolve : 성공한 경우의 callback 
+                // reject : 실패한 경우의 callback
+                return new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                        const success = false;
+                        if (count <= 2) {
+                            resolve();
+                        } else {
+                            reject();
+                        }
+                    }, 1000);
+                });
+            }    
+            
+            const resolveFunc = () => {
+                console.log(count == 0? "시작" : count);
+                count++;
+                return job();
+            }
+            const rejectFunc = () => {
+                console.log("error!");
+                throw new Error();
+            }
+
+            job()
+                .then(resolveFunc, rejectFunc)
+                .then(resolveFunc, rejectFunc)
+                .then(resolveFunc, rejectFunc)
+                .then(resolveFunc, rejectFunc)
+                .then(resolveFunc, rejectFunc)
+                .then(()=> {console.log("끝");})
+                .catch(() =>{console.log("error catch!");});
+        }
+
+    </script>
+
+</body>
+</html>

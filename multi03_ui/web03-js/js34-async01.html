@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <pre onclick="counterMain();">
+        async await
+        - async : function을 비동기로 만들겠다. (= return 되는 값이 promise 객체)
+        - await : async function 내부에서 promise 완료를 기다림
+    </pre>
+
+    <script>
+        function counter(i) {
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    console.log(i++);
+                    resolve(i);
+                }, 1000);
+            });
+        }
+
+        async function counterMain() {
+            let num = 1;
+
+            /*
+            counter(num)
+                .then((i)=>{return counter(i)})
+                .then((i)=>{return counter(i)})
+                .then((i)=>{return counter(i)})
+            */
+
+            // await counter 안에 프로미스 함수를 기다린다.
+            num = await counter(num);
+            num = await counter(num);
+            num = await counter(num);
+            num = await counter(num);
+
+        }
+    </script>
+</body>
+</html>

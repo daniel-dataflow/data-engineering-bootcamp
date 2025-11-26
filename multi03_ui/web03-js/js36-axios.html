@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        button {
+            width: 100px;
+        }
+        textarea {
+            width: 800px;
+            height: 500px;
+        }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script>
+        /*
+            REST (RestFul) :  REpresentational State Transfer : 지원 (resource) 중심으로 요청 / 응답
+            
+            GET     : 자원 요청 (read)
+            POST    : 자원 저장 (create)
+            PUT     : 자원 수정 (update) -> 덮어쓰기
+            PATCH   : 자원 수정 (update) -> 일부만 수정
+            DELETE  : 자원 삭제
+            HEAD, OPTIONS, ...
+        
+        */
+
+        const target_url = "https://jsonplaceholder.typicode.com/posts";
+
+        window.addEventListener("DOMContentLoaded", () => {
+            const btns = document.querySelectorAll("button");
+            const txt = document.querySelector("#result");
+
+            btns[0].addEventListener("click", () => {
+                axios({method: "get", url: target_url})
+                .then((resp)=>{txt.value = JSON.stringify(resp);})
+            });
+            btns[1].addEventListener("click", () => {
+                axios({method: "get", url: target_url + "/1"})
+                .then((resp)=>{txt.value = JSON.stringify(resp);})
+            });
+            btns[2].addEventListener("click", () => {
+                axios({method: "post", url: target_url, data: {title: "test", body: "abcd"}})
+                .then((resp)=>{txt.value = JSON.stringify(resp);})
+            });
+            btns[3].addEventListener("click", () => {
+                axios({method: "put", url: target_url + "/1", data: {title: "update"}})
+                .then((resp)=>{txt.value = JSON.stringify(resp);})
+            });
+            btns[4].addEventListener("click", () => {
+                axios({method: "delete", url: target_url + "/1"})
+                .then((resp)=>{txt.value = JSON.stringify(resp);})
+            });
+        });
+
+    </script>
+
+</head>
+<body>
+    <pre>
+        axios
+        - promise 기반
+        - fetch와 비슷하나, http response status code (200, 403, 404, 500, ...) 에 대한 예외처리가 뛰어남!
+    </pre>
+
+    <button>GET all</button>
+    <br>
+    <button>GET one</button>
+    <br>
+    <button>POST</button>
+    <br>
+    <button>PUT</button>
+    <br>
+    <button>DELETE</button>
+    <br>
+    <textarea name="result" id="result"></textarea>
+</body>
+</html>
