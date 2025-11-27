@@ -1,0 +1,106 @@
+QR!
+
+
+web03-s\
+	js38-module.js
+
+
+
+HTML : document --> XML
+CSS : style
+JavaScript : event => DOM / asynchronous (ajax -> promise -> async await -> fetch | axios)
+JSON : {key: value}
+RESTful : resource(자원, data) 중심으로 요청과 응답
+- get, post, put, patch, delete
+
+
+
+conda create -n multi03 python
+
+
+crawling  - scrapping
+
+web04-crawling\
+	01-naver\
+		novels01.py
+
+
+
+
+
+<li class="item">
+<a class="link NPI=a:lis1" href="/best/list?novelId=1198701">
+<div class="thumbnail">
+<img alt="나의 별은 빛나지만" src="https://novel-phinf.pstatic.net/20221231_277/novel_16724131586787UIQL_PNG/romance_320_7.png?type=f100_80_2" width="100%"/>
+</div>
+<div class="info_area">
+<p class="ranking">
+<em class="rank">1</em>
+</p>
+<p class="title_group">
+<span class="bullet_wrap">
+<span class="bullet_up">UP</span>
+</span>
+<span class="title">나의 별은 빛나지만</span>
+</p>
+<p class="info_group">
+<span class="author">러브러브유</span>
+<span class="genre">로맨스</span>
+</p>
+<p class="info_group">
+<span class="league">베스트리그</span>
+<span class="count">관심<span>1,132</span></span>
+</p>
+</div>
+</a>
+</li>
+
+
+
+webtoons01.py
+
+chrome driver
+
+
+web04-crawling\
+	01-naver\
+		crawling-scroll-paging.py
+	02-open-api\
+		country01.py
+		crawling_loop.py
+
+resp = requests.get(url).text
+resp = requests.get(url).text
+
+xml.etree.ElementTree
+
+BeatifulSoup : str -> obj (tag 안에 값들)
+
+selenium
+
+
+
+reflection
+
+공유폴더에 "7nights.py" -> target url에 data를 입력하는 방법 / click event 발생 방법 등 이 들어가 있음!
+
+
+HTML, CSS, JS -> crawling (scrapping) 
+- url 요청 -> 응답 (html, json, xml)
+- parsing -> BeautifulSoup, json, xml.etree, ... -> object -> ,,,,
+- url 요청 (*.js)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

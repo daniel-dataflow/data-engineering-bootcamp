@@ -1,0 +1,74 @@
+QR !
+
+
+http status code 
+
+
+
+jsonplaceholder
+posts
+
+https://jsonplaceholder.typicode.com/posts
+
+// get
+curl https://jsonplaceholder.typicode.com/posts
+// get (1개만)
+curl https://jsonplaceholder.typicode.com/posts/4
+
+// -X (method 명시)
+curl -X GET https://jsonplaceholder.typicode.com/posts/4
+
+// -i (header + body)
+curl -i https://jsonplaceholder.typicode.com/posts/4
+
+// post
+// -d : data 
+curl -d "title=test&body=insert" https://jsonplaceholder.typicode.com/posts
+
+// -H : header 변경
+// json data format : "{\"key\": \"val\"}"
+
+curl -H "Content-Type: application/json" -d "{\"title\": \"test\", \"body\": \"abcd\" }" https://jsonplaceholder.typicode.com/posts
+
+// patch
+curl -X PATCH -d "title=test" https://jsonplaceholder.typicode.com/posts/1
+// put
+curl -X PUT -d "title=test2" https://jsonplaceholder.typicode.com/posts/2
+
+// delete
+
+curl -X DELETE https://jsonplaceholder.typicode.com/posts/3
+
+
+MLP 접속해서 설문조사 지금 당장 나우 !!
+
+다 하신 분들은 reflection
+
+
+GPU -> Graphic  => 머신러닝
+
+TPU -> Tensor
+
+
+ 
+
+
+
+HTML CSS JavaScript -> DOM, asyncronous (ajax -> promise -> async / await -> fetch | axios)
+					   RESTful (server/resource/id)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
