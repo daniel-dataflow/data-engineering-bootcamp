@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        class Animal {
+            // instance field
+            gender = "m";
+            // # field : private field : 해당 클래스 내부에서만 사용 가능
+            #age = 1;
+            // static field
+            static spicies = "animal";
+
+            // constructor : __init__() 과 같은
+            constructor(name){
+                this.name = name;
+            }
+
+            bark() {
+                console.log(`${this.name} : 짖다!`);
+            }
+
+            getAge() {
+                return this.#age;
+            }
+
+            setAge(i) {
+                this.#age = i;
+            }
+
+            static work() {
+                console.log(`${this.name} : 걷다.`);
+            }
+
+        }
+
+        const tiger = new Animal("티커");
+        console.log(tiger);
+        tiger.gender = "f";
+        console.log(tiger.gender);
+        tiger.age = 2; // setter
+        console.log(tiger.age); // getter
+        console.log(tiger.spicies)
+        console.log(Animal.spicies);
+        tiger.bark();
+        // tiger.work(); // static 이기 때문에 클래스명으로 사용해야한다.-
+        Animal.work();
+
+
+        class Lion extends Animal {
+            constructor(name, i) {
+                // super : 부모 생성자
+                super(name);
+
+                // 부모의 field
+                super.age = i;
+            }
+
+            // override
+            bark() {
+                console.log(`${this.name} : 크게 짖다!`);
+            }
+        }
+        
+        const lion = new Lion("심바", 2);
+        console.log(lion);
+
+        console.log(lion.gender); // 부모객체가 가지고 있는 것을 가져다 쓴다.
+        console.log(lion.age)
+
+        console.log(lion.name);
+        console.log(lion.spicies);
+        console.log(Lion.spicies);
+        lion.bark();
+        Lion.work();
+    </script>
+</head>
+<body>
+    <pre>
+        Class
+        - 객체 (instance) 생성을 위한 설계도
+        - prototype (상속) 기반
+        - 생성자 (constructor), 속성 (field), 기능 (method)로 이루어짐
+        - 상속 시 extends 키워드 사용
+        - hoisting 될 때 생성자는 hoisting이 되지 않기 때문에 반드시 생성자 선언부터 하자.
+    </pre>
+</body>
+</html>

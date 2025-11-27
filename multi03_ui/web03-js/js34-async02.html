@@ -51,8 +51,50 @@
         // 비동기 통신으로
         // emplist.json을 가지고 와서
         // createTable()을 만들어보자
+        // 
+        /*        async function asyncTest() {
+            try{
+                const url = "emplist.json";
+                const response = await fetch(url);
+                if(!response.ok) {
+                    throw new Error(`${response.status} ${response.statusText}`);
+                }
+                console.log(response);
+                const data = await response.json();
+                createTable(data);
+            }
+            catch(err) {
+                console.log(err);
+                
+            }
+        }
+        */
+        
+        function myPromise(url) {
+            return new Promise((resolve, reject) => {
+                const xhr = new XMLHttpRequest();
+
+                xhr.onreadystatechange = () => {
+                    if (xhr.readyState == 4) {
+                        if (xhr.status == 200) {
+                            const jsonToObj = JSON.parse(xhr.responseText);
+                            resolve(jsonToObj);
+                        } else {
+                            reject(new Error(xhr.status));
+                        }
+                    }
+                }
+
+                xhr.open("GET", url);
+                xhr.send();
+            });
+        }
         async function asyncTest() {
+            // myPromise("emplist.json")
+            // .then((data) => {createTable(data);});
             
+            const data = await myPromise("emplist.json");
+            createTable(data);
         }
 
     </script>
