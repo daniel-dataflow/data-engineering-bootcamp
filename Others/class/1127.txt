@@ -87,7 +87,7 @@ reflection
 
 HTML, CSS, JS -> crawling (scrapping) 
 - url 요청 -> 응답 (html, json, xml)
-- parsing -> BeautifulSoup, json, xml.etree, ... -> object -> ,,,,
+- parsing -> BeautifulSoup, json, xml.etree, ..., selenium -> object -> ,,,,
 - url 요청 (*.js)
 
 

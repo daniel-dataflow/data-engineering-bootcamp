@@ -1,0 +1,60 @@
+QR !!
+
+특정 서비스 (home - index.html) 뒤에다가
+/robots.txt
+
+03-starbucks\
+	starbucks01.py
+
+
+
+__ajaxCall("/store/getSidoList.do", {}, true, "json", "post",
+
+
+
+https://www.starbucks.co.kr/store/store_map.do?disp=locale
+
+
+
+
+
+__ajaxCall("/store/getGugunList.do", {"sido_cd":sido}, true, "json", "post",
+
+conda create -n multi04 python=3.13 -y
+
+pip install streamlit
+
+multi04_streamlit\
+	data\
+	01_hello.py
+	02_text.py
+	03_data.py
+	04_chart.py
+	05_write.py
+
+
+streamlit run filename.py
+
+conda activate multi04
+
+pip install matplotlib
+
+------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
