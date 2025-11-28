@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="fb74d109-5a76-4cbf-bf3a-ff8ef05251b5" name="변경" comment="">
+      <change afterPath="$PROJECT_DIR$/web04-crawling/03-starbucks/starbucks01.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web04-crawling/03-starbucks/starbucks02.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 7
+}]]></component>
+  <component name="ProjectId" id="362cBg2NgNoUdafbYX3HVs1Gzkx" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "Python.7knights.executor": "Run",
+    "Python.country01.executor": "Run",
+    "Python.country02.executor": "Run",
+    "Python.crawling-scroll-paging.executor": "Run",
+    "Python.crawling_loop.executor": "Run",
+    "Python.novels01.executor": "Run",
+    "Python.novels02.executor": "Run",
+    "Python.novels03.executor": "Run",
+    "Python.starbucks01.executor": "Run",
+    "Python.starbucks02.executor": "Run",
+    "Python.webtoons01.executor": "Run",
+    "Python.webtoons02.executor": "Run",
+    "Python.webtoons03.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "git-widget-placeholder": "main",
+    "junie.onboarding.icon.badge.shown": "true",
+    "last_opened_file_path": "/Users/handaeseong/dev/data-engineer/workspaces/multi03_ui/web04-crawling/03-starbucks",
+    "to.speed.mode.migration.done": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/web04-crawling/03-starbucks" />
+      <recent name="$PROJECT_DIR$/web04-crawling/02-open-api" />
+      <recent name="$PROJECT_DIR$/web04-crawling/01-naver" />
+    </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-python-sdk-ce6832f46686-7b97d883f26b-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-252.25557.178" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="디폴트 작업">
+      <changelist id="fb74d109-5a76-4cbf-bf3a-ff8ef05251b5" name="변경" comment="" />
+      <created>1764207972866</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1764207972866</updated>
+    </task>
+    <servers />
+  </component>
+</project>
