@@ -1,0 +1,101 @@
+QR !!!
+
+HTML, CSS, JS -> crawling / open api => streamlit
+
+06_input.py
+
+
+streamlit run 06_input.py
+
+multi04_streamlit\
+	resources\
+		img01.png
+		a.mp3
+
+
+10:15
+
+07_layout.py
+
+08_status.py
+
+09_multi\
+	hello.py
+	pages\
+		page01.py
+
+streamlit run 09_multi/hello.py
+
+---
+
+multi04_streamlit\
+	06_...
+	07_..
+	08_...
+	09_navigator01.py
+	09_a.py
+	09_b.py
+	09_navigator02.py
+	10_cache_session.py
+	11_execution.py
+	12_form.py
+	13_ex\
+		hello.py
+		category.py
+		year.py
+		month.py
+
+streamlit run 13_ex/hello.py
+
+cache, cookie, session
+의 차이점!!!
+
+
+----
+
+mysql install
+
+root password
+# mac
+12345678
+# window
+1234
+
+use mysql;
+
+alter user "root"@"localhost" identified by "1234";
+
+flush privileges;
+
+exit;
+
+cd
+
+mysql -u root -p
+
+
+reflection
+
+mysql
+postgresql
+mongodb
+redis = 공식적으로 window 지원 X -> wsl -> linux에다 설치하는 것처럼
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

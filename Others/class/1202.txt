@@ -1,0 +1,584 @@
+QR !!
+
+html css js -> document + server (django, fastapi) // streamlit (only python)
+
+mysql
+Relational DataBase Management System -> rdbms
+
+접속 방법 : mysql -u root -p (-u : 유저 / -p : 비밀번호)
+
+C:\Program Files\MySQL\MySQL Server 8.4\bin
+mysqld
+
+mysql -u root -p
+
+show databases;
+
+information_schema : db meta정보
+mysql : server, user, ...
+performance_schema : 모니터링
+sys : performance_schema 기반 view, procedure
+
+use mysql;
+
+show tables;
+
+-- 주석
+
+-- 현재 사용하고 있는 db 확인
+select database();
+
+-- 현재 접속되어 있는 user 확인
+select user();
+-- root@localhost : root 계정 @ localhost에서 접속 가능
+
+select now();
+
+SQL : Structured Query Language
+-DDL : Data Definition Language - table 관련
+-DML : Data Manipulation Language - data 관련
+-DCL (+TCL) : Data Control Language -  user 관련 (+ Transaction Control Language)
+
+create table student(
+	id int,
+	name varchar(100),
+	phone char(13),
+	address varchar(1000)
+);
+
+select id, name, phone, address from student;
+
+insert into student values(1, 'hong-gd', '010-1111-1111', '서울시 강남구');
+
+-- alter : table 수정
+alter table student add subject varchar(100);
+
+-- table 구조 확인
+desc student;
+
+insert into student (id, name, phone, address, subject) 
+values (2, 'kim-sd', '010-2222-2222', '수원시 영통구', 'engineer');
+
+select * from student;
+
+delete from student where id = 1;
+
+
+drop table student;
+
+ERROR 1146 (42S02): Table 'mysql.student' doesn't exist
+
+create database test;
+show databases;
+use test;
+
+select database();
+
+DDL - create, alter, drop 
+DML - select, insert, update, delete
+
+create table dml (
+	id int,
+	name varchar(100),
+	addr varchar(1000)
+);
+
+-- select : read
+-- select 컬럼 from 테이블
+select * from dml;
+select id, name, addr from dml;
+
+-- insert : create, write
+-- insert into 테이블 (컬럼) values (데이터)
+-- 모든 컬럼에 데이터를 입력할 시, 컬럼 생략 가능!
+insert into dml (id, name, addr) values (1, 'hong-gd', 'seoul');
+insert into dml values (2, 'kim-sd', 'suwon');
+
+insert into dml values (3, 'lee-dh', 'suwon'), (4, '카리나', '남양주');
+
+select id, name, addr from dml;
+select name from dml;
+
+-- update : 
+-- update 테이블 set 컬럼=데이터 where 조건;
+update dml set addr='heaven' where id=3;
+
+select * from dml;
+
+-- delete : 
+-- delete from 테이블 where 조건;
+delete from dml where id=2;
+
+select * from dml;
+
+
+-- window : dir
+-- mac : ls
+
+mysql -u root -p
+
+source employees.sql
+
+- rdb : relational database (sql) - mysql, postresql -> ansi 표준 query
+- nosql : Not Only sql - mongodb, redis
+
+
+use employees;
+
+show tables;
+
+desc current_dept_emp;
+-- view : 보여주기 용도
+
+desc departments;
+select * from departments;
+
+desc employees ;
+desc salaries;
+desc titles;
+
+select emp_no, first_name, last_name from employees;
+
+select emp_no, first_name, last_name from employees limit 100;
+
+-- 100번째 부터
+select emp_no, first_name, last_name from employees limit 100, 100;
+
+-- 조건 
+-- select 컬럼 from 테이블 where 조건
+select * from employees where hire_date >= '2000-01-01';
+
+select * from salaries where salary >= 150000;
+
+-- 문제. salaries 테이블에서 월급이 100000 보다 크고, 150000보다 작거나 같은 모든 데이터 출력
+
+select * from salaries where salary > 100000 and salary <= 150000;
+
+-- employees 테이블에서 1960년에 태어난 사원의 first_name과 birth_date 출력
+select first_name, birth_date
+from employees
+where birth_date >= '1960-01-01' and birth_date <= '1960-12-31';
+
+select count(*)
+from employees
+where birth_date >= '1960-01-01' and birth_date <= '1960-12-31';
+
+-- 정렬 desc (내림차순) / asc (오름차순)
+select emp_no, salary from salaries order by salary limit 10;
+select emp_no, salary from salaries order by salary desc limit 10;
+
+-- descript
+desc salaries;
+
+-- order by 컬럼 desc : descending
+select emp_no, salary from salaries order by salary desc limit 10;
+
+-- 늦게 취업한 순서대로, 나이 순서대로
+select * from employees
+order by hire_date desc, birth_date
+limit 10;
+
+-- 나이 순서대로, 늦게 취업한 순서대로
+select * from employees
+order by birth_date, hire_date desc 
+limit 10;
+
+-- group by
+select title from titles;
+select title from titles group by title;
+
+select title, emp_no from titles group by title;
+
+select title, count(title) from titles group by title;
+
+---
+
+
+
+select count(*)
+from employees;
+
+select count(*)
+from employees
+where gender = 'M';
+
+-- dept_emp 테이블에서 각 부서의 부서번호와 사원수를 출력
+desc dept_emp;
+
+select dept_no, count(dept_no)
+from dept_emp
+group by dept_no;
+
+-- 위의 결과에서 사원 수가 50000 이상인 부서만 
+-- group by 에서 집계함수 에 조건을 사용할 때는 where 대신 having!!
+select dept_no, count(dept_no)
+from dept_emp
+group by dept_no
+having count(dept_no) >= 50000;
+
+select max(salary), min(salary), avg(salary)
+from salaries;
+
+-- employees 테이블에서 성(last_name)이 S 로 시작하면서, 여자이면서, 99년도 12월에 입사한 사람의 전체 정보 출력
+
+select * 
+from employees
+where last_name like 'S%'
+and gender = 'F'
+and year(hire_date) = 1999
+and month(hire_date) = 12;
+
+select * 
+from employees
+where last_name like 'S%'
+and gender = 'F'
+and hire_date like '1999-12%';
+-- employees 테이블에서 이름(first_name)에 'y'가 포함되거나, 이름(first_name)이 'z'로 끝나는, 
+-- 99년도에 입사한 사원의 전체 정보
+select *
+from employees
+where ( first_name like '%y%'
+or first_name like '%z' )
+and year(hire_date) = 1999;
+
+-- titles 테이블에서 직업 별 사원수를 출력하자. 단, 사원 수를 내림차순 정렬 하자.
+
+select title, count(title)
+from titles
+group by title
+order by count(title) desc;
+
+select title, count(title)
+from titles
+group by title
+order by 2 desc;
+
+-- distinct
+select distinct title from titles;
+
+select dayname(hire_date)
+from employees
+where hire_date = '2000-01-28';
+
+-- employees 테이블에서 성(last_name)과 이름(first_name)을 하나로 합칠건데, 사이에 공백 한개 넣어서 출력
+select last_name, first_name
+from employees
+limit 10;
+
+select last_name + first_name
+from employees
+limit 10;
+
+select last_name + " " + first_name
+from employees
+limit 10;
+
+select concat(last_name, " ", first_name)
+from employees
+limit 10;
+
+-- 위의 결과 컬럼에 별칭
+select concat(last_name, " ", first_name) as full_name
+from employees
+limit 10;
+
+-- departments 테이블에서 부서이름(dept_name) 을 모두 대문자로 출력
+select upper(dept_name)
+from departments;
+
+
+
+
+
+
+-- employees 테이블에서 gender가 M이면 man, F 면 woman 으로 출력
+select gender, if (gender = 'M', 'man', 'woman')
+from employees
+limit 10;
+
+-- salaries 테이블에서 5만 단위로 구간을 나눠서, 각 구간에 몇 명씩 있는지 출력하자.
+select count(*), 
+	case 
+	when salary < 50000 then '1'
+	when salary < 100000 then '2'
+	when salary < 150000 then '3'
+	else '4'
+	end as salary_group
+from salaries
+group by salary_group
+order by salary_group;
+
+select *, case 
+	when salary < 50000 then '1'
+	when salary < 100000 then '2'
+	when salary < 150000 then '3'
+	else '4'
+	end as salary_group
+from salaries
+limit 10;
+
+
+select count(*), least(floor(salary/50000) + 1, 4) as salary_group
+from salaries
+group by salary_group
+order by salary_group;
+
+
+-- join
+-- inner join
+
+select *
+from employees inner join dept_emp on employees.emp_no = dept_emp.emp_no
+limit 10;
+
+
+create database test;
+use test;
+
+create table join_a(
+	aa int,
+	ab  char(3)
+);
+
+create table join_b(
+	bb int,
+	ab char(3)
+);
+
+-- join_a
+insert into join_a values(1, 'aaa'),
+				(2, 'bbb'),
+				(3, 'ccc');
+-- join_b
+insert into join_b values (4, 'bbb');
+insert into join_b values (5, 'ccc');
+insert into join_b values (6, 'ddd');
+
+select * from join_a;
+select * from join_b;
+
+-- inner join
+select * 
+from join_a inner join join_b 
+	on join_a.ab = join_b.ab;
+
+select * 
+from join_a a inner join join_b b 
+	on a.ab = b.ab;
+
+select * 
+from join_a a inner join join_b b
+	using(ab);
+
+select *
+from join_a join join_b
+	on join_a.ab = join_b.ab;
+
+
+select *
+from join_a join join_b 
+	using(ab);
+
+join_a				join_b
+1  aaa
+2  bbb			4 bbb
+3  ccc				5 ccc
+				6 ddd
+
+select * from join_a natural join join_b;
+
+-- outer join
+
+select *
+from join_a left outer join join_b 
+	on join_a.ab = join_b.ab;
+
+select *
+from join_a left join join_b
+	using(ab);
+
+
+
+select *
+from join_a right outer join join_b
+	on join_a.ab = join_b.ab;
+
+select *
+from join_a right  join join_b
+	on join_a.ab = join_b.ab;
+
+-- full outer join -> mysql은 지원 X
+
+join_a				join_b
+1  aaa			null, null
+2  bbb			4 bbb
+3  ccc				5 ccc
+null null			6 ddd
+
+-- 집합연산 (union, union all)
+select * from join_a left join join_b on join_a.ab = join_b.ab
+union
+select * from join_a right join join_b  on join_a.ab = join_b.ab;
+-- union : 중복 제거
+-- union all : 중복 포함
+select * from join_a left join join_b on join_a.ab = join_b.ab
+union all
+select * from join_a right join join_b  on join_a.ab = join_b.ab;
+
+-- intersect : 교집합 -> mysql 지원 X
+-- except : 차집합 -> mysql 지원 X
+
+
+-- join + on / using
+-- inner join (join) 
+-- outer join
+-- - left outer join
+-- - right outer join
+-- - full outer join
+
+use employees;
+
+select *
+from employees join dept_emp 
+	on employees.emp_no = dept_emp.emp_no
+where to_date = '9999-01-01'
+limit 10;
+
+-- employees, dept_emp, departments 테이블을 이용하여
+-- 사원의 이름, 성, 성별, 부서이름 을 출력하자.
+select first_name, last_name, gender, dept_name
+from employees join dept_emp 
+	on employees.emp_no = dept_emp.emp_no
+	join departments
+	on dept_emp.dept_no = departments.dept_no
+limit 10;
+
+
+
+수강생 -  entity -> table
+이름, 나이, 생일, 전화번호, 이메일, 주소, 학원 - attr -> column
+이동헌, 100, .. , 010-. ... , 수언, 멀캠 - tuple -> row
+????, !!
+
+학원 - entity
+학원명, 주소, 과정명 - attr
+멀캠, 세종대옆, 데이터 엔지니어 부트캠프 -> tuple
+????
+
+
+SQL : Structured Query Language
+
+mysql -u root -p	(cli client)				------>				mysqld (server)
+1234
+mysql> 
+
+DDL : 데이터 정의어  entity -> table,
+- create 
+- alter 
+- drop 
+
+DML : 데이터 조작어 tuple -> row
+- select --> ????
+- insert
+- update
+- delete
+
+DCL : 데이터 제어어 role, transaction (TCL)
+- grant
+- revoke
+- commit
+- rollback
+
+join / subquery
+(select)
+
+- join : table 연결 -> table처럼 보이더라.
+-- inner join : 
+   (natural join)
+-- outer join
+    - left outer join : inner join + left table의 남은 row (null 로 채우고)
+    - right outer join : ..
+    (- full outer join)
+
+
+
+
+숙제!!!
+각 조별로 30문항 (개인 10) 만들어서 조 내부에서 풀어보시고!
+1 -> 2 ->3 -> 1
+내일 오전 09:00까지 슬랙에 1조 문항 / employees database 에서
+
+team 1 : ['정수아', '한대성', '박주언']
+team 2 : ['김소영', '곽동원', '강지연']
+team 3 : ['이창주', '이주형', '안호용']
+
+reflection
+
+DataBase
+- RDB -> MySQL
+- NoSQL
+
+mysql -u root -p (client)
+1234				------> mysqld (server)
+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
+
+table (entity)
+column (attr)
+row (tuple)
+
+SQL
+- DDL : 정의어 - create , alter , drop
+- DML : 조작어 - select , insert , update , delete
+- DCL : 제어어 - ...
+
+select 컬럼 from 테이블;
+select 컬럼 from 테이블 where 조건; 
+select 컬럼 from 테이블 group by 컬럼;
+select 컬럼 from 테이블 group by 컬럼 having 조건;
+select 컬럼 from 테이블 order by 컬럼;
+
+join on a = b
+join using a
+- inner join
+- outer join
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- cross join
+select * from join_a inner join join_b;
+
+
+
+
+
+
+
+
+

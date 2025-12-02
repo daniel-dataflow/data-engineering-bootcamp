@@ -41,8 +41,26 @@ pip install matplotlib
 
 ------
 
+js
 
+streamlit
 
+===========
+
+HTML : client -request-> server -response(document, resource)-> client 
+CSS : document style
+JavaScript : document event
+
+RESTful : resource 중심 req/resp
+
+pip install requests
+pip install beautifulsoup4
+
+json / xml -> import json / import xml.etree
+
+------
+
+pip install streamlit
 
 
 
