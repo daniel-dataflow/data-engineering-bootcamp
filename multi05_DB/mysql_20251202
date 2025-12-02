@@ -1,0 +1,340 @@
+show databases;
+
+show tables;
+
+— 가 주석
+
+select database(); - 현재 사용하고 있는 데이터 베이스
+
+select user(); - 현재 접속되어 있는 유저
+
+root@localhosts  - root 계정 @ localhost에서 접속가능
+
+select user, host from user;  - 데이터 베이스에 계정 확인
+
+select now(); -  현재 시간
+
+create table student( id int, name varchar(100), phone char(13), address varchar(1000));
+
+select id, name, phone, address from student;
+
+insert into student values(1, 'hong-gd','010-1111-1111', '서울시 강남구');
+
+— alter : 테이블 수정 alter table student add subject varchar(100);
+
+— table 구조 확인 desc student;
+
+insert into student(id, name, phone, address, subject) values(2, 'kim-sd', '010-2222-2222','수원시 영통구','engineer');
+
+select * from student;
+
+delete from student where id = 1;
+
+select * from student;
+
+drop table student;
+
+Create database test;
+
+show databases;
+
+user test;
+
+create table dml(id int, name varchar(100), addr varchar(1000));
+
+[Data Types](https://dev.mysql.com/doc/refman/8.4/en/data-types.html)
+
+[Functions and Operators](https://dev.mysql.com/doc/refman/8.4/en/functions.html)
+
+[SQL Statements](https://dev.mysql.com/doc/refman/8.4/en/sql-statements.html)
+
+select id, name, addr from dml;
+
+--Insert into 테이블 valuse
+
+Insert into dml(id, name, addr) values (1, 'hong-gd', 'seoul');
+
+Insert into dml values(2, 'kim-sd', 'suwon');
+
+Insert into dml values(3, 'lee-dh','suwon'),(4, '카리나','남양주');
+
+select id, name, addr from dml;
+
+select name from dml;
+
+--update 테이블 set 컬럼=데이터 where 조건
+
+Update dml set addr='heaven' where id=3;
+
+select * from dml;
+
+-- delete from 테이블 where 조건
+
+delete from dml where id=2;
+
+select * from dml;
+
+Mysql -u root -p
+
+source employees.sql;
+
+use employees;
+
+show tables;
+
+Desc current_dept_emp;
+
+desc departments;
+
+select * from departments;
+
+desc employees;
+
+desc salaries;
+
+desc titles;
+
+select emp_no first_name, last_name from employees;
+
+select emp_no first_name, last_name from employees limit 100;
+
+- 101 번부터 200번
+
+select emp_no first_name, last_name from employees limit 100, 100;
+
+-- 조건
+
+실행순서 : from 테이블 -> where 조건 -> select 컬럼
+
+select * from employees where hire_date >= '2000-01-01';
+
+select * from salaries where salary >= 150000;
+
+--월급이 100000 보다 크고 150000 보다 작거나 같은 모든 데이터
+
+select * from salaries where salary > 100000 and salary <= 150000;
+
+--1960년에 태어난 사원의 first_name 과 birth_date
+
+select first_name, birth_date from employees where birth_date like '1960%' ;
+
+select count(*) from employees where birth_date like '1960%' ;
+
+-- 정렬 desc(내림차순) / asc(오름차순)
+
+Select emp_no, salary from salaries order by salary limit 10; 
+
+Select emp_no, salary from salaries order by salary desc limit 100; 
+
+-- 늦게 취업한 순서대로 나이 순서대로
+
+Select * from employees order by hire_date desc, birth_date limit 10;
+
+-- 나이 순서대로 늦게 취업한 순서대로 
+
+Select * from employees order by birth_date, hire_date desc limit 10;
+
+-- group by
+
+Select title from titles;
+
+Select title from titles group by title;
+
+Select title, emp_no from titles group by title;
+
+Select title, count(title) from titles group by title;
+
+Select count(*) from employees;
+
+Select count(*) from employees where gender='M';
+
+Dept_emp 테이블에서 각 부서의 부서번호와 사원수를 출력
+
+desc dept_emp;
+
+select dept_no, count(dept_no) from dept_emp group by dept_no;
+
+-- 위 결과에서 사원의 수가 50000  이상인 부서만 
+
+-- group by 에서 집계함수에 조건을 사용할 때는 where 대신 having!!!
+
+select dept_no, count(dept_no) from dept_emp  group by dept_no having count(dept_no) >= 50000;
+
+select max(salary), min(salary), avg(salary) from salaries;
+
+--- employees 테이블에서 성이 s로 시작하면서 여자이면서 99년도 12월 에 입사한 사람의 전체 정보 출력
+
+select * from employees where last_name like 'S%' and gender ='F' and hire_date like '1999-12%';
+
+select * from employees where last_name like 'S%' and gender ='F' and year(hire_date) = 1999 and month(hire_date) =12;
+
+-- employees 테이블에서 이름(first_name)에 'y'가 포함되거나, 이름이 'z'로 끝나는, 99년도에 입사한 사원의 전체정보
+
+select * from employees where (first_name like '%y%' or first_name like '%z') and year(hire_date) = 1999;
+
+-- title 테이블에서 직업 별 사원수를 출력하자. 단 사원수를 내림차순 정렬하자.
+
+Select title, count(title) from titles group by title order by count(title) desc;
+
+Select title, count(title) from titles where to_date ='9999-01-01' group by title order by count(title) desc;
+
+-- distinct (별개의) : 고유값만 나오게 해준다.
+
+Select distinct title from titles;
+
+Select dayname(hire_date) from employees where hire_date='2000-01-28';
+
+-- employees 테이블에서 성(last_name)과 이름(first_name)을 하나로 합칠건데. 사이에 공백 한개 넣어서 출력
+
+Select last_name, first_name from employees limit 10;
+
+Select last_name + " " + first_name from employees limit 10;
+
+Select concat(last_name , " ", first_name) from employees limit 10;
+
+-- 컬럼의 별칭
+
+Select concat(last_name , " ", first_name) as full_name from employees limit 10;
+
+-- dpartments 테이블에서 부서 이름(dept_name)을 모두 대문자로 출력
+
+Select upper(dept_name) from departments;
+
+-- employees 테이블에서 gender가 M이면 man,  F면 woman 으로 출력
+
+Select gender, if (gender ='M', 'man', 'woman')  from employees limit 10;
+
+-- salaries 테이블에서 5만 단위로 구간을 나눠서, 각 구간에 몇 명 씩 있는지 출력하자.
+
+Select count(*), 
+
+case 
+
+when salary < 50000 then '1'
+
+When salary < 100000 then '2'
+
+When salary < 150000 then '3'
+
+Else '4' 
+
+End as salary_group
+
+  from salaries
+
+Group by salary_group
+
+Order by salary_group;
+
+-- 버리고 작은거
+
+Select count(*), least(floor(salary/50000) + 1, 4) as salary_group
+
+from salaries
+
+Group by salary_group
+
+Order by salary_group;
+
+-- join : 합치다
+
+-- inner join
+
+desc employees; desc dept_emp;
+
+Select * from employees inner join dept_emp on employees.emp_no = dept_emp.emp_no limit 10;
+
+
+
+ create table join_a(aa int, ab char(3));
+
+Create table join_b(bb int, ab char(3));
+
+-- join_a
+
+insert into join_a values (1, 'aaa'), (2, 'bbb'), (3, 'ccc');
+
+-- join_b
+
+insert into join_b values (4, 'bbb'); 
+
+insert into join_b values (5, 'ccc');
+
+insert into join_b values (6, 'ddd');
+
+select * from join_a;
+
+select * from join_b;
+
+select * from join_a 
+
+-- inner join : 같은 값이 있는 것만 나타내준다.
+
+select * from join_a a inner join join_b b on a.ab = b.ab;
+
+-- cross join : 모든 집합 : 잘 사용 안함
+
+select * from join_a a inner join join_b b;
+
+-- using 사용하면 내가 연결할려는 컬럼이 동일하다면 1개로만 나오게 된다.
+
+select * from join_a a inner join join_b b using (ab);
+
+-- 명시하지 않으면 기본적으로 inner로 사용된다.
+
+select * from join_a a join join_b b on a.ab = b.ab;
+
+select * from join_a a join join_b b using (ab);
+
+-- 똑같은 컬럼이 있으면 자동으로 inner join을 해준다.
+
+Select * from join_a natural join join_b;
+
+-- outer join 
+
+select * from join_a left outer join join_b on join_a.ab = join_b.ab;
+
+select * from join_a left join join_b using(ab);
+
+select * from join_a right outer join join_b on join_a.ab = join_b.ab;
+
+select * from join_a right join join_b using(ab);
+
+-- full outer join -> mysql 은 지원 x
+
+select * from join_a full outer join join_b on join_a.ab = join_b.ab;
+
+-- 집합연산 (union, union all)
+
+select * from join_a left join join_b on join_a.ab = join_b.ab
+
+union
+
+select * from join_a right join join_b on join_a.ab = join_b.ab;
+
+-- union : 중복제거, union all : 중복 포함
+
+select * from join_a left join join_b on join_a.ab = join_b.ab
+
+union all
+
+select * from join_a right join join_b on join_a.ab = join_b.ab;
+
+-- intersect : 교집합 / except : 차집합 -> mysql 지원 x
+
+
+
+use employees;
+
+select * from employees join dept_emp on employees.emp_no =dept_emp.emp_no
+
+where to_date = '9999-01-01' limit 10;
+
+--- employees, dept_emp, departments 테이블을 이용하여 사원의 이름, 성, 성별, 부서 이름을 출력하자.
+
+Select e.first_name, e.last_name, e.gender, dp.dept_name from 
+
+employees e join dept_emp d on e.emp_no = d.emp_no 
+
+ join departments dp on d.dept_no = dp.dept_no limit 10;
+
