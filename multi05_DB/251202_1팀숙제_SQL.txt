@@ -1,0 +1,88 @@
+한대성
+1. 1990년 이전에 입사해서 현재 까지 근무 중인 직원의 총 명수는? (current_dept_emp)
+2. 1998년 12월에 퇴사한 직원의 명수는? (current_dept_emp)
+3. 퇴사한 직원 중에 가장 역대 가장 오래 일한 직원dml 근무 일수은?(current_dept_emp)
+4. 중복되지 않게 부서명을 모두 대문자로 표기하고 내림차순으로 정렬 하여라. (departments)
+5. 가장 많이 부서 이동이 일어난 부서 코드와 부서 이동이 일어난 횟수를  표기하라. (dept_emp)
+6. 각 월마다 퇴사한 인원을 카운딩하여 표기하라. (dept_emp_latest_date)
+7.  퇴사한 매니저를 입사일자 오름차순 부서번호 내림차순, 퇴사일자 오름차순으로 정렬해서 나타내라. (dept_manager)
+8. 입사한 년도가 태어난지 30년이 되었고 성(last_name)이 G로 시작하고 이름(first_name) 3번째 자리에 z가 들어가는 직원을 풀네임, 생일, 입사일 을 나타내며 태어난 일자순으로 오름차순으로 나타내어라. (employees)
+9. 가장 많은 연봉을 가진 직원을 정보를 모두 나타내어라. (salaries)
+10. 1990년도에 입사한 직원들이 가진 타이틀 명, 타이틀 갯수(count)를 타이틀 갯수의 내림차순으로 표기해라. (titles)
+
+박주언
+1. employees 테이블에서 성별 갯수 집계
+select gender, count(gender) from employees group by gender;
+
+2. titles 테이블에서 title이 Se로 시작하는 title 이름을 구하기(distinct)
+Select distinct title from titles where title like'Se%';
+ 
+3. salaries 테이블에서 salary들을 100단위에서 올림(ceiling)-- 보류
+select emp_no, CEILING(salary), from_date, to_date from salaries limit 10;
+
+4. salaries테이블에서 현재기준 봉급이 150000보다 큰 직원 리스트
+select * from salaries where salary > 150000;
+
+5.  employees테이블에서 가장 최근 입사일부터 오더링
+select * from employees order by hire_date desc;
+
+6.  salaries테이블에서 salary가 90000 에서 100000인 사람들 count
+select count(*) from salaries where salary >= 90000 and salary <= 100000;
+
+7. 부서별  직원 수 카운트
+
+8. salies 테이블에서 salaty값이 null이면 0으로 수정할것
+
+9. salaries table에서 salary 값을 100이하는 버리고 리스트 
+
+10. employees table에서 현재일하고 hire_date를 비교해서 몇년차인지 출력
+
+정수아
+문제 1.
+current_dept_emp 테이블에서 부서번호(dept_no)가 d006이면서 from_date가 2000년인 사원 수를 출력.
+
+
+문제 2.
+titles 테이블에서 현재 재직중인(to_date = 9999-01-01) 사원들이 각 직무(title)별로 몇 명씩 근무하고 있는지 집계하여 title, to_date, 사원 수(cnt)를 출력.
+사원 수 기준으로 오름차순 정렬.
+
+
+문제 3.
+titles 테이블에서 직무별로 from_date가 가장 오래된 사람을 찾아 title과 날짜를 출력하시오.
+
+
+문제 4.
+salaries 테이블에서 사원별로 연봉이 가장 높았을 때와 낮았을 때의 차이를 내림차순 정렬후 5 명만 출력하시오. 이때 컬럼명은 salary_diff.
+
+
+문제 5.
+salaries 테이블에서 급여가 100000 이상인 경우의 비율을 소수 둘째자리까지 출력하시오. round() 사용.
+해당 컬럼명은 pct_over_100000.
+
+
+문제 6.
+salaries 테이블에서 급여를 3구간으로 나누어(A/B/C) 각 구간의 인원 수 출력하시오.
+A는 40000 미만, B는 40000~70000, C는 70000 이상.
+각 컬럼명은 salary_group, cnt 이며, salary_group 기준으로 정렬.
+
+
+문제 7.
+Salaries 테이블에서 급여에 3자리마다 ,를 넣어서 내림차순 정렬 후 10개만 출력하시오. 출력 컬럼은 emp_no와 salary_with_comma.
+format() 사용.
+
+
+문제 8.
+Employees 테이블에서 last_name 길이가 6글자인 사원 수 출력하시오.
+char_length() 사용. 컬럼명 cnt.
+
+
+문제 9.
+Employees 테이블에서 입사일이 가장 빠른 사원의 birth_date와 hire_date의 날짜 형식을 (YY년 MM월)으로 변환하여 출력하시오.
+date_format() 사용.
+출력 컬럼은 emp_no, birth_ym, hire_ym.
+
+
+문제 10.
+Employees 테이블에서 hire_date를 기준으로 요일별 입사자 수를 출력하시오.
+요일은 오름차순 정렬, 컬럼명은 각각 yoil, cnt.
+dayofweek() 사용.
