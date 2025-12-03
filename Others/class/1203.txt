@@ -583,6 +583,40 @@ select * from TABLE_CONSTRAINTS where CONSTRAINT_NAME='ibfk';
 
 reflection
 
+DataBase
+- RDB : MySQL
+- NoSQL
+
+SQL   ---> server
+	<---
+
+DDL
+- create
+- alter
+- drop
++ constraint : primary key
+
+DML
+- select
+- insert
+- update
+- delete
++ join, subquery
+
+DCL
+- grant
+- revoke
+TCL : transaction
+- commit
+- rollback
+
+
+
+
+
+
+
+
 
 
 
