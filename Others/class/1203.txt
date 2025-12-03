@@ -1,0 +1,599 @@
+QR !!!
+
+mysql -u root -p
+1234
+
+
+use employees;
+
+-- departments 테이블과 dept_manager 테이블과 employees 테이블을 가지고
+-- 부서의 이름과 관리자의 이름을 출력
+desc dept_manager
+
+select dept_name, first_name
+from departments join dept_manager using(dept_no)
+	join employees using(emp_no)
+where to_date = '9999-01-01';
+
+select dept_name, first_name
+from departments natural join dept_manager
+	natural join employees 
+where to_date = '9999-01-01';
+
+-- subquery
+-- nested select
+-- 1. single row subquery : subquery가 단일 행, 단일 값 (where 뒤에서 조건으로 사용)
+--    ㄴ scalar subquery : subquery가 단일 행, 단일 값 (select 뒤에서 컬럼으로 사용)
+
+-- Production 부서의 현재 매니저를 찾아서, 해당 사원의 모든 정보를 출력
+-- departments (dept_no, dept_name) -> dept_manager (dept_no, emp_no) -> employees
+select *
+from employees
+where emp_no = 
+	(select emp_no
+	from dept_manager
+	where dept_no = 
+		(select dept_no
+		from departments
+		where dept_name = 'Production')
+	and to_date = '9999-01-01');
+
+-- 현재 사원들을 대상으로, 평균 월급보다 더 많은 월급을 받는 사원의 수 출력
+
+select count(emp_no)
+from salaries
+where salary >
+	(select avg(salary)
+	from salaries
+	where to_date = '9999-01-01')
+and to_date = '9999-01-01';
+
+-- multi row subquery : subquery의 결과가 여러 줄의 row
+
+-- 현재 직업이 Engineer인 사원들의 이름 출력
+
+select first_name
+from employees
+where emp_no in
+	(select emp_no
+	from titles
+	where title = 'Engineer'
+	and to_date = '9999-01-01');
+
+-- 직업이 Staff 인 사원들의 월급들보다 더 많이 받는 사원들의 평균 월급 출력 
+
+select avg(salary)
+from salaries
+where salary >all
+	(select salary
+	from titles join salaries using(emp_no)
+	where title = 'Staff'
+	and titles.to_date = '9999-01-01');
+
+select avg(salary)
+from salaries
+where salary >
+	(select max(salary)
+	from titles join salaries using(emp_no)
+	where title = 'Staff'
+	and titles.to_date = '9999-01-01');
+
+
+select avg(salary)
+from salaries
+where salary >any
+	(select salary
+	from titles join salaries using(emp_no)
+	where title = 'Staff'
+	and titles.to_date = '9999-01-01');
+
+select avg(salary)
+from salaries
+where salary >
+	(select min(salary)
+	from titles join salaries using(emp_no)
+	where title = 'Staff'
+	and titles.to_date = '9999-01-01');
+
+-- multi column subquery
+
+-- emp_no가 59748 인 사원과 같은 나이이면서 같은 날짜에 입사한 사원 출력
+
+select *
+from employees
+where year(birth_date) = (select year(birth_date) from employees where emp_no = 59748)
+and hire_date = (select hire_date from employees where emp_no = 59748);
+
+
+select *
+from employees
+where (year(birth_date), hire_date)  = (select year(birth_date), hire_date from employees where emp_no = 59748);
+
+-- correlated subquery : 상호연관(상관) 서브쿼리 : subquery 에서 mainquery 참조
+
+-- Senior Staff 가 존재하는 부서 이름을 출력
+select d.dept_name from departments d
+where exists 
+	(select 1 from dept_emp de join titles t using(emp_no) 
+	where de.dept_no = d.dept_no and t.title = 'Senior Staff');
+
+-- inline view : from 뒤에 사용 = table처럼 작동
+
+select dept_name, emp_no, salary 
+from employees join dept_emp using(emp_no)
+	join departments using(dept_no)
+	join salaries using(emp_no)
+	join (select dept_no, max(salary) as maxsal
+		from dept_emp
+		join salaries using(emp_no)
+		group by dept_no) as maxsalary using(dept_no)
+where salary = maxsalary.maxsal;
+
+-- self join
+-- 같은 월급을 받고 있는 사원들 출력 월급 내림차순
+select a.emp_no, b.emp_no, a.salary
+from salaries as a join salaries as b on a.salary = b.salary
+where a.emp_no > b.emp_no 
+and a.to_date = '9999-01-01'
+and b.to_date = '9999-01-01'
+order by 3 desc
+limit 1000;
+
+-- index
+alter table salaries add index salary_idx (salary)
+
+RDBMS - MySQL
+relational -> table(entity)
+table (entity) / column (attribute) / row (tuple)
+
+SQL
+- DDL : create, alter, drop
+- DML : select, insert, update, delete
+	-> join / subquery
+- DCL : grant, revoke, commit rollback
+
+
+use mysql;
+
+create user 'root'@'%' identified by '1234';
+
+-- *.* : database.table
+grant all privileges on *.* to 'root'@'%' with grant option;
+
+-- grant all privileges on project01.table01 to 'root'@'%' with grant option;
+
+select user, host from user;
+
+flush privileges;
+
+-- revoke 
+
+use test;
+
+show tables;
+
+-- autocommit 활성화 중
+-- off
+set autocommit = 0;
+
+commit;
+
+1. 은행 어플 들어간다
+2. 반장의 계좌에 100만원을 보내겠다.
+3. 어플에서 은행 서버로 -100 <-------- 은행서버고장 rollback; -- 가장 마지막에 commit한 시점으로 되돌아가기
+4. 은행 서버에서 반장 계좌 + 100
+commit;
+
+create table students(
+	id int,
+	name varchar(100),
+	phone varchar(13),
+	address varchar(1000),
+	subjects varchar(100)
+);
+
+insert into students 
+values (1, 'hong-gd', '010-1111-1111', 'seoul', 'de'),
+	(2, 'kim-sd', '010-2222-2222', 'suwon', null);
+
+commit;
+
+select * from students;
+
+update students set subjects = 'ds' where name='kim-sd';
+
+select * from students;
+
+delete from students where id = 1;
+select * from students;
+
+rollback;
+select * from students;
+
+create table type_test(
+	i int,
+	c char(10),
+	vc varchar(10),
+	d date,
+	dt datetime,
+	ts timestamp
+);
+
+insert into type_test values(1, 'a', 'a', now(), now(), now());
+select * from type_test;
+
+select c, length(c), vc, length(vc)
+from type_test;
+-- char : 고정 길이 타입 : length(c) = 10 -> mysql에선 공백을 자동으로 trim(제거) 해주고 있다.
+-- varchar : 가변 길이 타입
+
+set sql_mode = 'PAD_CHAR_TO_FULL_LENGTH';
+
+select c, length(c), vc, length(vc)
+from type_test;
+
+-- 한글 3byte = encoding "utf8mb4"
+insert into type_test values(2, 'ㄱ', 'ㄱ', now(), now(), now());
+
+select c, length(c), vc, length(vc) from type_test;
+
+-- ㄱ:3 + " ":9 = 12
+
+insert into type_test values(3, '김', '김', now(), now(), now());
+
+insert into type_test(c) values('aaaaaaaaaaa');
+insert into type_test(vc) values('aaaaaaaaaaa');
+
+-- auto increment : 자동으로 숫자 증가 (primary key or unique key 지정되어야 함!)
+delete from type_test;
+
+alter table type_test modify i int primary key auto_increment;
+
+select * from type_test;
+
+insert into type_test(c, vc) values('auto', 'incre');
+
+insert into type_test(i, c, vc) values(null, 'null', 'incre');
+
+insert into type_test(c, vc) values('mysql', '재밌다');
+
+select * from type_test;
+
+-- datetime : 날짜와 시간
+-- timestamp : utc (timezone) -> utc+9
+insert into type_test(c, vc, d, dt, ts) values('datetime', 'timestamp', now(), now(), now());
+
+select * from type_test;
+
+show variables like 'time_zone';
+
+set time_zone = '+00:00';
+
+select * from type_test;
+
+------
+
+-- 제약조건
+-- default
+create table student_default(
+	id int,
+	name varchar(100) default '김철수',
+	addr varchar(1000)
+);
+
+insert into student_default(id, addr) values(1, '서울');
+select * from student_default;
+
+-- not null
+create table student_notnull (
+	id int primary key auto_increment,
+	name varchar(100) not null,
+	addr varchar(1000)
+);
+
+insert into student_notnull(name, addr) values('hong-gd', 'seoul');
+select * from student_notnull;
+
+-- 다른 디비에선 안된다!!!
+insert into student_notnull(addr) values('suwon');
+select * from student_notnull;
+
+insert into student_notnull(name, addr) values(null, 'seoul');
+select * from student_notnull;
+
+desc student_notnull;
+
+-- unique
+create table student_unique(
+	id int,
+	name varchar(100) unique,
+	addr varchar(1000)
+);
+
+insert into student_unique values(1, 'hong-gd', 'seoul');
+
+insert into student_unique values(2, 'hong-gd', 'suwon');
+
+insert into student_unique values(2, null, 'suwon');
+insert into student_unique values(2, null, 'suwon');
+
+-- table level에서 제약조건 추가!
+CREATE TABLE student_unique_name(
+	id INT,
+	name VARCHAR(100),
+	addr VARCHAR(1000),
+	CONSTRAINT name_unq UNIQUE (name)
+);
+
+insert into student_unique_name values(1, 'hong-gd', 'seoul');
+
+insert into student_unique_name values(2, 'hong-gd', 'suwon');
+
+
+CREATE TABLE student_unique_doble(
+	id INT,
+	name VARCHAR(100),
+	addr VARCHAR(500),
+	CONSTRAINT double_unq UNIQUE (name, addr)
+);
+
+insert into student_unique_doble values (1, 'hong-gd', 'seoul');
+
+insert into student_unique_doble values (1, 'hong-gd', 'suwon');
+
+-- primary key : unique + not null\
+
+
+수강생 -> 이름, 나이, 과정이름, 학원이름, , 성별, 주소, ...
+
+-- primary key : unique + not null
+create table student_primary01(
+	id int primary key,
+	name varchar (100),
+	addr varchar(500)
+);
+
+insert into student_primary01 values(1, 'hong-gd', 'seoul');
+insert into student_primary01 values(2, 'hong-gd', 'seoul');
+insert into student_primary01 values(2, 'hong-gd', 'seoul');
+insert into student_primary01 values(null, 'hong-gd', 'seoul');
+
+create table student_primary02(
+	id int,
+	name varchar (100),
+	addr varchar(500),
+	constraint student_pri primary key (id)
+);
+
+insert into student_primary02 values(1, 'hong-gd', 'seoul');
+insert into student_primary02 values(2, 'hong-gd', 'seoul');
+insert into student_primary02 values(2, 'hong-gd', 'seoul');
+insert into student_primary02 values(null, 'hong-gd', 'seoul');
+
+create table student_primary03(
+	id int,
+	name varchar (100),
+	addr varchar(500),
+	constraint student_pri primary key (id, name)
+);
+
+insert into student_primary03 values(1, 'hong-gd', 'seoul');
+insert into student_primary03 values(2, 'hong-gd', 'seoul');
+insert into student_primary03 values(2, 'hong-gd', 'seoul');
+insert into student_primary03 values(3, 'hong-gd', 'seoul');
+insert into student_primary03 values(null, 'hong-gd', 'seoul');
+
+-- foreign key : 부모 테이블.컬럼의 값을 참조 -> table level에서만 가능!!!!
+create table student_foreign(
+	id int,
+	name varchar(100),
+	foreign key (name) references student_unique(name)
+);
+
+insert into student_foreign values(1, 'hong-gd');
+insert into student_foreign values(100, 'hong-gd');
+insert into student_foreign values(1, 'kim-sd');
+
+-- check 
+create table student_check(
+	id int check (id > 0),
+	name varchar(100),
+	gender char(1),
+	constraint gender_chk check (gender in ('m', 'f'))
+);
+
+insert into student_check values (1, 'hong-gd', 'm');
+insert into student_check values (-1, 'hong-gd', 'm');
+insert into student_check values (1, 'hong-gd', 'a');
+
+
+
+-- constraint
+-- default
+-- not null
+-- unique
+-- primary key : unique + not null
+-- foreign key : 부모테이블.컬럼 참조
+-- check
+
+-- normalization (정규화)
+create database normal;
+use normal;
+
+create table employees00(
+	empno int not null,
+	ename varchar(50) not null,
+	deptno varchar(10) not null,
+	dname varchar(50),
+	orgcode varchar(10),
+	orgname varchar(50),
+	projectno varchar(10) not null,
+	projectname varchar(50),
+	projecttype varchar(50),
+	salary int,
+	primary key (empno)
+);
+
+insert into employees00 values 
+	(101, 'hong-gd', 'ceo', 'planning department', 'org01', 'planning', 'pj01', 'mvp', 'test', 25000),
+	(102, 'kim-sd', 'ds', 'data science', 'org02', 'data', 'pj01, pj02', 'full product', 'test, service', 20000),
+	(103, 'lee-ss', 'de', 'data engineering', 'org02', 'data', 'pj01, pj02', 'mvp, full product', 'test, service', 30000);
+
+
+select * from employees00;
+
+
+-- 1NF
+create table employees01 (
+    empno int not null,
+    ename varchar(50) not null,
+    deptno varchar(10) not null,
+    dname varchar(50),
+    orgcode varchar(10),
+    orgname varchar(50),
+    projectno varchar(10) not null,
+    projectname varchar(50),
+    projecttype varchar(50),
+    salary int,
+    primary key (empno, deptno, projectno)
+);
+
+insert into employees01 values
+(101, 'hong-gd', 'ceo', 'planning department', 'org01', 'planning', 'pj01', 'mvp', 'test', 25000),
+(102, 'kim-sd', 'ds', 'data science', 'org02', 'data', 'pj01', 'mvp', 'test', 20000),
+(102, 'kim-sd', 'ds', 'data science', 'org02', 'data', 'pj02', 'full product', 'service', 20000),
+(103, 'lee-ss', 'de', 'data engineering', 'org02', 'data', 'pj01', 'mvp', 'test', 30000),
+(103, 'lee-ss', 'de', 'data engineering', 'org02', 'data', 'pj02', 'full product', 'service', 30000);
+
+select * from employees01;
+
+-- 2NF : 부분 함수 종속 (기본키에 종속적이지 않은 컬럼 분리)
+
+-- empno -> ename, salary
+create table employees02_emp (
+    empno int primary key,
+    ename varchar(50) not null,
+    salary int
+);
+
+insert into employees02_emp
+select distinct empno, ename, salary
+from employees01;
+
+-- deptno -> dname, orgcode, orgname
+create table employees02_dept (
+    deptno varchar(10) primary key,
+    dname varchar(50),
+    orgcode varchar(10),
+    orgname varchar(50)
+);
+
+insert into employees02_dept
+select distinct deptno, dname, orgcode, orgname
+from employees01;
+
+-- projectno -> projectname, projecttype
+create table employees02_project (
+    projectno varchar(10) primary key,
+    projectname varchar(50),
+    projecttype varchar(50)
+);
+
+insert into employees02_project
+select distinct projectno, projectname, projecttype
+from employees01;
+
+-- mapping table
+create table employees02_mapping (
+    empno int not null,
+    deptno varchar(10) not null,
+    projectno varchar(10) not null,
+    primary key (empno, deptno, projectno),
+    foreign key (empno) references employees02_emp(empno),
+    foreign key (deptno) references employees02_dept(deptno),
+    foreign key (projectno) references employees02_project(projectno)
+);
+
+insert into employees02_mapping
+select empno, deptno, projectno
+from employees01;
+
+
+select * from employees02_emp;
+select * from employees02_dept;
+select * from employees02_project;
+select * from employees02_mapping;
+
+--3NF : 이행 함수 종속 -> 기본키를 제외한 나머지 컬럼들 간의 종속 분리
+select * from employees03_emp;
+select * from employees03_org;
+select * from employees03_dept;
+select * from employees03_project_type;
+select * from employees03_project;
+select * from employees03_mapping;
+
+-- 4NF : 다치종속 제거 -> employees03_mapping  (empno-> deptno / empno -> projectno)
+-- emp - dept
+create table employees04_emp_dept (
+    empno int not null,
+    deptno varchar(10) not null,
+    primary key (empno, deptno),
+    foreign key (empno) references employees03_emp(empno),
+    foreign key (deptno) references employees03_dept(deptno)
+);
+
+insert into employees04_emp_dept (empno, deptno)
+select distinct empno, deptno
+from employees03_mapping;
+
+-- emp - project
+create table employees04_emp_project (
+    empno int not null,
+    projectno varchar(10) not null,
+    primary key (empno, projectno),
+    foreign key (empno) references employees03_emp(empno),
+    foreign key (projectno) references employees03_project(projectno)
+);
+
+insert into employees04_emp_project (empno, projectno)
+select distinct empno, projectno
+from employees03_mapping;
+
+-- 5NF : join 시 후보키를 통해서만 연결
+ 
+-- BCNF : ???
+
+논리적으로는 4정규화가 필요
+
+물리적으로는 3정규화까지만.
+
+-- 1NF : 
+-- 2NF : 
+-- 3NF : 
+-- 4NF : 
+
+use information_schema;
+
+show tables;
+
+select * from TABLE_CONSTRAINTS where CONSTRAINT_NAME='ibfk';
+
+
+
+
+reflection
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
