@@ -1,0 +1,587 @@
+QR !!
+mysql
+join / subquery
+normalization -> usecase diagram -> 명사들 / 동사들 -> entity / attribute // method
+sql
+- ddl : create alter drop
+- dml : select insert update delete
+- dcl : grant revoke commit rollback
+mysql -u root -p
+1234
+
+use test;
+
+"window function"
+
+drop table if exists student;
+show tables;
+
+create table student(
+	id int primary key auto_increment,
+	grade int,
+	score int
+);
+
+insert into student (grade, score) values
+	(1, 100),
+	(1, 95),
+	(1, 95),
+	(1, 90),
+	(2, 95),
+	(2, 90),
+	(2, 80),
+	(2, 75),
+	(3, 100),
+	(3, 95),
+	(3, 75),
+	(3, 70);
+
+select * from student;
+
+-- window function
+-- 함수() over ([partition by 컬럼] [order by 컬럼] [rows/range])
+select id, grade, score,
+	rank() over (order by score desc) as rnk,
+	dense_rank() over (order by score desc) as dnsrnk,
+	row_number() over (order by score desc) as rownum
+from student;
+
+select id, grade, score,
+	rank() over (partition by grade order by score desc) as rnk,
+	dense_rank() over (partition by grade order by score desc) as dnsernk,
+	row_number() over (partition by grade order by score desc) as rownum
+from student; 
+
+-- 집계함수를 윈도우함수로 사용 시!
+-- order by를 사용하면 누적 집계가 된다!
+select id, grade, score,
+	sum(score) over (partition by grade order by id) as cum_sum,
+	sum(score) over (partition by grade) as group_sum,
+	avg(score) over (partition by grade) as group_avg,
+	max(score) over (partition by grade) as group_max,
+	min(score) over (partition by grade) as group_min
+from student;
+ 
+---
+
+select 1 + 2;
+
+select 'hello';
+
+select upper('hello');
+
+select rand();
+
+select datediff('2025-09-15', now());
+
+select timediff('17:50:00', '09:00:00');
+select timediff('17:50:00', time(now()));
+select timediff('17:50:00', curtime());
+
+select date_format(now(), '%Y년 %m월 %d일 %H:%i');
+
+select now(), case dayofweek(now())
+			when 1 then '일'
+			when 2 then '월'
+			when 3 then '화'
+			when 4 then '수'
+			when 5 then '목'
+			when 6 then '금'
+			when 7 then '토'
+			else '메롱'
+		end as 요일;
+
+
+select 0 is null;
+select 1 is null;
+select null is null;
+
+Java Virtual Machine
+
+-- 연산할 때는 null 절대 안됨!!!!
+select 10 = null;
+select null = null;
+select 1 + 2 + null;
+
+select count(null);
+
+-- ifnull(a, b) : a가 null이면, b로 대체
+select ifnull(null, '값');
+select ifnull('a', 'b');
+
+-- nullif(a, b) : a와 b가 같으면 null, 다르면 a
+select nullif(100, 100);
+select nullif(100, 200);
+
+use employees;
+
+-- Production 부서의 현재 매니저를 찾아서, 해당 사원의 모든 정보를 출력
+
+select *
+from employees
+where emp_no = 
+	(select emp_no
+	from dept_manager
+	where dept_no = 
+		(select dept_no
+		from departments
+		where dept_name = 'Production')
+	and to_date = '9999-01-01');
+
+
+-- with table (CTE : Common Table Expression)
+with production_dept as (
+	select dept_no
+	from departments
+	where dept_name = 'Production'
+),
+production_manager as (
+	select emp_no
+	from dept_manager
+	join production_dept as pd using (dept_no)
+	where to_date = '9999-01-01'
+)
+select *
+from employees join production_manager as pm using (emp_no);
+
+
+-- rollup, cube, grouping sets
+-- rollup (a, b)
+-- a, b 집계
+-- a, null 집계
+-- null, null 집계
+select gender, title, count(emp_no)
+from employees join titles using (emp_no)
+where to_date = '9999-01-01'
+group by gender, title with rollup;
+
+-- cube (a, b)
+-- a, b, 집계
+-- a, null, 집계
+-- null, b, 집계
+-- null, null, 집계
+
+-- grouping set(집계하고 싶은 그룹)
+-- grouping set((a, b), (a), ()) <- rollup
+
+-- 실행 계획 (explain)
+explain #
+select * from employees where hire_date = '2000-01-01';
+
+explain #
+select *
+from employees join dept_emp using (emp_no)
+	join departments using (dept_no);
+
+-- stored procedure (pl/sql)
+-- 구분자 변경 ; -> $$
+delimiter $$
+create procedure currnow()
+begin
+	select date_format(now(), '%Y년 %m월 %d일 %H시 %i분');
+end$$
+delimiter ;
+
+call currnow();
+
+show procedure status where db='employees';
+
+-- parameter
+delimiter $$
+create procedure d_day(in target date)
+begin
+	select datediff(target, now());
+end$$
+delimiter ;
+
+call d_day('2026-03-13');
+
+-- return
+drop procedure d_day;
+
+delimiter $$
+create procedure d_day(out target int)
+begin
+	select datediff('2026-03-13', now()) into target;
+end$$
+delimiter ;
+
+call d_day(@result);
+select @result;
+
+-- inout : 입력받은 값 -> 처리 후 -> 다시 리턴
+delimiter $$
+create procedure mycounter(inout i int)
+begin
+	set i = i + 2;
+end$$
+delimiter ;
+
+set @i = 1;
+call mycounter(@i);
+select @i;
+
+
+----
+
+공유폴더에 "react.zip" 올려놨습니다!!
+
+postgresql
+
+
+psql --version
+
+
+sudo vim ~/.zshrc
+
+o
+
+export PATH="/Library/postgresql/18/bin/:$PATH"
+
+esc
+
+:wq!
+
+source ~/.zshrc
+
+psql --version
+
+psql -U postgres
+
+exit;
+
+setx PGUSER postgres
+
+psql
+
+
+sudo vim ~/.zshrc
+
+o
+
+export PGUSER="postgres"
+
+esc
+
+:wq!
+
+source ~/.zshrc
+
+psql
+
+
+
+\?
+
+\dS
+
+\list
+\l
+
+\dt
+
+\conninfo
+
+\! dir
+\! ls
+
+\q
+
+-- DDL
+create database test;
+
+\c test
+
+create table student (
+	id serial,
+	name varchar(20),
+	age integer,
+	addr text
+);
+
+-----
+
+\dt
+\dt+
+
+\d student
+\dS student
+
+create table type_test(
+	i int,
+	c char(10),
+	vc varchar(10),
+	d date,
+	t time,
+	ts timestamp,
+	tz TIMESTAMPTZ
+);
+
+
+insert into type_test values (1, 'a', 'a', now(), now(), now(), now());
+
+select c, length(c), vc, length(vc) from type_test;
+
+select c, octet_length(c), vc, octet_length(vc) from type_test;
+
+
+insert into type_test values (2, '가', '가', now(), now(), now(), now());
+
+select c, octet_length(c), vc, octet_length(vc) from type_test;
+
+select d, t, ts, tz from type_test;
+-- d : 날짜
+-- t : 시간
+-- ts : 날짜 + 시간
+-- tz : 날짜 + 시간 + UTC
+
+show timezone;
+
+set timezone = 'GMT';
+
+select d, t, ts, tz from type_test;
+
+set timezone = 'utc-9';
+
+select d, t, ts, tz from type_test;
+
+create table student_default (
+	id int,
+	name varchar(100) default '홍길동',
+	addr varchar(500)
+);
+ 
+insert into student_default (id, addr) values(1, '서울');
+
+select * from student_default;
+
+create table student_not_null(
+	id int,
+	name varchar(100) not null,
+	addr varchar(500)
+);
+
+insert into student_not_null values (1, null, 'seoul');
+insert into student_not_null (id, addr) values (2, 'seoul');
+
+create table student_unique(
+	id int,
+	name varchar(100) unique,
+	addr varchar(500),
+	constraint addr_unq unique (addr),
+	constraint double_unq unique (id, name)
+);
+insert into student_unique values (1, 'hong-gd', 'seoul');
+insert into student_unique values (2, 'hong-gd', 'suwon');
+insert into student_unique values (3, 'kim-sd', 'seoul');
+insert into student_unique values (3, 'kim-sd', 'suwon');
+insert into student_unique values (3, 'kim-sd', 'pyeng-yang');
+
+create table student_primary01(
+	id int primary key,
+	name varchar(100) unique,
+	addr varchar(500)
+);
+
+insert into student_primary01 values (1, 'hong-gd', null);
+insert into student_primary01 values (null, 'hong-gd', null);
+insert into student_primary01 values (2, null, 'suwon');
+
+\d student_primary01;
+
+create table student_primary02 (
+	id int,
+	name varchar(100),
+	addr varchar(500),
+	constraint super_primary primary key (id, name)
+);
+
+insert into student_primary02 values(1, 'hong-gd', 'seoul');
+insert into student_primary02 values(2, 'hong-gd', 'suwon');
+
+create table student_foreign(
+	id int references student_primary01(id),
+	name varchar(100),
+	addr varchar(500),
+	foreign key (name) references student_unique(name)
+);
+
+insert into student_foreign values (100, 'hong-gd', 'seoul');
+insert into student_foreign values (1, 'lee-dh', 'suwon');
+
+create table student_check (
+	id int check (id > 0),
+	name varchar(100),
+	gender char(1),
+	constraint gender_chk check (gender in ('m', 'f'))
+);
+
+insert into student_check values (-1, 'dongheon', 'm');
+insert into student_check values (1, 'dongheon', 'a');
+
+-- DML
+drop table if exists student;
+
+create table student(
+	id serial,
+	name varchar(100),
+	age integer,
+	addr text
+);
+
+insert into student (name, age, addr) 
+			values ('hong-gd', 10, 'seoul'),
+				('kim-sd', 50, 'suwon'),
+				('lee-ss', 30, 'asan');
+
+select * from student;
+
+update student set addr='jindo' where name='lee-ss';
+
+select * from student;
+
+delete from student where id = 2;
+
+select * from student;
+
+
+select 9 + 8;
+
+select 5 * 4;
+
+select 2 ^ 10;
+
+select |/4;
+select sqrt(4);
+
+select ||/27;
+
+select factorial(5);
+
+select 5 * 4 * 3 * 2 * 1;
+
+select round(1.5), floor(1.5), ceil(1.5);
+
+select nullif('a', 'a'), nullif('a', 'b');
+
+\pset null 'null'
+
+select nullif('a', 'a'), nullif('a', 'b');
+
+
+공유폴더 all_card.csv -> local
+
+create table card (
+	id integer,
+	usedate date,
+	amount integer,
+	main_catge varchar(20),
+	sub_cate varchar(20),
+	store varchar(20)
+);
+
+\copy card from 'C:\Users\student\Desktop\공유\all_card.csv' delimiter ',' csv header;
+
+
+select * from card;
+
+-- 2019년 11월 12일에 사용한 내역들 전체 출력
+
+select *
+from card
+where usedate = '2019-11-12';
+
+-- 2019년도에 사용한 전체 내역들 출력
+
+select *
+from card
+where usedate >= '2019/01/01' and usedate <= '2019/12/31';
+
+
+select *
+from card
+where usedate between '2019/01/01' and '2019/12/31';
+
+-- select *
+-- from card
+-- where year(usedate) = 2019;
+
+select *
+from card
+where usedate::varchar like '2019%';
+
+select *
+from card
+where to_char(usedate, 'yyyy') = '2019';
+
+select *
+from card
+where extract(year from usedate) = 2019;
+
+-- 금액이 가장 큰 tuple부터 순서대로 10개만 출력
+select *
+from card
+order by amount desc
+limit 10;
+
+-- 대분류가 쇼핑인 데이터의 갯수를 출력
+-- alter table card rename column main_catge to main_cate;
+
+select main_cate, count(*)
+from card
+where main_cate = '쇼핑'
+group by main_cate;
+
+-- 대분류의 갯수가 100개 이상인 대분류와 갯수를 출력
+-- 단., 대분류의 갯수가 높은것부터 내림차순으로
+
+select main_cate, count(*)
+from card
+group by main_cate
+having count(*) >= 100
+order by count(*) desc;
+
+
+window function
+함수 over (? ? ?)
+
+rollup cube grouping sets
+
+explain
+
+stored procedure
+
+postgresql
+
+
+reflection
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

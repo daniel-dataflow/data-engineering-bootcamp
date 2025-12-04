@@ -1,0 +1,266 @@
+sudo : 관리자권한으로 실행
+vim : 텍스트 에디터
+~/.zshrc : 맥용 쉘 - 설정파일 열기
+o : 다음줄 에서 입력하겠다
+i : 현재줄에서 입력하겠다.
+
+\? : 사용할 수 있는 명령믄
+\list :database 목록
+\l : \list 동일
+\dt : table list
+\dt+ : table list의 상세정보
+\conninfo : 접속되어 있는 유저의 정보
+\! dir : 외부터미널의 명령어 (windows)
+\! ls : 외부터미널의 명령어 (mac)
+\q : 종료
+
+
+
+--DDL
+create database test;
+\c test
+
+create table sutdent (
+    id serial,
+    name varchar(20),
+    age integer,
+    addr text
+);
+
+----
+\dt
+\dt+
+\d sutdent
+\dS sutdent
+
+create table type_test(
+    i int,
+    c char(10),
+    vc varchar(10),
+    d date,
+    t time,
+    ts timestamp,
+    tz TIMESTAMPTZ
+);
+
+
+insert into type_test values (1, 'a', 'a', now(), now(), now(), now());
+
+-- 길이 표시
+select c, length(c), vc, length(vc) from type_test;
+-- 바이트
+select c, octet_length(c), vc, octet_length(vc) from type_test;
+
+insert into type_test values(2, '가', '가', now(), now(), now(), now() );
+select c, length(c), vc, length(vc) from type_test;
+select c, octet_length(c), vc, octet_length(vc) from type_test;
+
+
+select d, t, ts, tz from type_test; 
+
+-- d : 날짜
+-- t : 시간
+-- ts : 날짜 + 시간
+-- tz : 날짜 + 시간 + UTC
+
+show timezone;
+
+set timezone = 'GMT';
+select d, t, ts, tz from type_test; 
+
+set timezone = 'utc-9';
+
+
+create table student_defalut(
+    id int,
+    name varchar(100) default '홍길동',
+    addr varchar(500)
+);
+
+insert into student_defalut (id, addr) values(1, '서울');
+select * from student_defalut;
+
+
+create table student_not_null(
+    id int,
+    name varchar(100) not null,
+    addr varchar(500)
+);
+
+insert into student_not_null values(1, null, 'seoul');
+insert into student_not_null (id, addr)values(2, 'seoul');
+
+
+create table student_unique(
+    id int,
+    name varchar(100) unique,
+    addr varchar(500),
+    constraint addr_unq unique(addr),
+    constraint double_unique unique(id, name)
+);
+
+
+insert into student_unique values (1, 'hong-gd', 'seoul');
+insert into student_unique values (2, 'hong-gd', 'suwon');
+insert into student_unique values (3, 'kim-sd', 'seoul');
+insert into student_unique values (3, 'kim-sd', 'suwon');
+insert into student_unique values (3, 'kim-sd', 'pueng-yang');
+
+
+----
+create table student_primary01(
+    id int primary key,
+    name varchar(100) unique,
+    addr varchar(500)
+);
+
+insert into student_primary01 values(1, 'hong-gd', null);
+insert into student_primary01 values(null, 'hong-gd', null);
+insert into student_primary01 values(2, null, 'suwon');
+
+
+\d student_primary01;
+
+
+---
+create table student_primary02(
+    id int,
+    name varchar(100),
+    addr varchar(500),
+    constraint super_primary primary key(id, name)
+);
+
+insert into student_primary02 values(1, 'hong-gd', 'seoul');
+insert into student_primary02 values(2, 'hong-gd', 'suwon');
+
+---
+create table student_foreign(
+    id int references student_primary01(id),
+    name varchar(100),
+    addr varchar(500),
+    foreign key(name) references student_unique(name)
+);
+
+insert into student_foreign values(100, 'hong-gd', 'seoul');
+insert into student_foreign values(1, 'lee-dh', 'suwon');
+---
+
+create table student_check(
+    id int check (id>0),
+    name varchar(100),
+    gender char(1),
+    constraint gender_chk check (gender in ('m', 'f'))
+);
+
+insert into student_check values(-1, 'dongheon', 'm');
+insert into student_check values(1, 'dongheon', 'a');
+
+
+--DML
+drop table if exists student;
+
+
+create table student(
+    id serial,
+    name varchar(100),
+    age integer,
+    addr text
+);
+
+
+insert into student(name, age, addr)
+    values('hong-gd', 10, 'seoul'),
+    ('kim-sd', 50, 'suwon'),
+    ('lee-ss',30, 'asan');
+
+select * from student;
+
+update student set addr = 'jindo' where name='lee-ss';
+
+select * from student;
+
+delete from student where id = 2;
+
+select * from student;
+------
+
+select 9+8;
+select 5 * 4;
+
+-- 제곱근
+select 2 ^10;
+
+-- 2루트
+select |/4;
+
+select sqrt(4);
+
+-- 3 루트
+select ||/27;
+
+-- select 5*4*3*2*1;
+select factorial(5);
+
+select round(1.5), floor(1.5), ceil(1.5);
+
+select nullif('a','a'), nullif('a','b');
+
+\pset null  'null'
+
+
+
+create table card(
+    id integer,
+    usedate date,
+    amount integer,
+    main_cate varchar(20),
+    sub_cate varchar(20),
+    store varchar(20)
+);
+
+\copy card from '/Users/handaeseong/dev/data-engineer/workspaces/multi05_DB/all_card.csv' delimiter ',' csv header;
+
+
+select * from card;
+
+-- 2019년 11월 12월에 사용한 내역들 전체 출력
+select * from card where usedate ='2019-11-12';
+
+-- 2019년도에 사용한 전체내역들 출력
+select * from card where usedate >= '2019/01/01' and usedate <= '2019/12/31';
+select * from card where usedate between '2019/01/01' and '2019/12/31';
+-- select * from card where year(usedate) =2019; X
+select * from card where usedate::varchar like '2019%';
+SELECT * FROM card WHERE TO_CHAR(usedate,'yyyy') = '2019';
+SELECT * FROM card WHERE EXTRACT(YEAR FROM usedate) = 2019;
+
+
+
+
+-- 금액이 가장 큰 tuple 부터 순서대로 10개만 출력
+
+select * from card order by amount desc limit 10;
+
+
+-- alter table card rename column main_catge to main_cate;
+
+-- 대분류가 쇼핑인 데이터의 갯수를 출력
+select main_cate, count(main_cate) from card where main_cate='쇼핑' group by main_cate;
+
+
+-- 대분류의 갯수가 100개 이상인 대분류와 갯수를 출력 단, 대분류의 갯수가 높은 것부터 내림차순으로
+select main_cate, 
+ count(main_cate) as count
+ from card 
+ group by main_cate
+ having count(*) >=100
+ order by count(main_cate) desc;
+
+
+ select main_cate, 
+ count(main_cate) as count
+ from card 
+ group by main_cate
+ order by count(main_cate) desc limit 4;
+
+

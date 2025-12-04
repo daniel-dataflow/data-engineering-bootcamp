@@ -1,0 +1,27 @@
+name: teamrepomove
+
+on: #workflow 실행시점설정
+  push: # push가 되면 실행
+    branches: # target브랜치 설정
+      - bs
+jobs: # 실행할 작업들
+  sync: # 작업명
+    runs-on: ubuntu-latest # 실행할 가상컨테이너
+    steps: # 진행할 작업 설정
+      - name: 인증용 개인키 등록하기 # 작업명
+        uses: webfactory/ssh-agent@v0.9.0 # 다른 사람(공삭)이 마켓에 등록한 기능을 가져와 사용하기
+        with: # uses에서 실행하는 기능의 매개 변수값 설정
+          ssh-private-key: ${{secrets.ACTIONS_SSH_PRIVATE_KEY}}
+          
+      - name: 레포지토리 확인하기
+        uses: actions/checkout@v4
+        with: 
+          fetch-depth: 0 # 모든 브랜치의 히스토리를 가져오기
+
+      - name: 원격레포지토리에 저장하기
+        run: | # 실행할 명령어 직접입력 -> cli명령어 (리눅스 기준 : /bin/bash)       
+          git remote rm origin
+          git remote add origin git@github.com:nice-teachers/reacttest.git
+          git push origin bs
+          
+          

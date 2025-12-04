@@ -1,0 +1,25 @@
+/* 전역으로 설정되서 다 적용됨. */
+
+/* @import "tailwindcss"; */
+/* 기본태그의 스타일을 유지하려면 아래 설정을 하면됨.
+    preflight를 빼고 설정하는 방법임
+*/
+@import url("https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@100..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap");
+@layer theme, base, components, utilities;
+
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+
+@theme {
+  /* fontfamily추가 */
+  --font-goong: "궁서";
+  /* 색상추가 */
+  --color-bs: #ec07fc;
+  --color-bs2: lime;
+  /* 간격단위추가 */
+  --spacing-bssize: 2rem;
+  /* 모서리 둥글게 */
+  --border-radius-3xl: 50rem;
+  --font-noto: "Noto Sans KR";
+  --font-black: "Black Han Sans";
+}

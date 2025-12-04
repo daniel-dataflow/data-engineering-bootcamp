@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script>
+      // onbeforeunload = function (e) {
+      //   e.preventDefault();
+      //   e.retrunvalue = "";
+      // };
+    </script>
+    <!-- <script type="module" src="./test11.js"></script> -->
+    <!-- 라이브서버로 연결해야 cors에러가 발생하지 않음 -->
+    <script type="module">
+      import testFunc, { data, obj, arr, func } from "./namedTest.js";
+      import p from "./defaultTest.js";
+      // import testFunc from "./test11.js";
+      console.log(data);
+      console.log(obj);
+      console.log(arr);
+      console.log(func);
+      console.log(p);
+      // data="test";
+      testFunc();
+      // data="유병승";
+      obj.id = "kkk";
+    </script>
+    <!-- </script> -->
+  </head>
+  <body>
+    <h2>안녕</h2>
+    <!-- 스크롤 이벤트 테스트 -->
+    <!-- <div id="container" style="height: 100px; overflow: auto">
+      test 6) React 17/18 이후 변화 포인트(중요) 자동 배칭(React 18): 동일
+      이벤트 루프 안 다수의 상태 업데이트가 자동으로 한 번에
+      렌더링됩니다(타임아웃·프로미스에서도). 성능 향상. react.dev 이벤트 풀링
+      제거(React 17): 과거처럼 e.persist()가 필요 없습니다. legacy.reactjs.org
+      onScroll은 더 이상 전파되지 않음(React 17): 브라우저 동작과 일치. 부모에서
+      스크롤을 듣고 싶다면 각 요소/윈도우에 직접 달아야 합니다.
+      legacy.reactjs.org react.dev 델리게이션 지점 변경(React 17): 내부적으로
+      document가 아니라 루트 컨테이너에 리스너를 붙입니다. legacy.reactjs.org
+    </div> -->
+  </body>
+  <!-- <script>
+    document.getElementById("container").addEventListener(
+      "wheel",
+      (e) => {
+        e.preventDefault();
+        console.log("스크롤");
+      },
+      { passive: false }
+    );
+  </script> -->
+</html>
