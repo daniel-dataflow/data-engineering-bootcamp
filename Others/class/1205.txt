@@ -1,0 +1,572 @@
+QR !!!
+
+
+DataBase
+- RDB : MySQL, PostgreSQL (ansi standard query)
+- NoSQL
+
+psql
+(psql -U postgres)
+
+\c test;
+
+\d card;
+
+-- rollup, cube, grouping sets
+-- rollup(a, b)
+-- a, b 집계
+-- a, null 집계
+-- null, null 집계
+
+select main_cate, sub_cate, sum(amount)
+from card
+group by rollup(main_cate, sub_cate)
+order by main_cate, sub_cate;
+
+-- cube(a, b)
+-- a, b 집계
+-- a, null 집계
+-- null, b 집계
+-- null, null 집계
+
+select main_cate, sub_cate, sum(amount)
+from card
+group by cube(main_cate, sub_cate)
+order by main_cate, sub_cate;
+
+-- grouping sets (컬럼들) : 컬럼들에 대한 집계
+-- grouping sets를 사용해서 rollup 처럼 출력
+select main_cate, sub_cate, sum(amount)
+from card
+group by grouping sets ( (main_cate, sub_cate), (main_cate), ()  )
+order by 1, 2;
+
+-- grouping sets 를 사용해서 cube처럼 출력
+select main_cate, sub_cate, sum(amount)
+from card
+group by grouping sets ( (main_cate, sub_cate), (main_cate), (sub_cate), ()  )
+order by 1, 2;
+
+select distinct main_cate
+from card;
+
+-- 가게 이름(store)에 '커피' 라는 단어가 포함되어있는 가게의 이름들을 유일한 값만 출력
+select distinct store
+from card
+where store like '%커피%';
+
+-- split_part
+-- 컬럼::타입 -> 해당 타입으로 형변환
+select
+	split_part(usedate::varchar, '-', 1),
+	split_part(usedate::varchar, '-', 2),
+	split_part(usedate::varchar, '-', 3),
+	usedate
+from card
+limit 10;
+
+
+select * from card where to_char(usedate, 'YYYY') = '2019';
+select * from card where extract(year from usedate) = 2019;
+select * from card where split_part(usedate::varchar, '-', 1) = '2019';
+
+select usedate, to_char(usedate, 'day')
+from card
+limit 10;
+
+select usedate, to_char(usedate, 'dy')
+from card
+limit 10;
+
+-- dow : day of week
+select usedate, extract(dow from usedate)
+from card
+limit 5;
+
+-- extract 의 결과는 numeric'
+-- substr(text, from integer, to interger)
+select usedate, substr('일월화수목금토', extract(dow from usedate)::integer + 1, 1)
+from card
+limit 5;
+
+-- 년도 별 금액 총 합 출력 - 년도순으로 정렬
+select split_part(usedate::varchar, '-', 1), sum(amount)
+from card
+group by split_part(usedate::varchar, '-', 1)
+order by 1;
+
+select extract(year from usedate), sum(amount)
+from card
+group by extract(year from usedate)
+order by 1;
+
+select main_cate, sum(amount)::numeric / (select sum(amount) from card) * 100 as percent
+from card
+group by main_cate;
+
+select pg_typeof(sum(amount)), pg_typeof(sum(amount)::numeric)
+from card;
+
+
+select main_cate, round(sum(amount)::numeric / (select sum(amount) from card) * 100) as percent
+from card
+group by main_cate;
+
+select main_cate, round(sum(amount)::numeric / (select sum(amount) from card) * 100) || '%' as percent
+from card
+group by main_cate;
+
+select main_cate, concat(round(sum(amount)::numeric / (select sum(amount) from card) * 100), '%') as percent
+from card
+group by main_cate;
+
+-- 평균
+select  round(avg(amount)) as mean
+from card;
+-- 중위값
+-- percentile_cont : 연속값
+-- percentile_disc : 이산값
+select percentile_cont(.5) within group (order by amount),
+	percentile_disc(.5) within group (order by amount)
+from card;
+-- 사분위수 (q1, q2, q3)
+select percentile_cont(array[.25, .5, .75]) within group (order by amount) as quantiles
+from card;
+
+-- 최빈값
+select mode() within group (order by sub_cate)
+from card;
+
+select max(amount), min(amount)
+from card;
+
+
+select distinct concat(main_cate, ':', sub_cate) as category 
+from card;
+
+select store, replace(store, '카페', 'cafe')
+from card
+where store like '%카페%'
+group by store;
+
+-- case
+select store, amount,
+	case
+		when amount between 0 and 9999 then '만원'
+		when amount between 10000 and 19999 then '이만원'
+		when amount between 20000 and 29999 then '삼만원'
+		else '비쌈'
+	end
+from card
+limit 10;
+
+-- join
+
+create table table_a (
+	aa int,
+	ab char(3)
+);
+create table table_b (
+	bb int,
+	ab char(3)
+);
+insert into table_a values (1, 'aaa'),
+				  (2, 'bbb'),
+				  (3, 'ccc');
+insert into table_b values (4, 'bbb'),
+				  (5, 'ccc'),
+				  (6, 'ddd');
+select * from table_a;
+select * from table_b;
+
+-- inner join
+
+select *
+from table_a join table_b on table_a.ab = table_b.ab;
+
+select *
+from table_a join table_b using (ab);
+
+select *
+from table_a inner join table_b on table_a.ab = table_b.ab;
+
+select *
+from table_a inner join table_b using(ab);
+
+-- outer join
+-- left outer join
+select * from table_a left outer join table_b on table_a.ab = table_b.ab;
+select * from table_a left join table_b on table_a.ab = table_b.ab;
+
+-- right outer join
+select * from table_a right outer join table_b on table_a.ab = table_b.ab;
+select * from table_a right join table_b on table_a.ab = table_b.ab;
+
+-- full outer join
+select *
+from table_a full outer join table_b on table_a.ab = table_b.ab;
+
+select *
+from table_a full outer join table_b using(ab);
+
+-----
+-- 모호하다!!! (ambiguous)
+select ab
+from table_a full outer join table_b on table_a.ab = table_b.ab;
+
+-- union, union all, intersect, except
+select * from table_a left join table_b on table_a.ab = table_b.ab
+union
+select * from table_a right join table_b on table_a.ab = table_b.ab;
+
+
+select * from table_a left join table_b on table_a.ab = table_b.ab
+union all
+select * from table_a right join table_b on table_a.ab = table_b.ab;
+
+
+select * from table_a left join table_b on table_a.ab = table_b.ab
+intersect
+select * from table_a right join table_b on table_a.ab = table_b.ab;
+
+select * from table_a left join table_b on table_a.ab = table_b.ab
+intersect all
+select * from table_a right join table_b on table_a.ab = table_b.ab;
+
+select * from table_a left join table_b on table_a.ab = table_b.ab
+except
+select * from table_a right join table_b on table_a.ab = table_b.ab;
+
+select * from table_a left join table_b on table_a.ab = table_b.ab
+except all
+select * from table_a right join table_b on table_a.ab = table_b.ab;
+
+-- subquery
+-- single row subquery
+
+select *
+from card
+where amount >
+	(select max(amount)
+	from card
+	where extract(year from usedate) = 2018);
+
+-- multi row subquery
+
+select *
+from card
+where usedate in
+	(select usedate
+	from card
+	where sub_cate='병원' 
+	and extract(year from usedate) = 2018);
+
+-- multi column subquery
+
+select extract(dow from usedate), store
+from card
+where (extract(dow from usedate), store) in
+	(select extract(dow from usedate), store
+	from card 
+	where substring(usedate::text, 1, 4) = '2018'
+	and extract(month from usedate::date) = 12
+	and sub_cate = '카페')
+and to_char(usedate, 'YYYY-MM') = '2019-12';
+
+select extract(dow from usedate), store
+from card
+where extract(dow from usedate) in
+	(select extract(dow from usedate)
+	from card 
+	where substring(usedate::text, 1, 4) = '2018'
+	and extract(month from usedate::date) = 12
+	and sub_cate = '카페')
+and store in
+	(select store
+	from card 
+	where substring(usedate::text, 1, 4) = '2018'
+	and extract(month from usedate::date) = 12
+	and sub_cate = '카페')
+and to_char(usedate, 'YYYY-MM') = '2019-12';
+
+-- correlative subquery : 상호연관 서브쿼리 (상관쿼리)
+select *
+from card c1
+where amount >
+	(select avg(amount)
+	from card c2
+	where c2.store = c1.store
+	and c2.usedate = c1.usedate)
+and to_char(c1.usedate, 'YYYY') = '2020';
+
+-- inline view 
+
+select store, sum_amount, cnt
+from 
+	(select store, sum(amount) as sum_amount, count(*) as cnt
+	from card
+	where store is not null
+	group by store)
+order by 3 desc;
+
+-- self join
+select c1.store, c1.usedate, c2.store, c2.usedate, c1.amount
+from card c1 join card c2 on c1.amount = c2.amount
+where c1.id < c2.id
+and to_char(c1.usedate, 'yyyy-mm') = '2019-03'
+and to_char(c2.usedate, 'yyyy-mm') = '2019-03'
+and c1.store is not null
+and c2.store is not null
+order by 2, 4;
+
+-- window function
+
+select main_cate, sub_cate,
+	rank() over (order by amount desc),
+	dense_rank() over (order by amount desc),
+	row_number() over (order by amount desc),
+	amount
+from card
+where main_cate = '문화'
+limit 10;
+
+select store, amount, rank() over (partition by store order by amount desc)
+from card
+where sub_cate='치킨';
+
+with cate_rank as (
+	select main_cate, sub_cate,
+	rank() over (partition by main_cate order by amount desc) as rnk,
+	dense_rank() over (partition by main_cate order by amount desc) as dnsrnk,
+	row_number() over (partition by main_cate order by amount desc) as rownum,
+	amount
+	from card
+)
+select main_cate, sub_cate, amount, rnk, dnsrnk, rownum
+from cate_rank
+where rnk <= 3
+order by main_cate, amount desc;
+
+select store, amount, usedate, sum(amount) over (partition by store order by usedate)
+from card
+where sub_cate='치킨';
+
+-- DCL
+create user test with password '1234';
+
+grant select on card to test;
+
+-- 새로운 터미널
+psql -U test
+1234
+select count(*) from card;
+insert into card (usedate, amount, main_cate, sub_cate, store)
+	values(now(), 5000, '식사', '카페', '맘모스커피');
+
+-- 원래 터미널
+
+grant insert on card to test;
+
+-- 새로운 터미널
+
+insert into card (usedate, amount, main_cate, sub_cate, store)
+	values(now(), 5000, '식사', '카페', '맘모스커피');
+
+select * from card where id is null;
+
+-- 새로운 터미널 종료
+
+-- 모든 권한  (*.*안됨!)
+
+grant all privileges on all tables in schema public to test;
+
+-- 앞으로 추가될 테이블
+alter default privileges in schema public grant all privileges on tables to test;
+
+
+\q
+psql
+1234
+\c test
+
+\set AUTOCOMMIT false
+
+drop table if exists students;
+
+create table students(
+	id int,
+	name varchar(100),
+	phone char(13),
+	address varchar(1000),
+	subjects varchar(100)
+);
+
+insert into students values 
+	(1, 'hong-gd', '010-0000-0000', '서울시 광진구', 'data science'),
+	(2, 'kim-sd', '010-1111-1111', '수원시 영통구', 'data engineer');
+
+
+rollback;
+
+select * from students;
+
+end;
+
+create table students(
+	id int,
+	name varchar(100),
+	phone char(13),
+	address varchar(1000),
+	subjects varchar(100)
+);
+commit;
+
+insert into students values 
+	(1, 'hong-gd', '010-0000-0000', '서울시 광진구', 'data science'),
+	(2, 'kim-sd', '010-1111-1111', '수원시 영통구', 'data engineer');
+
+select * from students;
+
+rollback;
+select * from students;
+
+\set AUTOCOMMIT true
+
+commit;
+
+-- explain
+
+explain
+select * from card;
+
+delete from card where id is null;
+
+-- primary key가 걸려있는 컬럼은 자동으로 index 생성
+alter table card add primary key (id);
+
+explain
+select * from card
+where id < 100;
+
+-- analyze : 실행해보고, 실행과 예측을 같이 보여줌
+
+explain analyze
+select count(*) from card;
+
+
+explain (format xml) select count(*) card;
+
+explain verbose select count(*) card;
+
+explain select count(*) card;
+
+
+
+\o explain.txt
+explain (analyze, format xml, verbose) select count(*) from card;
+
+
+\! dir
+\! ls
+
+PL/pgSQL
+
+create or replace function avg_year(
+	target_year int
+)
+returns numeric					-- return type (없으면 void)
+language plpgsql
+as $$							-- delimiter 변경
+declare						-- 함수 내에서 사용할 변수 선언
+	avg_amount numeric := 0.0;		-- 변수 타입 [:= 값]
+begin
+	select round(avg(amount), 2) into avg_amount
+	from card
+	where extract(year from usedate) = target_year;
+
+	return avg_amount;
+end;
+$$;
+
+-- postgres 에러였습니다!!!
+\q
+
+psql
+1234
+\c test
+
+select avg_year(2019);
+
+
+
+-- MongoDB
+
+-- install mac
+cd Downloads
+
+tar xvzf mongodb-macos-...tar
+
+mv mongodb-.... 8.2.2/ mongo
+
+cd mongo
+
+mkdir -p data/db
+
+cd ..
+
+unzip mongosh-.....
+cd mongosh-.... /
+cd bin
+
+mv mongosh ~/Downloads/mongo/bin/
+
+cd ~/Downloads/mongo/bin/
+ls
+
+sudo vim ~/.zshrc
+
+o
+export PATH="/Users/???/Downloads/mongo/bin/:$PATH"
+
+[esc]
+:wq!
+
+source ~/.zshrc
+
+
+-- 백그라운드 실행
+nohub mongod --dbpath ~/Downloads/mongo/data/db &
+
+mongosh
+
+exit;
+
+-- 백그라운드 실행된 서버 종료
+ps -ef | grep mongo
+
+
+
+reflection
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
