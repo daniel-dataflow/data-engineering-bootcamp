@@ -21,7 +21,6 @@ select id, name, phone, address from student;
 insert into student values(1, 'hong-gd','010-1111-1111', '서울시 강남구');
 
 — alter : 테이블 수정 alter table student add subject varchar(100);
-
 — table 구조 확인 desc student;
 
 insert into student(id, name, phone, address, subject) values(2, 'kim-sd', '010-2222-2222','수원시 영통구','engineer');
@@ -43,12 +42,11 @@ user test;
 create table dml(id int, name varchar(100), addr varchar(1000));
 
 [Data Types](https://dev.mysql.com/doc/refman/8.4/en/data-types.html)
-
 [Functions and Operators](https://dev.mysql.com/doc/refman/8.4/en/functions.html)
-
 [SQL Statements](https://dev.mysql.com/doc/refman/8.4/en/sql-statements.html)
 
 select id, name, addr from dml;
+
 
 --Insert into 테이블 valuse
 
@@ -62,11 +60,13 @@ select id, name, addr from dml;
 
 select name from dml;
 
+
 --update 테이블 set 컬럼=데이터 where 조건
 
 Update dml set addr='heaven' where id=3;
 
 select * from dml;
+
 
 -- delete from 테이블 where 조건
 
@@ -336,5 +336,5 @@ Select e.first_name, e.last_name, e.gender, dp.dept_name from
 
 employees e join dept_emp d on e.emp_no = d.emp_no 
 
- join departments dp on d.dept_no = dp.dept_no limit 10;
+join departments dp on d.dept_no = dp.dept_no limit 10;
 
