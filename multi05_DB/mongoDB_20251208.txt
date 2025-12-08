@@ -1,0 +1,408 @@
+function test() {
+    print("mongo!!")
+}
+
+test();
+
+
+const today = () => {
+    print(new Date());
+}
+
+today();
+
+
+function insertDB(name) {
+    db.test.insertOne({"name":name});
+}
+
+insertDB("hong-gd");
+
+db.test.find();
+
+
+show dbs;
+// admin   40.00 KiB -> 관리자
+// config  60.00 KiB -> 설정에 대한 shard(분산저장 : 복제가 이뤄짐) 정보 저장
+// local   64.00 KiB -> 복제되지 않는 데이터 저장 / mater만 존재
+// test    40.00 KiB -> test 용도로 사용됨
+
+db;
+use multi; // 데이터베이스 만들어지고 사용까지 이뤄짐
+
+show collections;
+
+use test
+
+show collections; 
+
+db.help();
+
+
+//db.student.insertOne - 데이터 베이스. 컬렉션. 도큐먼트를 만들어 주겠다.
+// acknowledged: true, // 응답해서 요청이 성공했다.
+// insertedId = _id -> ObjectId 를 부여 받는다.
+
+db.student.insertOne({"name": "hong-gd", 
+                    "class" : "data engineer",
+                    "midterm": {"kor":100, "eng":60, "math":80}
+});
+
+show collections;
+
+const lee = {name: "lee-ss",
+            midterm : {
+                kor:70,
+                eng:90,
+                math:100 
+            },
+            final:{
+                kor:80,
+                eng:80,
+                math:60
+            },
+            class:"data science"
+};
+
+db.student.insertOne(lee);
+
+db.student.find();
+
+비정형데이터로 내가 넣고 싶은데로 넣겠다.
+
+
+
+db.student.insertMany([
+    {"name":"hong-gd", "class":"de", "kor":100, "eng":50, "math":80},
+    {"name":"kim-sd", "class":"ds", "kor":70, "eng":100, "math":90},
+    {"name":"lee-ss", "class":"de", "kor":80, "eng":90, "math":80}
+]);
+
+db.student.find();
+
+// insert into student(name, kor, eng, math)
+// values ("shib-dy", 90, 100, 40);
+
+db.student.insertOne({
+                    "name":"shin-dy",
+                    "kor":90,
+                    "eng":100,
+                    "math":40
+});
+
+
+//db.collection.find(query, projection, options)
+// query : 조건
+// projection : 보여줄 필드
+// options : 
+
+// 1: true - 보여주기
+db.student.find({}, {"name":1});
+db.student.find({}, {"name":true});
+
+db.student.find({}, {"_id":0, "name":1});
+db.student.find({}, {"midterm":0});
+db.student.find({}, {"midterm":1});
+
+
+// 1 :asc 낮은거부터 / -1 :desc 높은거부터
+db.student.find().sort({"name":1});
+db.student.find().sort({"name":-1});
+
+db.student.find().sort({"midterm":1});
+db.student.find().sort({"midterm":-1});
+// 정렬기준은 필드명, 필드명이 없거나 필드명이 같은 경우는 _id 순으로 나온다.
+
+// 출력 제한
+db.student.find().sort({"kor":-1}).limit(2);
+
+// 이쁘게 나오기
+db.student.find({},{"_id":0}).pretty();
+
+// 갯수 세기
+db.student.find().count();
+
+// query -> {<field>:{<opr>:<values>}}
+// select * from student where class = 'de';
+
+// 조건넣기
+db.student.find({"class":{$eq:"de"}});
+db.student.find({"class":"de"});
+
+// 존재하는가?
+db.student.find({"midterm":{$exists: true}});
+db.student.find({"midterm":{$exists: 1}});
+
+// $gt > / $lte <=
+db.student.find({"kor":{$gt: 50}, "eng":{$lte:100}}, {"_id":0, "name":1, "kor":1, "eng":1});
+db.student.find({$and:
+                    [
+                        {"kor":{$gt: 50}, 
+                        "eng":{$lte:100}}
+                    ]
+                },
+                {"_id":0, "name":1, "kor":1, "eng":1});
+
+
+db.student.find({"midterm":{$exists: true}});
+
+//중간고사 (midterm)의 국어점수 (kor) >= 80
+db.student.find({"midterm.kor": {$gte:80}});
+
+//select * from student where kor < 100 or math >= 70;
+db.student.find({$or:
+                    [
+                        {"kor":{$lt:100}},
+                        {"math":{$gte:70}}
+                    ]
+});
+
+// regex
+// k가 포함되어 있는
+db.student.find({"name":/k/});
+db.student.find({"name":{$regex:"k"}});
+
+// k로 끝나는
+db.student.find({"name": /d$/});
+db.student.find({"name":{$regex:"d$"}});
+
+// l로 시작하는
+db.student.find({"name":/^l/});
+db.student.find({"name":{$regex:"^l"}});
+
+// midterm 존재하지 않는 또는  "midterm":null 녀석도 찾아줌
+db.student.find({"midterm":null});
+db.student.insertOne({"midterm":null});
+
+// 있는애
+db.student.find({"midterm":{$ne:null}});
+
+db.student.findOne({"midterm":{$ne:null}});
+
+
+insertOne({}) : 한개만 입력
+insertMany([{},{}]): 여러개 입력
+
+
+// update
+// update student set name = '홍길동' where name like 'hong%';
+db.student.updateOne({"name":/^hong/},{$set: {"name":"홍길동"}});
+db.student.find();
+
+
+// final 을 가지고 있는 document를 찾아서, class를 graduated로 바꾸자.
+db.student.updateOne({"final":{$ne:null}}, {$set: {"class":"graduated"}});
+db.student.updateOne({"final":{$exists:true}}, {$set: {"class":"graduated"}});
+db.student.find();
+
+// null 값 지우기
+db.student.deleteOne({_id: ObjectId('693651adac8ad2eff3a365d3')});
+
+// 다중 업데이트
+db.student.updateMany({"midterm":{$exists:1}}, {$set:{"midterm.kor":0}})
+db.student.find();
+
+// final이 존재하는 document의 _id
+_id: ObjectId('69362598ac8ad2eff3a365ce')
+
+// 덮어쓰기
+db.student.replaceOne({"final": {$exists: 1}},{"name":"이순신"});
+db.student.find();
+
+
+let cnt = 1;
+
+function insertName(name){
+    const tmp = db.student.insertOne({"_id":cnt++, "name":name});
+    return tmp;
+}
+
+insertName("신동엽");
+insertName("유재석");
+insertName("강호동");
+insertName("조세호");
+
+db.student.find();
+
+
+// $unset 필드를 지울때
+db.student.updateMany({"midterm":{$exists:1}}, {$unset:{"midterm":""}});
+
+
+
+// 배열
+db.myfriends.insertMany([
+    {"name":"아이언맨", buddy:["토르","헐크","호크아이"]},
+    {"name":"슈퍼맨",buddy:["배트맨","원더우먼","아쿠아맨","조커"]},
+    {"name":"스파이더맨",buddy:[{"alias":"피터 파커"},{"alias":"마일즈 모랄레스"}]},
+]);
+
+db.myfriends.find();
+
+
+// 마일즈 모랄레스가 들어가 있는 id의 항목을 모두 보여줘.
+db.myfriends.find({"buddy.alias":"마일즈 모랄레스"});
+db.myfriends.find({"buddy.alias": {$eq:"마일즈 모랄레스"}});
+
+
+// 아이언맨의 친구로 "캡틴아메리카","블랙위도우" 추가
+db.myfriends.updateOne({"name":"아이언맨"},
+                        {$push:{"buddy":{$each:["캡틴 아메리카","블랙위도우"]}}});
+
+db.myfriends.find();
+
+
+// 아이언맨 친구에서 헐크를 빼자
+db.myfriends.updateOne({"name":"아이언맨"},{$pull:{"buddy":"헐크"}});
+db.myfriends.find();
+
+db.myfriends.updateOne({"name":"슈퍼맨"}, {$pop:{"buddy":1}});
+db.myfriends.find();
+
+
+
+
+// delete
+db.student.deleteOne({"name":"홍길동"});
+db.student.find();
+
+
+db.student.deleteMany({"name":{$exists:1}});
+db.student.find();
+
+db.student.deleteMany({});
+
+db.student.drop();
+show collections;
+
+
+
+
+
+db.score.insertMany([
+  {name:"홍길동",kor:90,eng:80,math:98,test:"midterm"},
+  {name:"이순신",kor:100,eng:100,math:76,test:"final"},
+  {name:"김선달",kor:80,eng:55,math:67,test :"midterm"},
+  {name:"강호동",kor:70,eng:69,math:89,test:"midterm"},
+  {name:"유재석",kor:60,eng:80,math:78,test:"final"},
+  {name:"신동엽",kor:100,eng:69,math:89,test:"midterm"},
+  {name:"조세호",kor:75,eng:100,math:100,test:"final"}
+]);
+
+
+db.score.find();
+
+db.score.countDocuments({});
+db.score.countDocuments({"test":"final"});
+
+
+db.score.distinct("test");
+
+
+// filtering, grouping, aggre - 걸러내고 그룹화 시켜서 집합으로 나타내준다.
+// filtering
+db.score.aggregate({$match:{"kor":{$gt:80}}});
+
+// grouping
+// select * from score group by test;
+db.score.aggregate({$group:{"_id":"$test"}});
+
+// aggre
+// select test, avg(kor) from score group by test;
+db.score.aggregate({$group:{"_id":"$test", "average": {$avg:"$kor"}}});
+// select avg(kor) from score;
+db.score.aggregate({$group:{"_id":null, "average": {$avg:"$kor"}}});
+
+// sum
+db.score.aggregate({$group:{"_id":null, "sum": {$sum:"$kor"}}});
+db.score.aggregate({$group:{"_id":"$test", "sum": {$sum:"$kor"}}});
+
+// null - min, max
+db.score.aggregate({$group:{"_id":null, "sum": {$min:"$kor"}}});
+db.score.aggregate({$group:{"_id":null, "sum": {$max:"$kor"}}});
+
+// $test - min, max
+db.score.aggregate({$group:{"_id":"$test", "sum": {$min:"$kor"}}});
+db.score.aggregate({$group:{"_id":"$test", "sum": {$max:"$kor"}}});
+
+// 배열 형태에 스테이지가 들어가고 그안에 도큐먼트형태로 들어가고 
+// 필터형태로 보여주겠다.
+db.score.aggregate({$project:{"_id":0, "name":1, "kor":1}});
+
+
+// 파이프라인 - 스테이지의 결과가 다음 스테이지의 입력으로 들어간다.
+db.score.aggregate(
+    [
+        {$match: {"test": "final"}},
+        {$project: {"name":1, "eng":1}},
+        {$group:{"_id":"final exam", "eng avg": {$avg: "$eng"}}}
+    ]
+);
+
+
+
+
+
+// 점수(kor, eng, math)의 합계가 250점 이상인 사람들의 이름과 점수 합계를 내림차순으로
+// $project: 다음에 무슨값을 보내줄지 결정한다.
+// "$kor" : 각 필드의 값 하나하나를 사용해야 할때 $를 붙인다.
+// $match: 맞는 조건을 넣어준다,total이 250이상인 값을 다음으로 넘긴다.
+// $sort: 값을 정렬해서 보여줘라 (-1 : 큰수부터)
+
+db.score.aggregate([
+    {$project: {"name":1, "total": {$add: ["$kor", "$eng", "$math"]}}},
+    {$match:{"total":{$gte:250}}},
+    {$sort:{"total":-1}}
+]);
+
+// "학생 각각의 평균" 에 대한 전체 평균을 구하고, 반올림
+// $round:["$average", 0] : 0: 보여지는 자릿수
+db.score.aggregate([
+    {$group:{"_id":null, "average":{$avg:{$avg:["$kor","$eng","$math"]}}}},
+    {$project:{"_id":0,"average":{$round:["$average", 0]}}}
+]);
+
+
+// Map-Reduce : 묶어서 줄어준다. 
+// Data Modeling
+
+
+// explain : 실행계획
+// winningPlan : 최종적으로 선택한 것
+// rejectedPlans: 선택하지 않은 것
+db.score.find({"name":"이순신"}).explain();
+
+// executionStats : 실제 실행결과
+// totalKeysExamined : 인덱스를 사용해서 찾을 때 사용한 인덱스의 갯수
+db.score.find({"name":"이순신"}).explain("executionStats");
+
+// allPlansExecution : winningPlan 와 rejectedPlans 마저도 모두 실행한 결과를 알려준다.
+db.score.find({"name":"이순신"}).explain("allPlansExecution");
+
+
+//index
+function generateDummy(){
+    const dummy = [];
+    for (let i = 0; i < 100000; i++) {
+        dummy.push({"num":i});
+    }
+    db.dummy.insertMany(dummy);
+}
+generateDummy();
+
+db.dummy.find();
+it // iterator
+
+db.dummy.find().forEach((doc)=>print(doc));
+
+
+
+
+
+
+
+
+
+
+
+

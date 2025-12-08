@@ -550,6 +550,15 @@ reflection
 
 
 
+mongodb
+redis -> windows X => wsl
+python database connection
+---
+data engineer -> vmware 
+
+
+
+
 
 
 

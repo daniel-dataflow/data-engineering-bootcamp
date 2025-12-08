@@ -1,0 +1,510 @@
+QR !!!
+
+DataBase
+-> Entity (attribute, tuple)
+=> Table (column, row)
+
+RDBMS : MySQL, PostgreSQL 
+Structured Query Language
+- DDL : create, alter, droup
+- DML : select, insert, update, delete
+- DCL : grant, revoke, (TCL)commit, rollback
+
+
+
+JS environemt (REPL) -> interactive
+Read
+Eval
+Print
+Loop
+
+nohup mongod --dbpath ~/Downloads/mongo/data/db &
+
+mongosh
+
+function test(){
+	print("mongo!!")
+}
+test();
+
+const today = ()=>{
+	print(new Date());
+}
+today();
+
+function insertDB(name) {
+	db.test.insertOne({"name": name});
+}
+insertDB("hong-gd"); 
+db.test.find();
+
+show dbs;
+// admin   40.00 KiB
+// config  96.00 KiB	-> shard 정보 저장
+// local   72.00 KiB	-> 복제되지 않는 데이터 저장
+// test    40.00 KiB
+
+db;
+
+use multi;
+
+show collections;
+
+use test
+show collections;
+
+db.help();
+
+
+// db.student.insertOne
+// insertedId = _id -> ObjectId
+db.student.insertOne({"name": "hong-gd", 
+			    "class": "data engineer", 
+			    "midterm": {"kor": 100, "eng": 60, "math": 80}
+});
+
+show collections;
+
+
+const lee = {name : "lee-ss", 
+		midterm : {
+			kor: 70,
+			eng: 90,
+			math: 100
+		},
+		final : {
+			kor: 80,
+			eng: 80,
+			math:60
+		},
+		class : "data science"
+};
+
+db.student.insertOne(lee);
+
+db.student.find();
+
+db.student.insertMany([
+	{"name": "hong-gd", "class": "de", "kor": 100, "eng": 50, "math": 80},
+	{"name": "kim-sd", "class": "ds", "kor":70, "eng": 100, "math": 90},
+	{"name": "lee-ss", "class": "de", "kor":80, "eng": 90, "math": 80}
+]);
+
+db.student.find();
+
+// insert into student(name, kor, eng, math)
+// values ("shin-dy", 90, 100, 40);
+
+db.student.insertOne({"name": "shin-dy", "kor": 90, "eng": 100, "math": 40});
+
+db.student.find();
+db.student.find({});
+
+db.student.find({}, {"name": 1});
+db.student.find({}, {"name": true});
+
+db.student.find({}, {"_id": 0, "name": 1});
+
+db.student.find({}, {"midterm":0});
+db.student.find({}, {"midterm":1});
+
+// 1 : asc / -1 : desc
+db.student.find().sort({"name": 1});
+db.student.find().sort({"name": -1});
+
+db.student.find().sort({"midterm": 1});
+db.student.find().sort({"midterm": -1});
+
+db.student.find().sort({"kor":-1}).limit(2);
+
+db.student.find({},{"_id":0}).pretty();
+
+db.student.find().count();
+
+// query -> {<field>: {<opr>: <value>}}
+// select * from student where class = 'de';
+db.student.find({"class": {$eq: "de"}});
+db.student.find({"class": "de"});
+
+db.student.find({"midterm": {$exists: true}});
+db.student.find({"midterm": {$exists: 1}});
+
+
+db.student.find({"kor": {$gt: 50}, "eng": {$lte: 100}}, {"_id":0, "name":1, "kor":1, "eng":1});
+
+db.student.find(
+		   {$and:
+			    [
+				{"kor": {$gt: 50}}, 
+			     	{"eng": {$lte: 100}}
+			    ]
+		    }, 
+		    {"_id":0, "name":1, "kor":1, "eng":1}
+		);
+
+db.student.find({"midterm": {$exists: true}});
+
+// 중간고사(midterm) 의 국어점수 (kor) >= 80
+db.student.find({"midterm.kor": {$gte: 80}});
+
+// select * from student where kor < 100 or math >= 70;
+db.student.find({
+	$or:
+		[
+			{"kor": {$lt: 100}},
+			{"math": {$gte: 70}}
+		]
+});
+
+1 -> 3 -> 2 -> 1
+내일 아침 9시까지 slack에!
+
+db.inventory.insertMany( [
+   { item: "canvas", qty: 100, size: { h: 28, w: 35.5, uom: "cm" }, status: "A" },
+   { item: "journal", qty: 25, size: { h: 14, w: 21, uom: "cm" }, status: "A" },
+   { item: "mat", qty: 85, size: { h: 27.9, w: 35.5, uom: "cm" }, status: "A" },
+   { item: "mousepad", qty: 25, size: { h: 19, w: 22.85, uom: "cm" }, status: "P" },
+   { item: "notebook", qty: 50, size: { h: 8.5, w: 11, uom: "in" }, status: "P" },
+   { item: "paper", qty: 100, size: { h: 8.5, w: 11, uom: "in" }, status: "D" },
+   { item: "planner", qty: 75, size: { h: 22.85, w: 30, uom: "cm" }, status: "D" },
+   { item: "postcard", qty: 45, size: { h: 10, w: 15.25, uom: "cm" }, status: "A" },
+   { item: "sketchbook", qty: 80, size: { h: 14, w: 21, uom: "cm" }, status: "A" },
+   { item: "sketch pad", qty: 95, size: { h: 22.85, w: 30.5, uom: "cm" }, status: "A" }
+] );
+
+// regex
+// k가 포함되어 있는
+db.student.find({"name": /k/});
+db.student.find({"name": {$regex: "k"}});
+
+// d로 끝나는
+db.student.find({"name": /d$/});
+db.student.find({"name": {$regex: "d$"}});
+
+// l로 시작하는
+db.student.find({"name": /^l/});
+db.student.find({"name": {$regex: "^l"}});
+
+db.student.find({"midterm": null});
+
+db.student.insertOne({"midterm":null});
+
+db.student.find({"midterm": {$ne: null}});
+
+db.student.findOne({"midterm": {$ne: null}});
+
+insertOne({})
+insertMany([{},{},{}])
+find(<query>, <projection>)
+
+// update
+// update student set name='홍길동' where name like 'hong%';
+db.student.updateOne({"name": /^hong/}, {$set: {"name": "홍길동"}});
+
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+
+db.student.find();
+
+// final 을 가지고 있는 document 하나를 찾아서, class를 graduated로 바꾸자
+db.student.updateOne({"final": {$exists: true}}, {$set: {"class": "graduated"}});
+db.student.updateOne({"final": {$ne: null}}, {$set: {"class": "graduated"}});
+db.student.find();
+
+db.student.deleteOne({_id: ObjectId('693651629d5418dc741e2629')});
+
+db.student.updateMany({"midterm": {$exists: 1}}, {$set: {"midterm.kor": 0}});
+db.student.find();
+
+// final이 존재하는 document의 _id
+ObjectId('6936258a9d5418dc741e2623')
+
+db.student.replaceOne({"final": {$exists: 1}}, {"name": "이순신"});
+db.student.find();
+ObjectId('6936258a9d5418dc741e2623')
+
+updateOne
+updateMany
+replaceOne
+--
+
+let cnt = 1;
+
+function insertName(name){
+	const tmp = db.student.insertOne({"_id": cnt++, "name": name});
+	return tmp;
+}
+
+insertName("신동엽");
+insertName("유재석");
+insertName("강호동");
+insertName("조세호");
+
+db.student.find();
+
+
+// $unset
+db.student.updateMany({"midterm": {$exists: 1}}, {$unset: {"midterm": ""}});
+
+db.student.find();
+
+// 배열
+db.myfriends.insertMany([
+	{"name": "아이언맨", buddy: ["토르", "헐크", "호크아이"]},
+	{"name": "슈퍼맨", buddy: ["배트맨", "원더우먼", "아쿠아맨", "조커"]},
+	{"name": "스파이더맨", buddy: [{"alias": "피터 파커"}, {"alias": "마일스 모랄레스"}]}
+]);
+
+db.myfriends.find();
+
+db.myfriends.find({"buddy.alias": "마일스 모랄레스"});
+db.myfriends.find({"buddy.alias": {$eq: "마일스 모랄레스"}});
+
+// 아이언맨의 친구로 "캡틴아메리카", "블랙위도우" 추가
+db.myfriends.updateOne({"name": "아이언맨"}, 
+				 {$push: {"buddy": {$each: ["캡틴 아메리카", "블랙 위도우"]}}});
+
+db.myfriends.updateOne({"name": "아이언맨"}, {$push: {"buddy": "??"}});
+
+
+// 아이언맨의 친구에서 헐크를 빼자
+db.myfriends.updateOne({"name":"아이언맨"}, {$pull: {"buddy": "헐크"}});
+db.myfriends.find();
+db.myfriends.updateOne({"name":"아이언맨"}, {$pullAll: {"buddy": ["호크아이", "토르"]}});
+
+// 슈퍼맨의 친구에서 조커를 빼자
+db.myfriends.updateOne({"name": "슈퍼맨"}, {$pop: {"buddy": 1}});
+db.myfriends.find();
+
+// $pull 이랑 $pop 이랑 차이점!
+
+insertOne
+insertMany
+find
+updateOne
+updateMany
+replaceOne
+deleteOne
+deleteMany
+
+
+db.student.deleteOne({"name": "홍길동"});
+db.student.find();
+
+db.student.deleteMany({"name": {$exists: 1}});
+db.student.find();
+db.student.deleteMany({});
+
+db.student.drop();
+show collections;
+
+
+3:05
+
+db.score.insertMany([
+	{name: "홍길동", kor:90, eng:80, math:98, test:"midterm"},
+	{name: "이순신", kor:100, eng:100, math:76, test:"final"},
+	{name: "김선달", kor:80, eng:55, math:67, test:"midterm"},
+	{name: "강호동", kor:70, eng:69, math:89, test:"midterm"},
+	{name: "유재석", kor:60, eng:80, math:78, test:"final"},
+	{name: "신동엽", kor:100, eng:69, math:89, test:"midterm"},
+	{name: "조세호", kor:75, eng:100, math:100, test:"final"}
+])
+
+db.score.find();
+
+db.score.countDocuments({});
+db.score.countDocuments({"test": "final"});
+
+db.score.distinct("test");
+
+// filtering, grouping, aggre
+db.score.aggregate({$match: {"kor": {$gt: 80}}});
+
+// select * from score group by test;
+db.score.aggregate({$group: {"_id": "$test"}});
+
+// select test, avg(kor) from score group by test;
+db.score.aggregate({$group: {"_id":"$test", "average": {$avg: "$kor"}}});
+// select avg(kor) from score;
+db.score.aggregate({$group: {"_id":null, "average": {$avg: "$kor"}}});
+
+db.score.aggregate({$group: {"_id":null, "sum": {$sum: "$kor"}}});
+db.score.aggregate({$group: {"_id":"$test", "sum": {$sum: "$kor"}}});
+
+db.score.aggregate({$group: {"_id":null, "min": {$min: "$kor"}}});
+db.score.aggregate({$group: {"_id":null, "max": {$max: "$kor"}}});
+
+db.score.aggregate({$group: {"_id":"$test", "min": {$min: "$kor"}}});
+db.score.aggregate({$group: {"_id":"$test", "max": {$max: "$kor"}}});
+
+db.score.aggregate({$project: {"_id":0, "name":1, "kor":1}});
+
+
+aggregate([
+	{},
+	{$project: {"_id":0, "name":1, "kor":1}},
+	{},
+	{}
+])
+
+db.score.aggregate(
+[
+	{$match: {"test": "final"}},
+	{$project: {"name":1, "eng":1}},
+	{$group: {"_id":"final exam", "eng avg": {$avg: "$eng"}}}
+]
+);
+
+// 점수(kor, eng, math)의 합계가 250점 이상인 사람들의 이름과 점수 합계를 내림차순으로
+db.score.aggregate([
+	{$project: {"name":1, "total": {$add: ["$kor", "$eng", "$math"] } } } ,
+	{$match: {"total": {$gte: 250}}},
+	{$sort: {"total": -1}}
+]);
+
+// "학생 각각의 평균" 에 대한 전체 평균을 구하고, 반올림
+db.score.aggregate([
+	{$group: {"_id":null, "average": {$avg: {$avg: ["$kor", "$eng", "$math"]}}}},
+	{$project: {"_id":0, "average": {$round: ["$average", 0]}}}
+]);
+
+// explain : 실행 계획
+db.score.find({"name":"이순신"}).explain();
+
+db.score.find({"name":"이순신"}).explain("executionStats");
+
+db.score.find({"name":"이순신"}).explain("allPlansExecution");
+
+// index
+
+function generateDummy(){
+	const dummy = [];
+	for (let i=0; i<100000; i++) {
+		dummy.push({"num": i});
+	}
+
+	db.dummy.insertMany(dummy);
+}
+generateDummy();
+
+db.dummy.find();
+it
+
+db.dummy.find().forEach((doc)=>print(doc)); 
+
+// 실행 계획
+
+// index 추가 후 실행 계획
+
+// geojson (geolocation, geosphere)
+
+reflection
+
+
+
+MongoDB -> NoSQL 비 정형 데이터베이스
+=> Documents (BSON - Binary Json) -> Collections -> DataBases
+
+db.collection.find(<조건>, <보여질 필드>)
+db.collection.insertOne(document)
+db.collection.insertMany([doc, doc, doc,...])
+db.collection.updateOne(<조건>, {$set: <???>})
+db.collection.updateMany(//)
+db.collection.replaceOne(<조건>, document)
+db.collection.deleteOne()
+db.collection.deleteMany()
+
+db.collection.drop()
+
+// pipeline
+db.collection.aggregate([
+	stage,
+	stage,
+	stage, ...
+])
+
+explain
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
