@@ -1,0 +1,76 @@
+1. employees table - birth_date column
+	1953-09-02 -> 1953년 09월 02일 로 변경해보자.
+
+2. employees table - first_name column
+	앞쪽 3개의 문자열만 추출해보자.
+
+3. employees table - first_name column
+	fist_name + last_name -> as full_name 으로 결합시켜보자.
+
+4. salaries table - salary column
+	가장 높은 salary 값을 구하자.
+
+5. titles table - title column
+	1) 직무를 그룹화해서 몇 개의 직무가 있는지 2) 각 직무별 사원 수를 출력해보자.
+
+6. titles table - title column
+	Senior Enginner를 Enginner로 바꿔보자.
+
+7. employees table - first_name column
+	first_name을 내림차순으로 정렬해보자.
+
+8. employees table - first_name column
+	'g'가 포함된 문자열 search 해서 출력해보자.
+
+9. employees table - first_name column
+	'g'와 'n'이 포함된 문자열 search 해서 출력해보자.
+
+10. employees table - first_name, gender column
+	이름에 'g'가 포함되면서 성별이 남자인 이름만 출력해보자.
+
+11. employees 테이블에서 2000년 이후 고용된 직원의 직원 번호, 이름(full_name), 고용일을 출력하세요.
+(full_name : concat(), upper() 사용)
+
+12. employees 테이블에서 2000년 이후 고용된 직원의 고용일을 월/일/연도 요일(ex. Jan/11/2000 Tue) 형식으로 출력하세요.
+
+13. employees 테이블에서 연도별 고용된 남자 직원 수와 여자 직원 수를 출력하세요.
+(hire_year : 입사 연도, Male : 남자 직원수, Female : 여자 직원수)
+
+14. salaries 테이블에서 직원별 현재까지 받은 총 급여(total_salary)를 출력하세요.
+(total_salary : $ 1,234,567 형식)
+
+15. salaries 테이블에서 현재 급여 기준 상위 10명의 직원 번호와 급여(latest_salary)를 출력하세요.
+(latest_salary : $ 1,234,567 형식)
+
+16. dept_manager 테이블에서 현재 매니저로 근무 중인 직원의 전체 정보를 출력하세요.
+
+17. dept_manager 테이블에서 현재 근무 중인 매니저의 직원 번호, 부서 번호, 근속 연수(work_experience) 출력하세요.
+(work_experience : curdate(), timestampdiff() 사용 / n years 형식)
+
+18. dept_emp_latest_date 테이블에서 년도별 퇴사한 직원 수를 출력하세요.
+
+19. titles 테이블에서 직책에 Engineer가 포함된 직원 수를 출력하세요.
+
+20. titles 테이블에서 직책별 평균 근속 연수(avg_years)를 출력하세요.
+(avg_years : avg(), round(), timestampdiff(), curdate() 사용)
+
+21.Salaries 테이블에서 150,000이 넘는 사람들을 사번 순으로 정렬
+
+22.dept_emp테이블 에서 퇴사자 수 사번순으로 정렬
+
+23.Titles 테이블에서 직무(title)에 ‘Engineer’가 포함되는 사원 수 내림차순 출력
+
+24.Employees 테이블에서 사번(emp_no)가 가장 낮은 사람 출력
+
+25.dept_manager 테이블에서 퇴사자의 부서번호(dept_no)와 사번(emp_no) 출력
+
+26.Employees 테이블에서 입사일(hire_date)과 생일(birth_date)가 같은 사람의 성(last_name)과 사번(emp_no) 출력
+
+27.Employees 테이블에서 1990년대에 입사한, 이름(first_name)에 "an"이 들어가는 사람
+
+28.Salaries 테이블에서 1990년대, 2000년대 임금들의 평균 비교
+
+29.Employees 테이블에서 1980년대, 1990년대 입사 한 직원 수 비교
+
+30.Titles 테이블에서 직급 별 각 근속연수 평균 출력
+

@@ -1,0 +1,394 @@
+과제(team 3)
+
+이창주님 문제
+
+//1. 'qty'가 50보다 크고, 동시에 'status'가 'A'인 Document를 모두 조회하라. 단, 조건 결합은 $and 연산자를 사용해야 한다.
+
+\[
+
+&nbsp; {
+
+&nbsp;   \_id: ObjectId('6936870aca99d6e0b01e2621'),
+
+&nbsp;   item: 'canvas',
+
+&nbsp;   qty: 100,
+
+&nbsp;   size: { h: 28, w: 35.5, uom: 'cm' },
+
+&nbsp;   status: 'A'
+
+&nbsp; },
+
+&nbsp; {
+
+&nbsp;   \_id: ObjectId('6936870aca99d6e0b01e2623'),
+
+&nbsp;   item: 'mat',
+
+&nbsp;   qty: 85,
+
+&nbsp;   size: { h: 27.9, w: 35.5, uom: 'cm' },
+
+&nbsp;   status: 'A'
+
+&nbsp; },
+
+&nbsp; {
+
+&nbsp;   \_id: ObjectId('6936870aca99d6e0b01e2629'),
+
+&nbsp;   item: 'sketchbook',
+
+&nbsp;   qty: 80,
+
+&nbsp;   size: { h: 14, w: 21, uom: 'cm' },
+
+&nbsp;   status: 'A'
+
+&nbsp; },
+
+&nbsp; {
+
+&nbsp;   \_id: ObjectId('6936870aca99d6e0b01e262a'),
+
+&nbsp;   item: 'sketch pad',
+
+&nbsp;   qty: 95,
+
+&nbsp;   size: { h: 22.85, w: 30.5, uom: 'cm' },
+
+&nbsp;   status: 'A'
+
+&nbsp; }
+
+]
+
+//2. 'size' Subdocument가 반드시 다음 3개의 필드(h, w, uom) 를 포함하고 있고 'size.h'는 10보다 커야 하고 'size.uom'은 'cm'이고 그중 'uom'이 문자열(String)이어야만 조회되도록 $jsonSchema를 사용하여 Query를 작성하라.
+
+\[
+
+&nbsp; {
+
+&nbsp;   \_id: ObjectId('6936870aca99d6e0b01e2621'),
+
+&nbsp;   item: 'canvas',
+
+&nbsp;   qty: 100,
+
+&nbsp;   size: { h: 28, w: 35.5, uom: 'cm' },
+
+&nbsp;   status: 'A'
+
+&nbsp; },
+
+&nbsp; {
+
+&nbsp;   \_id: ObjectId('6936870aca99d6e0b01e2622'),
+
+&nbsp;   item: 'journal',
+
+&nbsp;   qty: 25,
+
+&nbsp;   size: { h: 14, w: 21, uom: 'cm' },
+
+&nbsp;   status: 'A'
+
+&nbsp; },
+
+&nbsp; {
+
+&nbsp;   \_id: ObjectId('6936870aca99d6e0b01e2623'),
+
+&nbsp;   item: 'mat',
+
+&nbsp;   qty: 85,
+
+&nbsp;   size: { h: 27.9, w: 35.5, uom: 'cm' },
+
+&nbsp;   status: 'A'
+
+&nbsp; },
+
+&nbsp; {
+
+&nbsp;   \_id: ObjectId('6936870aca99d6e0b01e2624'),
+
+&nbsp;   item: 'mousepad',
+
+&nbsp;   qty: 25,
+
+&nbsp;   size: { h: 19, w: 22.85, uom: 'cm' },
+
+&nbsp;   status: 'P'
+
+&nbsp; },
+
+&nbsp; {
+
+&nbsp;   \_id: ObjectId('6936870aca99d6e0b01e2627'),
+
+&nbsp;   item: 'planner',
+
+&nbsp;   qty: 75,
+
+&nbsp;   size: { h: 22.85, w: 30, uom: 'cm' },
+
+&nbsp;   status: 'D'
+
+&nbsp; },
+
+&nbsp; {
+
+&nbsp;   \_id: ObjectId('6936870aca99d6e0b01e2628'),
+
+&nbsp;   item: 'postcard',
+
+&nbsp;   qty: 45,
+
+&nbsp;   size: { h: 10, w: 15.25, uom: 'cm' },
+
+&nbsp;   status: 'A'
+
+&nbsp; },
+
+&nbsp; {
+
+&nbsp;   \_id: ObjectId('6936870aca99d6e0b01e2629'),
+
+&nbsp;   item: 'sketchbook',
+
+&nbsp;   qty: 80,
+
+&nbsp;   size: { h: 14, w: 21, uom: 'cm' },
+
+&nbsp;   status: 'A'
+
+&nbsp; },
+
+&nbsp; {
+
+&nbsp;   \_id: ObjectId('6936870aca99d6e0b01e262a'),
+
+&nbsp;   item: 'sketch pad',
+
+&nbsp;   qty: 95,
+
+&nbsp;   size: { h: 22.85, w: 30.5, uom: 'cm' },
+
+&nbsp;   status: 'A'
+
+&nbsp; }
+
+]
+
+//3. 아래 두 조건 중 하나라도 만족하는 Document를 조회하라.
+
+//가. 'item'이 \['canvas','mat','postcard'] 중 하나
+
+//나. 'qty'가 25 이하
+
+\[
+
+&nbsp; {
+
+&nbsp;   \_id: ObjectId('6936870aca99d6e0b01e2621'),
+
+&nbsp;   item: 'canvas',
+
+&nbsp;   qty: 100,
+
+&nbsp;   size: { h: 28, w: 35.5, uom: 'cm' },
+
+&nbsp;   status: 'A'
+
+&nbsp; },
+
+&nbsp; {
+
+&nbsp;   \_id: ObjectId('6936870aca99d6e0b01e2622'),
+
+&nbsp;   item: 'journal',
+
+&nbsp;   qty: 25,
+
+&nbsp;   size: { h: 14, w: 21, uom: 'cm' },
+
+&nbsp;   status: 'A'
+
+&nbsp; },
+
+&nbsp; {
+
+&nbsp;   \_id: ObjectId('6936870aca99d6e0b01e2623'),
+
+&nbsp;   item: 'mat',
+
+&nbsp;   qty: 85,
+
+&nbsp;   size: { h: 27.9, w: 35.5, uom: 'cm' },
+
+&nbsp;   status: 'A'
+
+&nbsp; },
+
+&nbsp; {
+
+&nbsp;   \_id: ObjectId('6936870aca99d6e0b01e2624'),
+
+&nbsp;   item: 'mousepad',
+
+&nbsp;   qty: 25,
+
+&nbsp;   size: { h: 19, w: 22.85, uom: 'cm' },
+
+&nbsp;   status: 'P'
+
+&nbsp; },
+
+&nbsp; {
+
+&nbsp;   \_id: ObjectId('6936870aca99d6e0b01e2628'),
+
+&nbsp;   item: 'postcard',
+
+&nbsp;   qty: 45,
+
+&nbsp;   size: { h: 10, w: 15.25, uom: 'cm' },
+
+&nbsp;   status: 'A'
+
+&nbsp; }
+
+]
+
+
+
+
+
+이주형님 문제
+
+4\. 모든 상품에 10~20달러 사이의 판매가격을 랜덤하게 만들어주고, item과 price 를 출력해보자
+
+
+
+출력예시
+
+\[
+
+&nbsp; { item: 'canvas', price: 18 },
+
+&nbsp; { item: 'journal', price: 17 },
+
+&nbsp; { item: 'mat', price: 11 },
+
+&nbsp; { item: 'mousepad', price: 18 },
+
+&nbsp; { item: 'notebook', price: 10 },
+
+&nbsp; { item: 'paper', price: 13 },
+
+&nbsp; { item: 'planner', price: 13 },
+
+&nbsp; { item: 'postcard', price: 14 },
+
+&nbsp; { item: 'sketchbook', price: 15 },
+
+&nbsp; { item: 'sketch pad', price: 18 }
+
+]
+
+
+
+4-1. 모든 상품을 판매했다고 예상했을때  총 판매대금은 얼마인가?
+
+
+
+출력예시
+
+\[ { \_id: null, totalSales: 10805 } ]
+
+
+
+5\. item 이름 길이가 8글자 이상인 상품의 item과 itemLength을 출력하시오.
+
+
+
+출력 예시
+
+\[
+
+  { item: 'mousepad', itemLength: 8 },
+
+  { item: 'notebook', itemLength: 8 },
+
+  { item: 'postcard', itemLength: 8 },
+
+  { item: 'sketchbook', itemLength: 10 },
+
+  { item: 'sketch pad', itemLength: 10 }
+
+]
+
+
+
+6\. 상품의 사이즈를 cm로 표기하시오 (1 in = 2.54cm)
+
+
+
+출력예시
+
+\[
+
+&nbsp; {
+
+&nbsp;   item: 'canvas',
+
+&nbsp;   size: { h: 28, w: 35.5, uom: 'cm' },
+
+&nbsp;   h\_cm: 28,
+
+&nbsp;   w\_cm: 35.5
+
+&nbsp; },
+
+&nbsp; {
+
+&nbsp;   item: 'journal',
+
+&nbsp;   size: { h: 14, w: 21, uom: 'cm' },
+
+&nbsp;   h\_cm: 14,
+
+&nbsp;   w\_cm: 21
+
+&nbsp; }
+
+]
+
+6-1 상품의 넓이(h \* x) 가 400cm^2 이상인 제품의 item(제품명)과 재고(qty)와 넓이(area\_cm)를 구하시오(내림차순정렬)
+
+\[
+
+  { item: 'canvas', qty: 100, area\_cm: 994 },
+
+  { item: 'mat', qty: 85, area\_cm: 990.4499999999999 },
+
+  { item: 'mousepad', qty: 25, area\_cm: 434.15000000000003 },
+
+  { item: 'notebook', qty: 50, area\_cm: 603.2246 },
+
+  { item: 'paper', qty: 100, area\_cm: 603.2246 },
+
+  { item: 'planner', qty: 75, area\_cm: 685.5 },
+
+  { item: 'sketch pad', qty: 95, area\_cm: 696.9250000000001 }
+
+]
+
+
+
+
+
+
+
