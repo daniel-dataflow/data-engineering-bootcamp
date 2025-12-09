@@ -1,0 +1,300 @@
+redis-cli —-raw
+
+set name daesung
+get name
+
+set daesung 대성
+get daesung
+
+// name 이전에 저장한 내용을 가져와달라, 이전 값을 리턴
+set name lee-ss get
+get name
+
+// nx 옵션은 키가 존재하지 않을때만 저장하겠다.
+set name hong-gd nx
+get s_name
+
+// 키가 존재할때만 값을 저장한다.
+set name hong-gd xx
+get s_name
+
+// null -> nil 라고 표현한다. 값이 존재하지 않음
+set age 100  xx
+get age
+
+// ex 18 설정한 초 뒤에 있는 키가 사라짐(만료시간을 지정해 줄 수 있다.)
+set access a1234 ex 18
+get access
+
+// px ms로 지정해 줄 수 있다. (10000이 10초)
+set refresh r1234 px 10000
+get refresh
+
+// 트랜젹션 아웃박스 패턴 : 메세지 큐  나갔을 때도 그 요청을 나중에 받을 수 있다.
+// oauth :  otp등 인증키 발급에도 사용된다.
+
+set addr seoul ex 1000
+get addr
+// 남은시간을 보여준다.
+ttl addr
+
+set addr suwon
+// -1 : 만료시간 없음 (덮어쓰기 되면 만료 시간이 사라짐)
+ttl addr
+
+set addr busan ex 1000
+ttl addr
+
+// keepttl :  만료시간 유지
+set addr sokcho keepttl
+ttl addr
+get addr
+
+set license-key abcdefg
+
+// expire로 인하여 나중에 ex 의 효과를 넣어 줄 수 있다.
+expire license-key 31536000
+ttl license-key
+
+keys *
+keys *s*
+
+// index : 커서(시작점)가 가르키고 있는 것부터 찾아오겠다.
+scan 0
+
+// 동기적 삭제 : 삭제하는 동안 다른작업 안됨
+del name
+// 비동기적 삭제 :  삭제하는동안 다른작업을 할 수 있음
+unlink addr
+
+set user:1 daesung
+
+exists user:1 
+-1(true)
+exists user:2 
+-0(false)
+
+// 유형을 알려줘
+object encoding user:1
+// 마지막으로 접근한 시간 (초) : read, write 시간으로부터의 시간이다.
+object idletime user:1
+
+
+set cnt 0
+// 값을 증가시킴
+incr cnt
+get cnt
+
+// 내가 원하는시간을 넣을 수도 있다.
+incrby cnt 10
+
+
+json.set user:admin $ '{"name":"daesung", "age":1000, "addr":"seoul"}'
+// $ : path (경로) 아무거나 써도 상관 없다.
+json.get user:admin
+json.get user:admin $.name
+
+// value 값에 들어가 있는 json 객체 안에 있는 키들
+json.objkeys user:admin
+
+
+# linked list
+#lpush : 왼쪽에
+#rpush : 오른쪽에
+lpush num 1 2 3
+rpush num 4 5 6
+
+num -> 3 2 1 4 5 6
+lrange num 0 -1
+// 0 ~ -1 :  0번지 인덱스 부터 마지막 인덱스까지
+
+// 몇번지 인덱스 출력
+lindex num 1
+
+# sort : list, set, sorted set에서만 !!! 정렬되어 가져만 오는거다 저장되진 않는다.
+# desc : 역순으로 
+sort num
+lrange num 0 -1
+
+
+
+lpop num
+lrange num 0 -1
+// 2 개씩 왼쪽에서부터 뺀다.
+lpop num 2
+rpop num
+lrange num 0 -1
+
+
+
+lpush queue a b c
+lrange queue 0 -1
+rpop queue
+
+lpush stack a  b c
+lpop stack
+
+rpush queue1 a b c
+lpop queue1
+
+
+
+#set 
+sadd lotto 1 3 3 5
+
+// 몇개 가지고 있는가
+scard lotto
+
+// 가지고 있는 멤버
+sinter lotto
+
+// 삭제
+srem lotto 5
+sinter lotto
+
+// 멤버인지 아닌지 1-true / 0-false
+sismember lotto 1
+sismember lotto 2
+
+
+
+# hashes : 여러개의 value를 하나의 키에 저장할 수 있다. (짝을 맞춰서 작성해야 한다.)
+hset admin name daesung email daesung@daesung.com age 100
+
+// 모든 필드에 있는 값을 다 가지고 와줘
+hgetall admin
+
+// 해당 연결되어 있는 필드 하나를 가지고 올 수 있다.
+hget admin name
+// 두개 이상 값을 가지고 올때
+hmget admin name age
+
+// 데이터 지워기
+unlink 지우고 싶은이름
+
+# sorted set
+// 멤버가 뒤어 스코어가 앞에
+zadd daesung 100 kor 10 eng 60 math
+
+// 스코어를 가지고 스코어 기준으로 정렬해서 저장한다.
+zrevrange daesung 0 -1
+zadd daesung 80 de
+
+// 키와 밸류 모두 다 같이 보여줘.
+zrevrange daesung 0 -1 withs
+
+
+# 127.0736345 37.5518018 세종대
+# 127.076404 37.551946 어린이대공원역
+# 127.079032 37.556965 군자역
+# 127.066367 37.547326 성수낙낙
+# 127.079334 37.5575666 중곡
+
+
+geoadd redisbucks 127.0736345 37.5518018 세종대 127.076404 37.551946 어린이대공원역 127.079032 37.556965 군자역 127.066367 37.547326 성수낙낙 127.079334 37.5575666 중곡
+
+geosearch redisbucks fromlonlat 127.0736345 37.5518018 byradius 5 km withdist withcoord asc
+
+geodist redisbucks 어린이대공원역 중곡 km
+
+
+# 발행 (채널 만들기)
+publish num 1
+publish num 2
+
+# 새창에서 
+redis-cli --raw
+// 구독(채널의 메세지를 받는다.- 대기중: 실시간으로 받아준다.)
+subscribe num
+
+
+# 원래 창에서
+publish num 3
+// publish 채널명 메세지
+publish num "배달 시작했습니다."
+
+# 새창에서 
+ctrl + c
+
+# 원래창에서
+publish num 4
+//////////////////////////
+
+# streams type이 만들어졌다. (불편해서) 저장되어 있다. 
+# 메세지가 구독자가 없어도 날라가기지 않는다.
+# * :  아이디 (random 하게 만들어라)
+# msg : key
+# "a" : value
+xadd channel1 * msg "a"
+xadd channel1 * msg "b"
+xadd channel1 * msg "c"
+
+# 새창에서 
+# 채널 1에서 작은아이디부터 가장 큰 아이디까지 모든 메세지 받아줘
+xrange channel1 - +
+
+# xread : 읽어온다 
+# 0 : 무한정 대기, 
+#현재 스트림(channel1) 아이디 다음꺼부터 읽어오겠다.
+xread block 0 streams channel1 $
+
+
+
+# 원래창에서 
+xadd channel1 * msg "배달 시작했습니다."
+
+# consumer group 
+# 한명만 받아도 모두 읽은거로 친다. 중복 방지를 위해
+# sgroup : 구독하고 있는 그룹
+xgroup create channel1 sgroup $
+xadd channel1 * msg  "배달 완료 했습니다."
+
+# 새창에서
+# 그룹으로 읽을건데 consumer1라는애가 하나만 읽어올건데 읽은거 다음의 메세지만 가져올께 
+xreadgroup group sgroup consumer1 count 1 streams channel1 >
+
+
+
+# 원래창에서
+xadd channel1 * msg "키보드 1번"
+xadd channel1 * msg "키보드 2번"
+xadd channel1 * msg "키보드 3번"
+
+# 새창에서
+xreadgroup group sgroup consumer1 count 2 streams channel1 >
+
+
+# 원래창에서
+# count 1 인경우는 생략 가능
+xreadgroup group sgroup consumer2 count 1 streams channel1 >
+
+
+
+
+# <pub / sub 구조>
+pulisher (productor)
+-> message queue (redus)->
+subscriber (consumer)
+
+
+
+
+# transaction : multi 로 시작 exec로 실행
+
+multi
+set name mulcam
+set addr 광진구
+mget name addr
+exec
+
+
+
+
+#discard : transaction 취소 : 실행한 내용작업 모두 취소해버려
+
+multi
+set name "대성"
+set addr "서울"
+discard
+mget name addr
+
