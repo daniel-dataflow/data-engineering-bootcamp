@@ -1,0 +1,472 @@
+QR !!!
+
+공유폴더 mysql 폴더에
+자기 팀 답안 올려주기!!
+
+
+MongoDB (NoSQL)
+-> BSON (Binary jSON) => Documents => Collections => DataBases
+* crud (create, read, update, delete)
+mongosh => js
+
+db.collection.find()
+		.insertOne()
+		.insertMany()
+		.updateOne()
+		.updateMany()
+		.replaceOne()
+		.deleteOne()
+		.deleteMany()
+
+		.aggregate([
+			stage, stage, ... // aggregate pipeline (이전 단계의 출력이 다음 단계의 입력)
+		])
+
+.explain
+
+* index
+
+mongosh
+
+db.dummy.find({"num": 666}).explain()
+
+db.dummy.createIndex({"num": 1});
+
+db.dummy.find({"num": 666}).explain()
+db.dummy.find({"num": 666}).explain("allPlansExecution")
+
+exit;
+
+									    "~/Documents/mongobucks.json"
+mongoimport --db test --collection mongobucks --file "C:\mongobucks.json" --jsonArray
+
+mongosh
+
+db.mongobucks.find()
+
+db.mongobucks.createIndex({"location": "2dsphere"})
+
+// 세종대
+// 127.0736345, 37.5518018
+
+// 현재 위치부터 가까운 순서대로
+db.mongobucks.find({
+	"location": {
+		$near: {
+			$geometry: {
+				type: "Point",
+				coordinates: [127.0736345, 37.5518018]
+			}
+		}
+	}
+});
+
+// 1km 안에 있는 데이터만
+db.mongobucks.find({
+	"location": {
+		$near: {
+			$geometry: {
+				type: "Point",
+				coordinates : [127.0736345, 37.5518018]
+			},
+			$maxDistance: 1000
+		}
+	}
+})
+
+// 가까운 순서대로 출력 + 거리까지
+db.mongobucks.aggregate([
+	{
+	$geoNear: {
+		near: {
+			type: "Point",
+			coordinates: [127.0736345, 37.5518018]
+			},
+		distanceField: "distance",
+		spherical: true
+		}
+	}
+]);
+
+// '역' 이라는 단어가 포함된 좌표들의 거리 (현재 위치 기준)
+db.mongobucks.aggregate([
+	{
+		$geoNear: {
+			near: {
+					type: "Point",
+					coordinates: [127.0736345, 37.5518018]
+				},
+			spherical: true,
+			query: {
+					"s_name": /역/
+				},
+			distanceField: "distance"
+		}
+	}
+])
+
+// 강변역 		127.093086, 37.536155	
+// 서울숲역		127.044961, 37.542075
+// 군자역 		127.079032, 37.556965
+db.mongobucks.find({
+  "location": {
+    $geoIntersects: {
+      $geometry: {
+        type: "Polygon",
+        coordinates: [
+          [
+            [127.093086, 37.536155],				// 강변역
+            [127.044961, 37.542075],				// 서울숲역
+            [127.079032, 37.556965],				// 군자역
+            [127.093086, 37.536155]				// 강변역
+          ]
+        ]
+      }
+    }
+  }
+})
+
+// 현재 위치 기준으로, 0.5 mile 반경의 원을 그려서 안에 있는 데이터 출력
+// 지구의 평균 반경을 mile 단위로 나타낸 상수 : 3963.2
+// 1mile = 약 1.6km
+db.mongobucks.find({
+	"location": {
+		$geoWithin: {
+			$centerSphere: [
+				[127.0736345, 37.5518018],
+				0.5 / 3963.2
+			]
+		}
+	}
+})
+
+11:15
+
+cd
+
+sudo apt-get install lsb-release curl gpg
+
+curl -fsSL https://packages.redis.io/gpg | sudo gpg --dearmor -o /usr/share/keyrings/redis-archive-keyring.gpg
+
+sudo chmod 644 /usr/share/keyrings/redis-archive-keyring.gpg
+
+echo "deb [signed-by=/usr/share/keyrings/redis-archive-keyring.gpg] https://packages.redis.io/deb $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/redis.list
+
+sudo apt-get update
+
+sudo apt-get install redis
+
+sudo systemctl enable redis-server
+
+sudo systemctl start redis-server
+
+sudo systemctl status redis-server
+
+redis-cli
+
+1:15
+
+ping
+
+exit
+
+# win
+sudo vim /etc/redis/redis.conf
+# mac
+sudo vim /opt/homebrew/etc/redis.conf
+
+i
+#
+bind 0.0.0.0
+
+protected-mode no
+
+[esc]
+:wq!
+# win
+sudo systemctl restart redis-server
+# sudo service redis-server restart
+
+sudo systemctl status redis-server
+# sudo service redis-server status
+
+# mac
+brew services stop redis
+brew services start redis
+
+# 기본 리턴값이 바이트배열 -> 입력한 포맷 그대로 리턴
+redis-cli --raw
+
+set name dongheon
+get name
+
+set dongheon 동헌
+get dongheon
+
+set name lee-ss get
+get name
+
+set name hong-gd nx
+get name
+
+set name hong-gd xx
+get name
+
+set age 100 xx
+# null -> nil
+get age
+
+set access a1234 ex 10
+get access
+
+set refresh r1234 px 10000
+get refresh
+
+set addr seoul ex 1000
+get addr
+ttl addr
+
+set addr suwon
+# -1 : 만료시간 없음
+ttl addr
+
+set addr busan ex 1000
+ttl addr
+
+# keepttl : 만료시간 유지
+set addr sokcho keepttl
+ttl addr
+get addr
+
+set license-key abcdefg
+
+expire license-key 31536000
+ttl license-key
+
+keys *
+
+keys *s*
+
+scan 0
+
+# 동기적 삭제 : 삭제하는동안 다른작업 X
+del name
+# 비동기적 삭제 : 삭제하는동안 다른작업 O
+unlink addr
+
+
+
+
+
+
+
+
+set user:1 dongheon
+
+exists user:1
+exists user:2
+
+object encoding user:1
+
+object idletime user:1
+
+set cnt 0
+
+incr cnt
+incr cnt
+incr cnt
+
+get cnt
+
+incrby cnt 10
+
+json.set user:admin $ '{"name": "dongheon", "age": 100, "addr": "suwon"}'
+
+json.get user:admin
+
+json.get user:admin $.name
+
+json.objkeys user:admin
+
+# linked list
+# lpush : 왼쪽에 
+# rpush : 오른쪽에
+lpush num 1 2 3
+rpush num 4 5 6
+# num -> 3 2 1 4 5 6
+lrange num 0 -1
+
+lindex num 1
+
+# sort : list, set, sorted set에서만 !!
+sort num
+
+lrange num 0 -1
+
+lpop num
+
+lpop num 2
+
+rpop num
+
+
+lpush queue a b c
+# c b a
+rpop queue
+
+lpush stack a b c
+# c b a
+lpop stack
+
+rpush queue1 a b c
+# a b c
+lpop queue1
+
+# set
+sadd lotto 1 3 3 5
+
+scard lotto
+sinter lotto
+
+srem lotto 5
+
+sismember lotto 1
+sismember lotto 2
+
+# hashes : 여러 개의 value(field value)를 하나의 키
+hset admin name dongheon email dongheon@dongheon.com age 100
+
+hgetall admin
+
+hget admin name
+
+hmget admin name age
+
+# sorted set
+unlink dongheon
+zadd dongheon 100 kor 10 eng 60 math
+
+zrevrange dongheon 0 -1
+
+zadd dongheon 80 de
+
+zrevrange dongheon 0 -1 withscores
+
+
+
+
+# 127.0736345 37.5518018 세종대
+# 127.076404 37.551946 어린이대공원역
+# 127.079032 37.556965 군자역
+# 127.066367 37.547326 성수낙낙
+# 127.079334 37.5575666 중곡
+
+geoadd redisbucks 127.0736345 37.5518018 세종대 127.076404 37.551946 어린이대공원역 127.079032 37.556965 군자역 127.066367 37.547326 성수낙낙 127.079334 37.5575666 중곡
+
+geosearch redisbucks fromlonlat 127.0736345 37.5518018 byradius 5 km withdist withcoord asc
+
+geodist redisbucks 어린이대공원역 중곡 km
+
+# 발행
+publish num 1
+publish num 2
+
+# 새로운 창에서...
+wsl
+redis-cli --raw
+
+subscribe num
+
+# 원래 창에서
+publish num 3
+
+publish num "배달 시작했습니다."
+
+# 새로운 창에서
+ctrl + c
+
+# 원래 창에서
+publish num 4
+
+# streams
+xadd channel1 * msg "a"
+xadd channel1 * msg "b"
+xadd channel1 * msg "c"
+
+# 새로운 창에서
+xrange channel1 - +
+
+xread block 0 streams channel1 $
+
+# 원래 창에서
+xadd channel1 * msg "배달 시작했습니다."
+
+# consumer group
+xgroup create channel1 sgroup $
+
+xadd channel1 * msg "배달 완료했습니다."
+
+# 새로운 창에서..
+xreadgroup group sgroup consumer1 count 1 streams channel1 >
+
+# 원래 창에서
+xadd channel1 * msg "키보드 1번"
+xadd channel1 * msg "키보드 2번"
+xadd channel1 * msg "키보드 3번"
+
+# 새로운 창에서
+xreadgroup group sgroup consumer1 count 2 streams channel1 >
+
+# 원래 창에서
+xreadgroup group sgroup consumer2 streams channel1 >
+
+<pub/sub 구조>
+publisher (productor)
+-> message queue (redis) ->
+subscriber (consumer)
+
+# transaction : multi 로 시작 exec 로 실행
+
+multi
+set name mulcam
+set addr 광진구
+mget name addr
+exec
+
+
+
+# discard : transaction 취소
+multi
+set name "동헌"
+set addr "수원"
+discard
+
+mget name addr
+
+NoSQL : Not only SQL -> 비정형 데이터
+- mongodb
+- redis
+
+~:55
+
+reflection
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

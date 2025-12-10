@@ -1,0 +1,106 @@
+QR !!
+
+DataBase
+- 정형 데이터
+Relational database : MySQL, PostgreSQL 
+-> SQL (ansi standard query)
+	DDL : create, alter, drop
+	DML : select, insert, update, delete
+	DCL : grant, revoke, (TCL)commit, rollback
+	=> index
+	=> explain
+
+
+- 비정형 데이터
+NoSQL : MongoDB, Redis
+->
+
+
+-----
+
+conda create -n multi05 python -y
+
+multi05_database
+
+pip install mysql-connector-python
+
+db01_mysql\
+	01_connect.py
+	02_create.py
+	03_insert.py
+	04_select.py
+	05_update.py
+	06_delete.py
+db02_mysql\
+	01_connect.py
+	02_hello.py
+
+db03_postgres\
+	01_create.py
+	02_select.py
+	03_insert.py
+	04_update.py
+	05_delete.py
+
+
+4:40
+
+
+
+
+pip install psycopg
+
+
+
+
+
+
+
+
+
+# pip install mysqlclient
+
+pip install PyMySQL
+pip install cryptography
+
+
+
+
+# terminal
+mysql -u root -p
+
+use pymysql;
+
+desc student;
+select * from student;
+
+
+
+
+
+    query = """
+                insert into student(id, name, phone, birthday)
+                values (%s, %s, %s, %s)
+            """
+
+
+This method executes the given database operation (query or command). The parameters found in the tuple or dictionary params are bound to the variables in the operation. Specify variables using %s or %(name)s parameter style (that is, using format or pyformat style).
+
+"sql injection"
+
+
+
+reflection
+
+
+
+
+
+
+
+
+
+
+
+
+
