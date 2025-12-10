@@ -94,6 +94,35 @@ reflection
 
 
 
+RDB (mysql, postgresql) <-> python
+
+pip install mysql-connector-python
+# pip install mysqlclient
+pip install PyMySQL
+pip install psycopg
+
+--
+
+1. connection (host, user, password, databse)
+2. connection.cursor
+	-> execute
+3. cursor.close()
+   connection.close()
+
+--
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
