@@ -1,0 +1,279 @@
+QR !!
+
+
+DataBase <- driver -> client (code)
+
+pip install pymongo
+
+
+db04_mongo\
+	01_connect.py
+	02_find.py
+	03_insert.py
+	04_update.py
+	05_delete.py
+	06_aggre.py
+db05_redis\
+	01_connect.py
+
+
+
+
+
+
+
+pip install redis
+
+
+
+
+
+# 0부터 65535까지의 16비트 숫자 범위
+
+uri : 
+urn : 
+url :
+
+
+
+
+{"$group": 
+	{"_id": "null",  
+	 "average": 
+		{"$avg": 
+			{"$avg": ["$kor", "$eng", "$math"]}}}},
+
+{"$project": {"_id":0, "average": {"$round": ["$average", 0]}}}
+
+
+
+
+cd /opt/homebrew/etc/redis.conf
+
+sudo vim /etc/redis/redis.conf
+
+----
+
+11:20
+vmware
+virtual box
+-> 가상머신
+
+전 가상화
+반 가상화
+linux
+
+big
+big
+big
+1234
+1234
+
+----
+
+sudo apt update
+
+sudo apt upgrade -y
+
+sudo apt install ubuntu-desktop
+
+y
+
+sudo adduser multi
+
+su multi
+
+cd
+
+pwd
+
+cd ..
+
+cd /
+
+ls
+
+
+sudo adduser test
+-> sudoers 파일에 없습니다 = sudo 권한이 없습니다.
+=> sudo : superuser do
+
+exit
+
+
+sudo usermod -aG sudo multi
+
+su multi
+# big -> multi
+
+sudo adduser test
+
+su test
+# big -> multi -> test
+exit
+exit
+
+cd ..
+ls
+
+id
+
+whoami
+
+cd
+
+su multi
+cd
+
+mkdir multidir
+
+ls
+
+cd multidir
+
+touch multi01
+ls
+
+cp multi01 multi02
+ls
+
+mv multi01 ../
+ls
+cd ..
+ls
+
+cp multi01 multi03
+mv multi01 multi
+ls
+
+rm multi
+ls
+rm multidir
+
+rm -r multidir
+ls
+
+rm -i multi03
+n
+ls
+
+mkdir test
+
+rm -r -i test
+n
+rm -ri test
+n
+
+rm -r -f test
+
+mkdir test
+ls
+rm -rf test
+
+ls
+
+touch test
+ls -l
+mkdir test02
+ls -l
+
+-rw-rw-r--  mutli multi test
+-				: directory X
+ rw-				: multi (user) read O write O eXecute X
+    rw-				: multi (group) read O write O eXecute X
+       r--			: 그 외 group 은 read O write X eXecute X
+
+
+sudo chmod u-w test
+ls -l
+sudo chmod u+x test
+ls -l
+
+sudo chmod g+x test
+ls -l
+-r-xrwxr--
+
+1
+2
+4
+
+sudo chmod 752 test
+ls -l
+
+    r   w   x
+7 : 1 + 2 + 4 = user
+5 : 1 + 0 + 4 = group
+2 : 0 + 2 + 0 = other
+
+sudo chmod 777 test02
+ls -l
+
+sudo chown big test
+ls -l
+
+sudo chown :test test
+ls -l
+
+sudo chown multi:multi test
+ls -l
+
+sudo apt install hollywood
+
+hollywood
+
+------------
+
+linux -> ubuntu 
+계정
+파일, 디렉토리
+권한
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+distrowatch
+
+reboot
+
+
+
+
+
+
+

@@ -12,7 +12,7 @@ def create():
             cursor.execute("""
                            create table member(
                            id serial primary key,
-                           name varchar(100),
+                           name varchar(100),`
                            age integer,
                            birthday date
                        )
