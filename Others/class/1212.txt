@@ -1,0 +1,484 @@
+QR !!
+
+sudo apt install vim -y
+
+#  Advanced Package Tool
+# apt-get
+# apt
+
+
+# os level
+# redhat -> yum (rpm)
+# debian -> apt
+# windows -> winget
+# os X -> homebrew
+
+# program level
+# pip -> python 기본 module
+# conda -> anaconda (python + c)
+# npm -> node.js
+
+Vi IMproved
+vim
+
+vim cheat sheet
+
+
+vim
+
+[esc]
+:q!
+
+vim test.txt
+
+[esc]
+:wq!
+
+cat test.txt
+
+touch test.abc
+
+ls 
+
+# tarball
+tar -cvzf test.tar.gz test.txt
+ls
+.tar.gz -> .tgz
+
+-cvzf
+-c : create (압축)
+-v : verbose (화면 출력)
+-z : gzip 사용
+-f : file 이름
+
+sudo mv test.tar.gz ../multi
+
+cd ../multi
+
+sudo adduser multi
+
+tar -cvzf test.tar.gz test.txt
+
+sudo mv test.tar.gz ../multi
+
+su multi
+
+cd
+
+ls
+
+tar -xvzf test.ta[tab]
+ls
+
+-x : eXtract (압축해제, 압축풀기)
+
+exit
+
+cd
+
+sudo cat /etc/sudoers
+
+info sudoers
+
+sudo head /etc/sudoers
+
+sudo head -n 5 /etc/sudoers
+
+sudo tail /etc/sudoers
+
+sudo tail -n 5 /etc/sudoers
+
+sudo man /etc/sudoers
+
+sudo man cd
+
+sudo man tar
+
+clear
+
+history
+
+
+clear
+
+
+ps
+
+
+
+ps -ef
+
+- tty : teletype (외부 접속)
+- pty : pseudo tty (가상 터미널 접속)
+- pts : pseudo terminal slave (원격 터미널 접속)
+ps -ef | more
+
+ps -ef | grep python
+
+top
+q
+
+clear
+
+amazon corretto -> open jdk (Java Development Kit)
+
+LTS -> Long Terms Service
+21
+
+wget uri
+
+ls
+
+tar -xvzf amazon[tab]
+ls
+
+ln -s amazon[tab].[tab]     java
+
+ls
+
+ls -l
+ls -al
+
+# .으로 시작하는 파일, 디렉토리는 숨김!!
+
+# /etc/profile -> ~/.bash_profile -> ~/.bash_login -> ~/.profile 순으로 동작!
+# ~/.bashrc 는 위의 파일들이 실행될 때, .bashrc파일이 존재하는지 확인해서 불러들인다.
+
+sudo vim ~/.bashrc
+
+# java
+export JAVA_HOME=/home/big/java
+export PATH=$JAVA_HOME/bin:$PATH
+
+[esc]
+:wq!
+
+source ~/.bashrc
+
+
+java -version
+
+cd java
+ls
+
+grep 'J' README.md
+
+grep -i 'java' README.md
+
+grep -i 'java\|jdk' README.md
+
+grep -i 'java.*jdk' README.md
+
+
+
+
+
+grep -i '^corretto' README.md
+
+grep -i 'corretto$' README.md
+
+grep -i -n 'amazon' README.md
+grep -in 'amazon' README.md
+
+# < > << >>
+ls -l > ~/java_list.txt
+
+ls
+cd ..
+ls
+
+cat java_list.txt
+
+date
+
+date > java_list.txt
+
+cat java_list.txt
+
+echo "hello, world!"
+
+echo "hello, world!" >> java_list.txt
+cat java_list.txt
+
+sudo userdel -rf test
+
+sudo userdel -rf multi
+
+cd ..
+
+ls
+
+cd
+
+# shell script
+sudo rm -rf *
+
+vim test01
+
+[i]
+date
+echo "test shell script!"
+
+[esc]
+:wq!
+
+sudo chmod u+x test01
+ls -l
+
+./test01
+
+
+vim test02.sh
+
+
+echo "user id : $USER"
+echo "home dir : $HOME"
+
+
+chmod 744 test02.sh
+
+./test02.sh
+
+
+vim test03.sh
+
+#!/bin/bash
+
+name=hong-gd
+age=100
+addr=seoul
+
+echo "$name is $age years old!"
+echo "$name is live in $addr"
+
+[esc] :wq!
+
+chmod 764 test03.sh
+./test03.sh
+
+vim test04.sh
+
+today=`date`
+format01=$(date +%Y)
+format02=$(date +%y-%m)
+format03=$(date +%Y/%m/%d)
+
+time01=$(date +%T)
+time02=$(date +%r)
+
+echo "today : $today"
+echo "year : $format01"
+echo "year month : $format02"
+echo "today : $format03"
+
+echo "time24 : $time01"
+echo "time12 : $time02"
+[esc]:wq!
+
+
+
+
+
+
+
+
+expr 1 + 2
+expr 3 * 4
+
+expr 3 \* 4
+
+
+expr ( 1 + 2 ) \* 3
+
+vim test05.sh
+
+temp=$[1 + 2]
+expr $temp \* 3
+
+[esc]:wq!
+
+vim test06.sh
+
+result=$[(1 + 2) * 3]
+echo "$result"
+
+[esc]:wq!
+
+
+rm test*
+
+
+vim test01.sh
+
+if [ $USER = "big" ]
+then
+	echo "big is data"
+fi
+
+[esc]:wq!
+
+
+
+vim test02.sh
+
+if [ $USER = "test" ]
+then
+	echo "$USER is testing user"
+else
+	echo "welcome $USER"
+fi
+
+[esc]:wq!
+
+vim test03.sh
+
+if [ $USER = "test" ]
+then
+	echo "$USER is testing user"
+elif [ $USER = "big" ]
+then
+	echo "welcome $USER"
+else
+	echo "this user is not registered"
+fi
+
+[esc] :wq!
+
+./test03.sh
+
+sudo ./test03.sh
+
+vim test04.sh
+
+if sudo grep $USER /etc/passwd
+then
+	echo "$USER is exists passwd file"
+fi
+
+[esc]:wq!
+
+./test04.sh
+
+vim test05.sh
+
+if [ -d $HOME/java ]
+then
+	echo "java directory is exists"
+else
+	echo "java directory is not exists"
+fi
+
+[esc]:wq!
+
+chmod u+x test05.sh
+./test05.sh
+
+vim test06.sh
+
+file=$HOME/test05.sh
+
+if [ -f $file ] && [ -w $file ] ; then
+	echo "$file is file. and $file is writable"
+fi
+
+[esc]:wq!
+chmod 700 test06.sh
+./test06.sh
+
+
+
+vim test07.sh
+
+file=$HOME/test05.sh
+
+if [ -f $file ] || [ -w $file ] ; then
+	echo "$file is file. or $file is writable"
+fi
+
+[esc]:wq!
+chmod 700 test07.sh
+./test07.sh
+
+chmod 500 test05.sh
+
+./test06.sh
+./test07.sh
+
+
+vim test08.sh
+
+echo -n "input name : "
+read name
+
+echo "hello, $name !"
+
+[esc]:wq!
+
+chmod 755 test08.sh
+./test08.sh
+
+vim test09.sh
+
+case $USER in
+root )
+	echo "$USER is administrator user" ;;
+
+big | multi )
+	echo "welcome $USER" ;;
+* )
+	echo "$USER is not registered"
+esac
+
+[esc] :wq!
+chmod 755 test09.sh
+./test09.sh
+sudo ./test09.sh
+
+
+vim test10.sh
+
+echo "keep study? (y/n)"
+read answer
+
+case $answer in
+Y | y | yes )
+	echo "gogogo!!!"
+	;;
+N | n | no )
+	echo "take a rest ..."
+	;;
+* )
+	echo "invalid input"
+	;;
+esac
+
+[esc]:wq!
+chmod 755 test10.sh
+./test10.sh
+
+----
+
+grep
+wget
+tar
+sh
+
+
+데이터베이스
+리눅스 (ubuntu)
+
+데이터 사이언스(머신, 딥) + 데이터 엔지니어 + 웹
+
+
+
+
+
+
+
+
+
+
+
+
+
+
