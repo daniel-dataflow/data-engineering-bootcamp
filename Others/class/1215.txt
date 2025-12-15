@@ -1,0 +1,530 @@
+QR!!
+
+
+DataBase 
+- RDB : Entity 관계, 정형화된 데이터
+	MySQL, PostgreSQL
+	-> SQL (ansi sql)
+- NoSQL : 비 정형 데이터 저장
+	MongoDB, Redis
+	-> geolocation, shard
+	-> pub/sub
+
+Linux -> ubuntu linux 24
+
+
+vim test11.sh
+
+for i in 1 2 3 4 5
+do
+	echo $i
+done
+
+echo "-----"
+
+list="6 7 8 9 10"
+for i in $list
+do
+	echo $i
+done
+echo "-----"
+
+for i in {1..10}
+do
+	echo -n "$i "
+done
+echo "-----"
+
+for (( i=0; i<10; i++ ))
+do
+	echo -n "$i "
+done
+echo "-----"
+
+for i in {1..10..2}
+do
+	echo "$i "
+done
+echo "-----"
+
+for i in {1..10}
+do
+	if [ $[ $i % 2 ] -eq 0 ]; then
+		continue
+	fi
+	echo "$i "
+done
+[esc] :wq!
+
+chmod 755 test11.sh
+./test11.sh
+
+vim gugu.sh
+
+for i in {2..9}
+do
+	echo "$i dan"
+	
+	for j in {1..9}
+	do
+		echo "$i * $j = $[ $i * $j ]"
+	done
+done > gugu.txt
+
+[esc] :wq!
+chmod u+x gugu.sh
+./gugu.sh
+cat gugu.txt
+
+for (( i=2; i<10; i++ ))
+do
+	echo "$i dan"
+	
+	for (( j=1; j<10; j++ ))
+	do
+		echo "$i * $j = $[ $i * $j ]"
+	done
+done > gugu.txt
+
+vim test12.sh
+
+for file in ~/*
+do
+	echo ${file}
+done
+
+chmd u+x test12.sh
+./test12.sh
+
+
+mkdir test_dir01
+mkdir test_dir02
+
+vim test13.sh
+
+for file in ~/*
+do
+	if [ -d $file ]
+	then
+		echo "[d] $file"
+	elif [ -f $file ]
+	then
+		echo "[f] $file"
+	fi
+done
+
+chmod 755 test13.sh
+./test13.sh
+
+vim test14.sh
+
+echo -n "input num : "
+read num
+
+while [ $num -gt 0 ]
+do
+	echo $num
+	num=$[ $num - 1 ]
+done
+
+chmod 755 test14.sh
+./test14.sh
+
+5
+
+vim test15.sh
+
+echo -n "input num : "
+read num
+
+until [ $num -gt 0 ]
+do
+	echo $num
+	num=$[ $num - 1 ]
+done
+
+chmod u+x test15.sh
+./test15.sh
+5
+
+# while : 조건이 참이면 내용을 실행하고, 반복하다가 조건이 거짓이 되면 종료
+# until : 조건이 거짓이면 내용을 실행하고, 반복하다가 조건이 참이 되면 종료
+# until -> while의 반대
+
+
+cp test15.sh test16.sh
+vim test16.sh
+
+# 조건만 변경
+[ $num -gt 0 ] -> [ $num -eq 0 ]
+
+./test16.sh
+5
+
+
+echo -n "input num : "
+read num
+
+until [ $num -eq 0 ]
+do
+	echo $num
+	num=$[ $num - 1 ]
+done
+
+
+# shell script "shift"
+
+vim test17.sh
+
+echo "first parameter : $1"
+echo "second paramter : $2"
+echo "zero paramerter : $0"
+echo "param count : $#"
+echo "all paramters : $@"
+
+chmod 755 test17.sh
+
+./test17.sh a "b c" d e f
+
+
+vim test18.sh
+
+echo "before shift : $@"
+shift
+echo "after shift : $@"
+shift
+echo "after shift : $@"
+
+chmod u+x test18.sh
+./test18.sh a "b c" d e f 
+
+virtual machine name : master
+
+11:01
+
+your name : big
+
+server name : master
+
+username : big
+
+1234
+1234
+----
+big/1234
+
+
+sudo apt update && sudo apt upgrade -y
+
+sudo apt install ubuntu-desktop -y
+
+reboot
+
+접속
+
+ibus
+
+# node 간 통신을 위해서 (-> ssh 통신)
+sudo apt install openssh-server -y
+sudo apt install ssh-askpass -y
+
+
+## 검사하지 않는 숙제!! -> 공개키 암호화 / rsa
+
+# -t : type
+# -P : 이전 암호 초기화
+# -f : 파일 저장 위치
+ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa
+
+# 방금 만든 공개키를 저장 (자기 자신-master-에게 암호 없이  ssh 접속 가능하게)
+cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+
+chmod 600 ~/.ssh/authorized_keys
+
+# java 8 => "11"
+# corretto
+wget ~
+
+tar xvzf amazon[tab]
+
+
+ln -s amazon[tab].[tab] java
+
+ls -l
+
+sudo vim ~/.bashrc
+
+o
+
+# java
+export JAVA_HOME=/home/big/java
+export PATH=$JAVA_HOME/bin:$PATH
+
+[esc] :wq!
+
+source ~/.bashrc
+
+java -version
+javac -version
+
+# python3 --version
+python3 -V
+
+# pip -V
+
+sudo apt install python3-pip -y
+
+pip -V
+
+sudo vim ~/.bashrc
+
+o
+
+# python alias
+alias python=python3
+
+[esc] :wq!
+
+source ~/.bashrc
+
+python -V
+pip -V
+
+
+## hadoop
+
+wget ~
+
+tar -xvzf hadoop-[tab]
+
+ln -s hadoop-3.4.0 hadoop
+ls -l
+
+sudo vim ~/.bashrc
+
+# hadoop
+export HADOOP_HOME=/home/big/hadoop
+export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
+export PATH=$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$PATH
+
+# hadoop user
+export HDFS_NAMENODE_USER=big
+export HDFS_DATANODE_USER=big
+export HDFS_SECONDARYNAMENODE_USER=big
+export YARN_RESOURCEMANAGER_USER=big
+export YARN_NODEMANAGER_USER=big
+
+[esc] :wq!
+
+source ~/.bashrc
+
+cd $HADOOP_C[tab]
+
+cat hadoop-env.sh | grep USER
+
+vim hadoop-env.sh
+
+# 54
+export JAVA_HOME=/home/big/java
+
+# 62
+export HADOOP_HOME=/home/big/hadoop
+
+# 72 -> 주석만 해제 (공백도 제거)
+
+# 202
+export HADOOP_PID_DIR=$HADOOP_HOME/pids
+
+[esc] :wq!
+
+vim core-site.xml
+
+<property>
+	<name>fs.defaultFS</name>
+	<value>hdfs://localhost:8020</value>
+</property>
+
+[esc] :wq!
+
+vim hdfs-site.xml
+
+<property>
+	<name>dfs.replication</name>
+	<value>1</value>
+</property>
+
+<property>
+	<name>dfs.namenode.name.dir</name>
+	<value>/home/big/hadoop/namenode_dir</value>
+</property>
+
+<property>
+	<name>dfs.namenode.secondary.http-address</name>
+	<value>localhost:9868</value>
+</property>
+
+<property>
+	<name>dfs.datanode.data.dir</name>
+	<value>/home/big/hadoop/datanode_dir</value>
+</property>
+
+vim mapred-site.xml
+
+<property>
+	<name>mapreduce.framework.name</name>
+	<value>yarn</value>
+</property>
+
+<property>
+	<name>yarn.app.mapreduce.am.env</name>
+	<value>HADOOP_MAPRED_HOME=$HADOOP_HOME</value>
+</property>
+
+<property>
+	<name>mapreduce.map.env</name>
+	<value>HADOOP_MAPRED_HOME=$HADOOP_HOME</value>
+</property>
+
+<property>
+	<name>mapreduce.reduce.env</name>
+	<value>HADOOP_MAPRED_HOME=$HADOOP_HOME</value>
+</property>
+
+vim yarn-site.xml
+
+<property>
+	<name>yarn.nodemanager.aux-services</name>
+	<value>mapreduce_shuffle</value>
+</property>
+
+<property>
+	<name>yarn.nodemanager.aux-services.mapreduce_shuffle.class</name>
+	<value>org.apache.hadoop.mapred.ShuffleHandler</value>
+</property>
+
+[esc] :wq!
+
+cd
+
+hdfs namenode -format
+hdfs datanode -format
+
+start-dfs.sh
+start-yarn.sh
+
+jps
+
+stop-dfs.sh
+stop-yarn.sh
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
