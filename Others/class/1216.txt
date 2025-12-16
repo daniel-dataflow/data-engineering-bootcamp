@@ -1,0 +1,510 @@
+QR !!!!
+
+5층 이전 무산!!
+
+HADOOP <- java (8, 11)
+start-dfs.sh
+start-yarn.sh
+
+namenode
+datanode
+secondary namenode
+resourcemanager
+nodemanager
+
+# cluster 설정
+cd $HADOOP_CONF_DIR
+
+vim core-site.xml
+
+<value>hdfs://localhost:8020</value>
+<value>hdfs://master:8020</value>
+
+vim hdfs-site.xml
+
+<value>1</value>
+<value>3</value>
+
+<value>localhost:9868</value>
+<value>slave1:9868</value>
+
+<property>
+	<name>dfs.namenode.rpc-bind-host</name>
+	<value>0.0.0.0</value>
+</property>
+
+
+vim yarn-site.xml
+
+<property>
+	<name>yarn.resourcemanager.hostname</name>
+	<value>master</value>
+</property>
+
+vim workers
+
+master
+slave1
+slave2
+slave3
+
+# slave1
+sudo hostnamectl set-hostname slave1
+ip addr
+192.168.31.134
+
+sudo vim /etc/hosts
+master -> slave1
+
+192.168.31.134	slave1
+192.168.31.133	slave2
+192.168.31.132	slave3
+192.168.31.130	master
+
+[esc] :wq!
+
+
+
+# slave2
+sudo hostnamectl set-hostname slave2
+192.168.31.133
+
+# slave3
+sudo hostnamectl set-hostname slave3
+192.168.31.132
+
+# master
+192.168.31.130
+
+
+
+master -> slave1, slave2, slave3
+ssh slave1
+yes
+exit
+
+ssh slave2
+yes
+exit
+
+ssh slave3
+yes
+exit
+
+slave1 -> master, slave2, slave3
+
+slave2 -> master, slave1, slave3
+
+slave3 -> master, slave1, slave2
+
+# master
+start-all.sh
+# start-dfs.sh + start-yarn.sh
+
+jps
+
+hdfs dfsadmin -report
+
+
+localhost:9870
+
+stop-all.sh
+
+# master, slave1, slave2, slave3
+cd hadoop
+
+rm -rf *_dir
+
+# master
+hdfs namenode -format
+hdfs datanode -format
+
+start-all.sh
+
+hdfs dfsadmin -report
+
+-----
+
+sudo apt update && sudo apt upgrade -y
+
+sudo apt install ubuntu-desktop -y
+
+
+sudo apt install openssh-server -y
+sudo apt install ssh-askpass -y
+
+
+ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa
+
+cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+
+chmod 600 ~/.ssh/authorized_keys
+
+corretto
+
+tar xvzf amazon[tab]
+
+ln -s ama[tab].[tab] java
+
+ls -l
+
+
+sudo vim ~/.bashrc
+
+o
+
+# java
+export JAVA_HOME=/home/big/java
+export PATH=$JAVA_HOME/bin:$PATH
+
+[esc]:wq!
+
+source ~/.bashrc
+
+java -version
+javac -version
+
+sudo apt install python3-pip -y
+
+sudo vim ~/.bashrc
+
+o
+
+# python
+alias python=python3
+
+[esc] :wq!
+
+source ~/.bashrc
+
+python -V
+pip -V
+
+# hadoop
+wget ~
+
+tar xvzf hadoop[tab]
+
+ln -s hadoop-3.4.0 hadoop
+
+ls -l
+
+sudo vim ~/.bashrc
+
+o
+
+# hadoop
+export HADOOP_HOME=/home/big/hadoop
+export HADOOP_CONF_DIR=/home/big/hadoop/etc/hadoop
+export PATH=$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$PATH
+
+# hadoop user
+export HDFS_NAMENODE_USER=big
+export HDFS_DATANODE_USER=big
+export HDFS_SECONDARYNAMENODE_USER=big
+export YARN_RESOURCEMANAGER_USER=big
+export YARN_NODEMANAGER_USER=big
+
+[esc]:wq!
+source ~/.bashrc
+
+cd $HADOOP_C[tab]
+
+vim hadoop-env.sh
+
+:54
+export JAVA_HOME=/home/big/java
+
+:62
+export HADOOP_HOME=/home/big/hadoop
+
+:72
+# 주석 해제
+
+:202
+export HADOOP_PID_DIR=$HADOOP_HOME/pids
+
+[esc] :wq!
+
+vim core-site.xml
+
+<property>
+	<name>fs.defaultFS</name>
+	<value>hdfs://master:8020</value>
+</property>
+
+vim hdfs-site.xml
+
+<property>
+	<name>dfs.replication</name>
+	<value>3</value>
+</property>
+<property>
+	<name>dfs.namenode.name.dir</name>
+	<value>/home/big/hadoop/namenode_dir</value>
+</property>
+<property>
+	<name>dfs.datanode.data.dir</name>
+	<value>/home/big/hadoop/datanode_dir</value>
+</property>
+<property>
+	<name>dfs.namenode.secondary.http-address</name>
+	<value>slave1:9868</value>
+</property>
+<property>
+	<name>dfs.namenode.rpc-bind-host</name>
+	<value>0.0.0.0</value>
+</property>
+
+vim mapred-site.xml
+
+<property>
+	<name>mapreduce.framework.name</name>
+	<value>yarn</value>
+</property>
+<property>
+	<name>yarn.app.mapreduce.am.env</name>
+	<value>HADOOP_MAPRED_HOME=/home/big/hadoop</value>
+</property>
+<property>
+	<name>mapreduce.map.env</name>
+	<value>HADOOP_MAPRED_HOME=/home/big/hadoop</value>
+</property>	
+
+<property>
+	<name>mapreduce.reduce.env</name>
+	<value>HADOOP_MAPRED_HOME=/home/big/hadoop</value>
+</property>
+
+vim yarn-site.xml
+
+
+<property>
+	<name>yarn.resourcemanager.hostname</name>
+	<value>master</value>
+</property>
+<property>
+	<name>yarn.nodemanager.aux-services</name>
+	<value>mapreduce_shuffle</value>
+</property>
+<property>
+	<name>yarn.nodemanager.aux-services.mapreduce_shuffle.class</name>
+	<value>org.apache.hadoop.mapred.ShuffleHandler</value>
+</property>
+
+
+
+vim workers
+
+dd
+
+master
+slave1
+slave2
+slave3
+
+---
+vm instance (master 복제 -> slave1, slave2, slave3)
+
+# slave1
+sudo hostnamectl set-hostname slave1
+ip addr
+192.168.31.134
+
+# slave2
+sudo hostnamectl set-hostname slave2
+ip addr
+192.168.31.133
+
+# slave3
+sudo hostnamectl set-hostname slave3
+ip addr
+192.168.31.132
+
+# master
+ip addr
+192.168.31.130
+
+# master
+sudo vim /etc/hosts
+
+192.168.31.130 master
+192.168.31.134 slave1
+192.168.31.133 slave2
+192.168.31.132 slave3
+
+# slave1
+sudo vim /etc/hosts
+127.0.1.1 slave1
+
+192.168.31.130 master
+192.168.31.134 slave1
+192.168.31.133 slave2
+192.168.31.132 slave3
+
+# slave2
+sudo vim /etc/hosts
+127.0.1.1 slave2
+
+192.168.31.130 master
+192.168.31.134 slave1
+192.168.31.133 slave2
+192.168.31.132 slave3
+
+# slave3
+sudo vim /etc/hosts
+127.0.1.1 slave3
+
+192.168.31.130 master
+192.168.31.134 slave1
+192.168.31.133 slave2
+192.168.31.132 slave3
+
+# master -> slave1, slave2, slave3
+ssh slave1
+yes
+exit
+
+# slave1 -> master, slave2, slave3
+# slave2 -> master, slave1, slave3
+# slave3 -> master, slave1, slave
+
+# master
+hdfs namenode -format
+hdfs datanode -format
+
+start-all.sh
+
+hdfs dfsadmin -report
+
+--안되는 사람만--
+stop-all.sh
+
+# master, slave1, slave2, slave3
+cd hadoop
+rm -rf *_dir
+
+---------------
+
+# dongheon-dev
+
+unzip master.zip
+
+mv data-master data
+
+hdfs dfs -put data /data
+
+# http://master:9870 <- namenode (client 와 연결)
+# http://master:8088 <- yarn (job 확인)
+
+hadoop jar $HADOOP_HOME/share/hadoop/mapreduce/hadoop-mapreduce-examples-3.4.0.jar pi 10 1000
+# .jar : Java ARchive
+# pi 추정 - 1000개의 샘플로 10개를 맵핑
+# 준 난수 몬테카를로 방법
+
+# mymapper.py
+-> data mapping
+
+# random shuffle -> sorting
+
+# myreducer.py
+-> data aggregation
+
+--------
+
+hadoop
+- single mode (1 컴퓨터 -> namenode + datanode)
+- cluster mode (4 컴퓨터
+		master : namenode + datanode
+		slave1 : secondary namenode + datanode
+		slave2 : datanode
+		slave3 : datanode 
+		)
+	=> Map / Reduce
+
+5:00
+=> reflection or project 
+
+stop-all.sh
+이후 컴퓨터 모두 종료
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
