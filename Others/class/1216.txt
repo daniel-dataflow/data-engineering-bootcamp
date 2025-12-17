@@ -428,6 +428,20 @@ hadoop
 stop-all.sh
 이후 컴퓨터 모두 종료
 
+hadoop 설정 ($HADOOP_CONF_DIR)
+hadoop-env.sh
+core-site.xml
+hdfs-site.xml
+mapred-site.xml
+yarn-site.xml
+
+module
+- commons
+- hdfs : hadoop distributed file system -> 분산 저장 (block단위)
+- yarn : resouce manager / node manager
+
+
+
 
 
 

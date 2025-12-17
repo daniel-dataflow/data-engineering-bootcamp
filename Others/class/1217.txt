@@ -1,0 +1,483 @@
+QR !!
+
+AWS -> ubuntu24 / java2? /
+GPU
+
+HADOOP -> cluster
+//
+single + spark
+
+big
+bigdata
+big
+1234
+1234
+
+sudo apt update && sudo apt upgrade -y
+
+sudo apt install ubuntu-desktop -y
+
+reboot
+
+sudo apt install openssh-server -y
+sudo apt install ssh-askpass -y
+
+ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa
+
+cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+
+chmod 600 ~/.ssh/authorized_keys
+
+# java 11
+wget ~
+
+# java 17
+wget ~
+
+# 두개 다 압축 해제
+tar xvzf amazon[tab]1[tab]
+tar xvzf amazon[tab]7[tab]
+
+# 두개 다 심볼릭 링크
+ln -s amazon[tab]1.[tab] java11
+ln -s amazon[tab]7.[tab] java17
+
+ls -l
+
+
+
+sudo apt install python3-pip
+
+sudo vim ~/.bashrc
+
+o
+
+# python alias
+alias python=python3
+
+[esc]:wq!
+
+source ~/.bashrc
+
+python --version
+
+
+# hadoop
+wget ~
+
+# 검사하지 않는 숙제!! mirror site ??
+
+tar -xvzf hadoop[tab]
+
+ln -s hadoop[tab] hadoop
+
+ls -l
+
+sudo vim ~/.bashrc
+
+# hadoop
+export HADOOP_HOME=/home/big/hadoop
+export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
+export PATH=$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$PATH
+
+# hadoop user
+export HDFS_NAMENODE_USER=big
+export HDFS_DATANODE_USER=big
+export HDFS_SECONDARYNAMENODE_USER=big
+export YARN_RESOURCEMANAGER_USER=big
+export YARN_NODEMANAGER_USER=big
+
+[esc] :wq!
+source ~/.bashrc
+
+cd $HADOOP_C[tab]
+vim hadoop-env.sh
+
+:54
+export JAVA_HOME=/home/big/java11
+
+:62
+export HADOOP_HOME=/home/big/hadoop
+
+:72
+# 주석 해제
+
+:202
+export HADOOP_PID_DIR=$HADOOP_HOME/pids
+
+[esc]:wq!
+
+vim core-site.xml
+
+<property>
+	<name>fs.defaultFS</name>
+	<value>hdfs://localhost:8020</value>
+</property>
+
+[esc]:wq!
+
+vim hdfs-site.xml
+
+<property>
+	<name>dfs.replication</name>
+	<value>1</value>
+</property>
+<property>
+	<name>dfs.namenode.name.dir</name>
+	<value>/home/big/hadoop/namenode_dir</value>
+</property>
+<property>
+	<name>dfs.datanode.data.dir</name>
+	<value>/home/big/hadoop/datanode_dir</value>
+</property>
+
+[esc]:wq!
+
+vim mapred-site.xml
+
+<property>
+	<name>mapreduce.framework.name</name>
+	<value>yarn</value>
+</property>
+
+[esc] :wq!
+
+cd
+
+hdfs namenode -format
+hdfs datanode -format
+start-all.sh
+
+cd ~/java11/bin
+./jps
+
+hdfs dfsadmin -report
+
+cd
+
+# spark
+wget ~
+# ~~~~.tgz = tar + gzip = .tar.gz
+tar -xvzf spark[tab]
+
+ln -s spark[tab] spark
+
+ls -l
+
+sudo vim ~/.bashrc
+
+# spark
+export SPARK_HOME=/home/big/spark
+export SPARK_DIST_CLASSPATH=$($HADOOP_HOME/bin/hadoop classpath)
+export PATH=$SPARK_HOME/bin:$SPARK_HOME/sbin:$PATH
+
+[esc]:wq!
+source ~/.bashrc
+
+cd $SPARK_HOME/conf
+
+ls
+
+cp workers.template workers
+cat workers
+
+cp spark-env.sh.template spark-env.sh
+
+vim spark-env.sh
+
+export JAVA_HOME=/home/big/java17
+export HADOOP_HOME=/home/big/hadoop
+export YARN_CONF_DIR=/home/big/hadoop/etc/hadoop
+export SPARK_DIST_CLASSPATH=$(/home/big/hadoop/bin/hadoop classpath)
+
+export PYSPARK_PYTHON=/usr/bin/python3
+export PYSPARK_DRIVER_PYTHON=/usr/bin/python3
+
+[esc] :wq!
+
+
+cp spark-defaults.conf.template spark-defaults.conf
+vim spark-defaults.conf
+
+o
+
+spark.master				yarn
+spark.yarn.appMasterEnv.JAVA_HOME	/home/big/java17
+spark.executorEnv.JAVA_HOME		/home/big/java17
+
+[esc]:wq!
+
+cd
+
+pyspark
+
+test = [1, 2, 3, 4, 5]
+test_rdd = sc.parallelize(test)
+test_rdd.collect()
+
+# repl
+# ~.py
+
+# 새로운 터미널에서
+cd java17/bin
+./jps
+
+cd
+
+# github -> dongheon-dev -> data
+wget https://github.com/dongheon-dev/data/archive/refs/heads/master.zip
+
+unzip master.zip
+
+mv data-master data
+
+# hdfs dfs (hadoop) ~/ : /home/big/
+# pyspark에서 ./ : /user/big/
+
+hdfs dfs -mkdir -p /user/big/
+
+hdfs dfs -put data /user/big/data
+
+hdfs dfs -ls /user/big/data/
+
+RDD (저수준 api) / DataFrame (고수준 api) // DataSet
+
+# 0부터, 1000 전까지, 1씩 증가, 2개의 파티션
+rdd01 = sc.range(0, 1000, 1, 2)
+rdd01
+
+rdd01.getNumPartitions()
+
+rdd01.collect()
+
+rdd01.take(5)
+
+rdd01.count()
+
+# localhost:8088
+# rdd lineage
+
+# rdd 함수의 종류
+# transformation : rdd -> rdd
+# action : rdd -> value
+
+# transformation 함수부터 보자!!
+# filter
+rdd02 = rdd01.filter(lambda x: x % 2)
+rdd02.collect()
+
+member = ['CaptainAmerica', 'Thor', 'Hulk', 'IronMan', 'BlackWidow', 'Hawkeye', 'Hulk']
+# parallelize : data를 받아서 rdd 생성
+avengers = sc.parallelize(member, 2)
+avengers.collect()
+
+# distinct
+avengers = avengers.distinct()
+avengers.collect()
+
+# glom : 파티션 별로 확인
+avengers_partition = avengers.glom()
+avengers_partition.collect()
+
+# map
+avengers_upper = avengers.map(lambda x: x.upper())
+avengers_upper.collect()
+
+# flatmap
+avengers_flat = avengers.flatMap(lambda x: list(x))
+avengers_flat.collect()
+
+avengers_map = avengers.map(lambda x: list(x))
+avengers_map.collect()
+
+# sortBy
+nums = sc.parallelize([1, 4, 2, 3, 7, 5, 6], 2)
+nums.collect()
+nums.sortBy(lambda x:x).collect()
+
+# action (rdd -> value)
+
+# collect() : rdd의 모든 데이터 출력
+# first
+avengers.first()
+
+nums.max(), nums.min()
+
+# 평균
+nums.mean()
+# 분산
+nums.variance()
+# 표준편차
+nums.stdev()
+
+# count mean stdev max min
+nums.stats()
+
+# take(n)
+avengers.take(3)
+
+# takeOrdered(n)
+avengers.takeOrdered(3)
+
+# top(n) : 내림차순 정렬!
+avengers.top(3)
+
+chars = sc.parallelize(['a', 'a', 'b', 'b', 'b', 'c', 'c', 'd'])
+# countByValue 
+chars.countByValue()
+dict(chars.countByValue())
+type(chars.countByValue())
+
+# sum
+rdd02.sum()
+
+# reduce : 병렬 연산
+rdd02.reduce(lambda x, y: x + y)
+
+# fold(기본값, 연산) : 병렬 연산 (파티션 단위)
+rdd02.fold(0, max)
+
+# aggregate(기본값, 파티션 단위, 전체 연산)
+rdd02.aggregate(0, max, lambda x, y: x + y)
+
+rdd02_list = rdd02.glom().collect()
+rdd02_list
+# [[1~499], [501~999]]
+rdd02_list[0]
+rdd02_list[1]
+
+
+def longvengers(x, y):
+	if len(x) > len(y):
+		return x
+	else:
+		return y
+
+avengers.reduce(longvengers)
+
+avengers.reduce(lambda x, y: y if len(x) > len(y) else x)
+
+# textfile로 저장
+avengers.saveAsTextFile('/avengers')
+
+# 불러오기
+# part-00000, part-00001, _SUCCESS
+result = sc.textFile('/avengers/part-*')
+result.collect()
+result.getNumPartitions()
+
+result.glom().collect()
+
+
+# stack trace
+
+# keyBy : key 생성해서 (key, value) 형태로
+key_val = avengers.keyBy(lambda x: x[0])
+key_val.collect()
+
+key_val.keys().collect()
+# key_val_keys = key_val.keys()
+# key_val_keys.collect()
+key_val.values().collect()
+
+# mapValues
+key_val.mapValues(lambda x: x.upper()).collect()
+key_val.mapValues(lambda x: x.lower()).collect()
+
+# groupByKey
+key_val.groupByKey().mapValues(list).collect()
+
+# reduceByKey
+key_val.reduceByKey(lambda x,y : x + ", " + y).collect()
+
+# countByKey
+key_val.countByKey()
+
+# 종료
+exit()
+
+vim wordcount.py
+[esc]:wq!
+
+spark-submit wordcount.py /user/big/data/shakespeare.txt /result
+
+hdfs dfs -ls /result
+hdfs dfs -head /result/part-00000
+
+12/18 08:59분 -> slack
+
+stop-dfs.sh
+stop-yarn.sh
+
+------
+
+hadoop + spark (without hadoop - user provide hadoop) -> in memory
+- RDD : 내 결함성 분산 데이터셋 -> partition => 병렬 처리
+- DataFrame : RDD를 추상화 (고수준) -> SparkSQL
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

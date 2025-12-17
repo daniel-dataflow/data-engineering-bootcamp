@@ -1,0 +1,34 @@
+import sys, re
+from pyspark import SparkContext
+
+# RDD 관리 - 실행시켜주는 역할
+sc = SparkContext() 
+
+# 3개라면 실행시켜라
+if len(sys.argv) != 3: 
+    print('wordcount.py input_file output_dir 형태로 실행해 주세요')
+    sys.exit(0)
+else:
+    input_file = sys.argv[1]
+    output_dir = sys.argv[2]
+
+wordcount = sc.textFile(input_file)\
+              .repartition(10)\
+              .filter(lambda x: len(x) > 0)\
+              .flatMap(lambda x: re.split(r'\W+', x))\
+              .filter(lambda x: len(x) > 0)\
+              .map(lambda x: (x.lower(), 1))\
+              .reduceByKey(lambda x, y: x + y)\
+              .map(lambda x: (x[1], x[0]))\
+              .sortByKey(ascending=False)\
+              .persist()
+
+wordcount.saveAsTextFile(output_dir)
+
+top10 = wordcount.take(10)
+result = []
+for counts in top10:
+    result.append(counts[1])
+print(result) 
+
+# https://spark.apache.org/docs/latest/api/python/reference/api/pyspark.SparkContext.textFile.html
