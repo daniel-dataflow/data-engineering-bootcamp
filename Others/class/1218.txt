@@ -345,3 +345,32 @@ Spark -> DataFrame => spark.sql
 exit()
 
 stop-all.sh
+
+project 회의
+
+
+Hadoop + Spark -> 저장소 + 처리 프로그램
+
+RDD
+DataFrame -> row + column (RDB 처럼 -> ansi 표준 쿼리)
+df.함수()
+spark.sql("query")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
