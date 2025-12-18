@@ -1,0 +1,347 @@
+QR!!
+
+Hadoop -> 저장소
++
+Spark -> 가공(처리)
+- RDD
+
+wordcount.py
+
+---
+
+sudo vim ~/.bashrc
+
+export PATH=$PATH:$SPARK_HOME/bin:$SPARK_HOME/sbin
+
+[esc]:wq!
+
+source ~/.bashrc
+
+start-all.sh
+
+hdfs dfsadmin -report
+
+pyspark
+
+wordcount = sc.textFile("./data/shakespeare.txt")
+wordcount.take(10)
+
+# 공백 데이터 제거
+wordcount = wordcount.filter(lambda x: len(x) > 0)
+wordcount.take(10)
+
+# 문자가 아닌 것으로 잘라서 1차원으로
+import re
+
+wordcount = wordcount.flatMap(lambda x: re.split(r"\W+", x))
+wordcount.take(10)
+
+# 공백 데이터 제거
+wordcount = wordcount.filter(lambda x: len(x) > 0)
+wordcount.take(10)
+
+# 모양 변경 -> (x.lower(), 1) <- tuple
+wordcount = wordcount.map(lambda x: (x.lower(), 1))
+wordcount.take(10)
+
+# key를 기준으로 value 연산
+wordcount = wordcount.reduceByKey(lambda x, y: x + y)
+wordcount.take(10)
+
+# (key, value) -> (value, key) 형태로 변환
+wordcount = wordcount.map(lambda x: (x[1], x[0]))
+wordcount.take(10)
+
+# key를 기준으로 정렬
+wordcount = wordcount.sortByKey(ascending=False)
+wordcount.take(10)
+
+# persist() : memory 저장
+# lazy evaluation
+
+exit()
+pyspark
+# DataFrame
+
+# spark == SparkSession
+# .toDF() : DataFrame으로 만들겠다.
+nums = spark.range(1000).toDF("nums")
+
+nums.head(7)
+nums.tail(3)
+nums.show()
+nums.count()
+nums.show(nums.count())
+
+# SparkContext : rdd
+# SparkSession : dataframe
+
+# .where : 조건
+evens = nums.where("nums % 2 = 0")
+evens.head(5)
+
+# csv
+card202010 = spark.read.csv("./data/card_data/csv/202010.csv")
+card202010.printSchema()
+card202010.show()
+
+# 가장 위의 줄을 컬럼명으로 지정하는 옵션
+card_column = spark.read.option("header", "true").csv("./data/card_data/csv/202010.csv")
+card_column.printSchema()
+card_column.show()
+
+# 자동으로 타입 추론 (단, 데이터의 양에 읭해 속도가 느려질 수 있음!)
+card = spark.read.format("csv").option("header", "true").option("inferSchema", "true")
+		.load("data/card_data/csv/202010.csv")
+
+card.printSchema()
+card.show()
+
+card.sort("이용일").show()
+# 실행계획
+card.sort("이용일").explain()
+
+# table 생성
+card.createOrReplaceTempView("card")
+
+# 한글 사용 시 `` (backtick)
+card_table = spark.sql("""
+	select `이용일`, `금액`, `대분류`, `중분류`, `소분류`
+	from card
+""")
+card_table.show()
+
+df = card.groupBy("이용일").count()
+
+sql = spark.sql("select `이용일`, count(*) from card group by `이용일`")
+
+df.explain()
+sql.explain()
+# dataframe의 함수를 사용 == spark.sql로 sql문을 사용
+
+from pyspark.sql.functions import max
+
+card.select(max("`금액`")).show()
+
+spark.sql("select max(`금액`) from card").show()
+
+# expr(표현식)
+# col(컬럼명) -> col 함수 사용 시, 한글 컬럼에 ``(backtick) 사용 안해도 됨!
+from pyspark.sql.functions import expr, col
+
+card.select(expr("`대분류` as category"), col("금액")).show()
+card.select(expr("`대분류`").alias("category"), col("금액")).show()
+spark.sql("select `대분류` as category, `금액` from card").show()
+
+# selectExpr = select + expr
+card.selectExpr("`대분류` as category", "`금액`").show()
+
+# selectExpr -> 새로운 컬럼 생성도 가능
+card.selectExpr("*", "`금액` > 40000").show()
+# card.select("*", expr("`금액` > 4000")).show()
+spark.sql("select *, `금액` > 40000 from card").show()
+
+# withColumn(컬럼명, 표현식) -> 추가되는 컬럼의 이름 변경
+card.withColumn("up4", expr("`금액` > 40000")).show()
+
+# 집계
+card.selectExpr("avg(`금액`)").show()
+
+spark.sql("select avg(`금액`) from card").show()
+
+# drop
+card.drop("결제일").show()
+card.drop("결제일", "포인트리금액").show()
+card.show()
+
+# filter / where : 조건 -> 차이점???
+card.filter(col("금액") < 10000).show()
+card.where("`금액` < 10000").show()
+spark.sql("select * from card where `금액` < 10000").show()
+
+# distinct
+card.select("대분류").distinct().show()
+spark.sql("select distinct(`대분류`) from card").show()
+
+card.select("대분류", "중분류").distinct().show()
+
+# 구조체 -> dataframe 내부에 다시 dataframe
+spark.sql("select distinct(`대분류`, `중분류`) from card").show()
+
+# spark.sql("select distinct(`대분류`), distinct(`중분류`) from card").show()
+
+spark.sql("select `대분류`, `중분류` from card group by `대분류`, `중분류`").show()
+
+
+from pyspark.sql import Row
+
+schema = card.schema
+new_rows = [
+	Row(20251218, None, 13000, None, "생활", "편의점", None),
+	Row(20251218, None, 29000, None, "식사", "카페", "맘모스커피")
+]
+
+new_card = spark.createDataFrame(new_rows, schema)
+new_card.show()
+
+cards = card.union(new_card)
+cards.tail(3)
+
+# sort / orderBy : ???
+card.sort("금액").show()
+card.sort("금액", ascending=False).show()
+card.orderBy(col("금액").asc()).show()
+card.orderBy(col("금액").desc()).show()
+
+spark.sql("select * from card order by `금액` ").show()
+spark.sql("select * from card order by `금액` desc").show()
+
+from pyspark.sql.functions import asc, desc
+
+card.orderBy(asc("이용일"), desc("금액")).show(5)
+card.orderBy(["이용일", "금액"], ascending=[1, 0]).show(5)
+card.orderBy(col("이용일").asc(), col("금액").desc()).show(5)
+card.sort(["이용일", "금액"], ascending=[1, 0]).show(5)
+card.sort(col("이용일").asc(), col("금액").desc()).show(5)
+
+spark.sql("select * from card order by `이용일`, `금액` desc limit 5").show()
+
+from pyspark.sql.functions import instr
+# instr : 없으면 -1, 있으면 index
+store_filter = instr(col("소분류"), "마트") >= 1
+pay_filter = col("금액") < 10000
+
+card.where(store_filter & pay_filter).where(col("이용일") >= 20201010)
+	.where(col("이용일") <= 20201031).show()
+
+spark.sql("""
+	select *
+	from card
+	where instr(`소분류`, "마트") >= 1
+	and `금액` < 10000
+	and `이용일` >= 20201010
+	and `이용일` <= 20201031
+""").show()
+
+
+expensive_filter = col("금액") > 30000
+
+card.withColumn("비쌈", expensive_filter).show()
+card.withColumn("비쌈", expensive_filter).where(col("비쌈")).show()
+
+from pyspark.sql.functions import round
+
+pay_filter = col("금액") / 1000
+card.select(pay_filter, round(pay_filter)).show()
+
+spark.sql("select `금액`/1000, round(`금액`/1000) from card").show()
+
+from pyspark.sql.functions import regexp_replace
+
+chain = "파머스빈|빽다방|바나프레소|카페7그램|스타벅스"
+card.select(col("소분류"), regexp_replace(col("소분류"), chain, "커피체인점").alias("치환"))
+	.where(col("중분류") == "카페").show()
+
+spark.sql("""
+	select `소분류`, 
+		regexp_replace(`소분류`, "파머스빈|빽다방|바나프레소|카페7그램|스타벅스", "커피체인점") as `치환`
+	from card
+	where `중분류` = "카페"
+""").show()
+
+from pyspark.sql.functions import translate
+
+card.select(col("소분류"), translate(col("소분류"), "스벅그프다", "12345").alias("치환"))
+	.where(col("중분류") == "카페").show()
+
+spark.sql("""
+	select `소분류`,
+		translate(`소분류`, "스벅그프다", "12345") as `치환`
+	from card
+	where `중분류` = "카페"
+""").show()
+
+# 패턴 추출
+from pyspark.sql.functions import regexp_extract
+
+extract_str = "카페|다방"
+card.select(regexp_extract(col("소분류"), extract_str, 0).alias("치환")).where(col("중분류") == "카페").show()
+
+spark.sql("""
+	select regexp_extract(`소분류`, "카페|다방", 0) as `치환`
+	from card
+	where `중분류` = "카페"
+""").show()
+
+
+
+
+contains01 = instr(col("소분류"), "카페") >= 1
+contains02 = instr(col("소분류"), "다방") >= 1
+
+card.withColumn("카페다방포함", contains01 | contains02).select("소분류", "카페다방포함")
+	.where(col("중분류") == "카페").show()
+
+
+from pyspark.sql.functions import current_date, current_timestamp
+
+date_df = spark.range(1).withColumn("mydate", current_date()).withColumn("mytimestamp", current_timestamp())
+date_df.show()
+
+date_df.show(1, False)
+date_df.show(truncate=False)
+date_df.show(vertical=True)
+
+date_df.createOrReplaceTempView("date_table")
+
+from pyspark.sql.functions import date_sub, date_add
+
+date_df.select(date_sub(col("mydate"), 5), date_add(col("mydate"), 5)).show()
+
+spark.sql("""
+	select date_sub(mydate, 5), date_add(mydate, 5)
+	from date_table
+""").show()
+
+from pyspark.sql.functions import datediff, months_between, to_date
+
+date_df.withColumn("week_ago", date_sub(col("mydate"), 7)).select(datediff(col("week_ago"), col("mydate"))).show()
+
+
+from pyspark.sql.functions import lit
+
+date_df.select(to_date(lit("2025-09-15")).alias("start"), to_date(lit("2026-03-13")).alias("end"))
+	.select(months_between(col("start"), col("end"))).show()
+
+date_df.select(to_date(lit("2025-12-32"))).show()
+# spark4. -> error
+# spark3. -> null
+
+date_format = "yyyy-MM-dd"
+
+format_df = spark.range(1).select(
+	to_date(lit("2025-12-25"), date_format).alias("format1"), 
+	to_date(lit("2025-25-12"), "yyyy-dd-MM").alias("format2")
+	)
+
+format_df.show()
+
+from pyspark.sql.functions import to_timestamp
+
+format_df.select(to_timestamp(col("format1"), date_format)).show()
+
+format_df.select(to_date(col("format1"), "yyyy-MM-dd HH:mm:ss").alias("date"),
+		to_timestamp(col("format1"), "yyyy-MM-dd HH:mm:ss").alias("timestamp")).show()
+
+
+# card에서 `이용일` 컬럼의 타입을 날짜로 변환하여 `이용일`만 출력
+card.select(to_date(col("이용일"), "yyyyMMdd")).show()
+
+card.select(to_date(col("이용일").cast("string"), "yyyyMMdd")).show()
+
+
+Spark -> DataFrame => spark.sql
+
+exit()
+
+stop-all.sh
