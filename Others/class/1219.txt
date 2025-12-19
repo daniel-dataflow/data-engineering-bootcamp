@@ -1,0 +1,291 @@
+QR !!
+
+.pem	<- 기본적인 ssh 접속 public key
+.ppk	<- putty 접속용 public key
+
+
+[mac]
+terminal -> 해당 파일의 위치 경로로 이동
+sudo chmod 600 ~.pem
+
+ls -l ~.pem
+
+---
+
+[win]
+
+windows  에서 aWS ~~ .pdf
+
+======
+
+terminal
+
+>> ssh -v -i de4_tutor.pem tutor@15.152.194.209
+
+yes
+
+# hadoop
+start-all.sh
+
+hdfs dfsadmin -report
+
+pyspark
+
+
+from pyspark.sql import Row
+
+null_df = sc.parallelize([
+	Row(name="You", phone="010-0000-0000", address="Seoul"),
+	Row(name="Shin", phone="010-1111-1111", address=None),
+	Row(name="Kang", phone=None, address=None)
+]).toDF()
+
+null_df.show()
+
+null_df.createOrReplaceTempView("null_table")
+
+
+from pyspark.sql.functions import coalesce, col
+
+# rdd의 coalesce 함수는 repartition에 사용된다!!
+# dataframe의 coalesce 함수는 null이 아닌 첫 번째 컬럼값
+
+null_df.select(coalesce(col("address"), col("phone"))).show()
+
+spark.sql("""
+	select ifnull(null, 'value'), nullif('same', 'same'),
+	nvl('notnull', 'value'), nvl2(null, 'value1', 'value2')
+""").show()
+
+
+spark.sql("""
+	select ifnull(null, 'value'), nullif('same', 'same'),
+	nvl('notnull', 'value'), nvl(null, 'value'), 
+	nvl2('notnull', 'value1', 'value2'), nvl2(null, 'value1', 'value2')
+""").show()
+
+# na : DataFrameNaFunction 리턴
+# DataFrameNaFunction : drop, fill, replace
+
+null_df.na.drop().show()
+
+# any : 컬럼의 값중 하나라도 null이면 row 제거
+# all : 컬럼의 모든 값이 null이면 row 제거
+null_df.na.drop("all", subset=["phone"]).show()
+null_df.na.drop("all", subset=["address"]).show()
+null_df.na.drop("all", subset=["phone", "address"]).show()
+null_df.na.drop("any", subset=["phone", "address"]).show()
+
+# fill
+null_df.na.fill("n/a").show()
+
+null_df.na.fill('n/a', subset=["phone"]).show()
+null_df.na.fill('n/a', subset=["address"]).show()
+
+null_df.na.fill('n/a', subset=["phone", "address"]).show()
+
+default_value = {"phone": "070-7777-7777", "address": "street"}
+null_df.na.fill(default_value).show()
+
+# replace
+null_df.na.replace(["Seoul"], ["서울"], "address").show()
+
+
+# DataFrame.dropna() == DataFrameNaFunctions.drop() -> null_df.dropna() == null_df.na.drop()
+# DataFrame.fillna()
+# DataFrame.replace()
+
+card = spark.read.format("csv").option("header", "true")
+		.option("inferSchema", "true").load("./data/card_data/csv/202010.csv")
+
+card.createOrReplaceTempView("card")
+
+card.show()
+spark.sql(" select * from card ").show()
+
+
+# 구조체 : dataframe 내부의 dataframe
+
+card.selectExpr("(`이용일`, `금액`) as complex", "*").show()
+card.selectExpr("struct(`이용일`, `금액`) as complex", "*").show()
+card.selectExpr("struct(`이용일`, `금액`) as complex", "*").printSchema()
+
+from pyspark.sql.functions import struct
+
+complex_df = card.select(struct("이용일", "금액").alias("complex"))
+complex_df.show()
+
+complex_df.createOrReplaceTempView("complex_table")
+spark.sql(" select * from complex_table ").show()
+
+
+complex_df.select("complex.이용일").show()
+complex_df.select(col("complex").getField("이용일")).show()
+
+spark.sql("""
+	select complex.`이용일`
+	from complex_table
+""").show()
+
+complex_df.select("complex.*").show()
+
+spark.sql(" select complex.* from complex_table ").show()
+
+# 배열
+from pyspark.sql.functions import split
+
+card.select(col("중분류"), split(col("중분류"), " ")).where(col("대분류") == "교통").show()
+
+spark.sql("""
+	select split(`중분류`, " ")
+	from card where `대분류` = "교통"
+""").show()
+
+card.select(split(col("중분류"), " ").alias("arraycol"))
+	.selectExpr("arraycol[0]").where(col("대분류") == "교통").show()
+
+spark.sql("""
+	select split(`중분류`, " ")[0] as arraycol
+	from card where `대분류` = "교통"
+""").show()
+
+from pyspark.sql.functions import array_contains
+
+card.select(array_contains(split(col("중분류"), " "), "버스")).where(col("대분류") == "교통").show()
+
+spark.sql("""
+	select array_contains(split(`중분류`, " "), "버스")
+	from card where `대분류` = "교통"
+""").show()
+
+# explode : 1정규화
+from pyspark.sql.functions import explode
+
+card.withColumn("splitted", split(col("중분류"), " "))
+	.select("중분류", "splitted").where(col("대분류") == "교통").show()
+
+card.withColumn("splitted", split(col("중분류"), " "))
+	.withColumn("exploded", explode(col("splitted")))
+	.select("중분류", "splitted", "exploded").where(col("대분류") == "교통").show()
+
+
+# map {key -> value}
+
+from pyspark.sql.functions import create_map
+
+card.select(create_map(col("이용일"), col("금액")).alias("complexmap")).show()
+
+spark.sql("""
+	select map(`이용일`, `금액`)
+	from card
+""").show()
+
+# 키를 통해 밸류에 접근해보자!!
+
+card.select(create_map(col("이용일"), col("금액")).alias("complexmap"))
+	.selectExpr("complexmap['20201002']").show()
+
+
+spark.sql("""
+	select map(`이용일`, `금액`)["20201002"]
+	from card
+""").show()
+
+# explode : map 객체를 key / value 분리
+card.select(create_map(col("이용일"), col("금액")).alias("complexmap"))
+	.selectExpr("explode(complexmap)").show()
+
+spark.sql("""
+	select explode(map(`이용일`, `금액`))
+	from card
+""").show()
+
+exit()
+
+pyspark
+
+card_all = spark.read.format("csv").option("header", "true").option("inferSchema", "true")
+		.load("./data/card_data/csv/*.csv")
+
+card_all.count()
+
+# hdfs ~/ : /home/big/
+# spark ./ : /user/big/
+
+[mac]
+sudo chmod 600 ~.pem
+
+# terminal
+ssh -i de4_tutor.pem tutor@15.152.194.209
+
+yes
+
+	16.208.23.213
+	56.155.47.51
+
+apt install vim -y
+sudo apt install vim -y
+
+exit
+
+# ubuntu
+ssh -i de4_tutor.pem ubuntu@15.152.194.209
+
+exit
+
+
+# scp : ssh 로 file 전송
+# -i ~.pem : public 키 path
+# scp [-i path] [보낼 file] [받을 서버의 계정]@[ip]:/[서버 안의 path]
+# scp [-i path] -r [보낼 folder] [받을 서버의 계정]@[ip]:/[서버 안의 path]
+
+scp -i de4_tutor.pem  c:\User\student\Desktop\test.txt ubuntu@15.152.194.209:/home/ubuntu/
+
+
+exit()
+
+stop-all.sh
+
+project 주제 회의
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
