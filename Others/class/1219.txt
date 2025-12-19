@@ -249,6 +249,24 @@ stop-all.sh
 project 주제 회의
 
 
+localhost (onpremis)		<->	aws
+	
+hadoop					s3
+spark					emr
+kafka					msk
+airflow					mwaa
+rdb(mysql, postgres)			aurora
+mongodb					documentdb
+redis					elastic cache / memorydb
+deeplearning				sagemaker	
+(model serving server)			sagemaker inference / lambda
+web service server			app runner / ecs
+elasticsearch				opensearch service
+
+=> 우리가 공부하는 내용을 기준으로 aws service (saas, paas)와 맵핑 
+   면접 시 이런 서비스가 있다는 것을 "알고는 있었으나 비용때문에" 사용하지 않았다고 하면 됨
+
+by gemini
 
 
 
