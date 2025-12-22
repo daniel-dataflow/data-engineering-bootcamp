@@ -590,6 +590,20 @@ zeppelin-daemon.sh stop
 
 stop-all.sh
 
+----
+
+pyspark 
+-> join
+-> streaming
++
+spark ml X
+
+-----
+
+zeppelin
+
+
+
 
 
 
