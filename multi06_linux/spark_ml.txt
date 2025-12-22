@@ -1,0 +1,39 @@
+from pyspark.sql import Row
+from pyspark.ml.feature import RFormula
+from pyspark.ml.classification import LogisticRegression
+
+# dataset
+data = spark.createDataFrame(
+    [Row(test=1, lesson=0, exam=0),
+    Row(test=2, lesson=0, exam=0),
+    Row(test=5, lesson=1, exam=0),
+    Row(test=2, lesson=3, exam=0),
+    Row(test=3, lesson=3, exam=1),
+    Row(test=8, lesson=1, exam=1),
+    Row(test=10, lesson=0, exam=1)])
+data.show()
+
+# RFormula : 데이터 변환 설정
+# MLlib에서 사용할 수 있는 데이터 형태로 변환 (Double / Vector[Double] : 레이블 / 값)
+# ~ : feature, target 분리
+# + : 연결
+# - : 삭제
+# : : 상호작용 (곱셈)
+# . : 모든 컬럼
+data_rf = RFormula().setFormula("exam ~.").setFeaturesCol("features").setLabelCol("label")
+data_fit = data_rf.fit(data).transform(data)
+data_fit.show()
+
+# model 생성
+logistic = LogisticRegression(featuresCol='features', labelCol='label')
+
+# 학습
+model = logistic.fit(data_fit)
+
+# 예측
+predict = model.transform(data_fit)
+predict.show(truncate=False)
+
+# rawPrediction : logits -> exp(x)/(1+exp(x)) 
+# probability : logistic regression 결과
+# prediction : probability를 통한 클래스

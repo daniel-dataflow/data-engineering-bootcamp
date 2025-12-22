@@ -1,0 +1,607 @@
+QR !!
+
+내일 철도 파업 예고 : 서울지하철 1·3·4호선, 수인분당선, 경의중앙선, 경강선 
+
+DataBase
+- RDB : 정형화 된 (MySQL, PostgreSQL)
+- NoSQL : 비 정형화된 (MongoDB, Redis)
+
+Driver (Connector)
+-> python code와 연동 (= client)
+
+Linux (Ubuntu 24배포판)
+-> Hadoop (HDFS 분산 저장) + Spark (RDD, DataFrame)
+
+------
+
+start-all.sh
+
+hdfs dfsadmin -report
+
+pyspark
+
+card_all = spark.read.format("csv").option("header", "true").option("inferSchema", "true")
+		.load("./data/card_data/csv/*.csv")
+
+card_all.createOrReplaceTempView("card_all")
+
+card_all.count()
+
+from pyspark.sql.functions import count
+
+card_all.select(count("*")).show()
+
+spark.sql(" select count('*') from card_all ").show()
+
+from pyspark.sql.functions import countDistinct, col
+
+card_all.select(countDistinct(col("이용일"))).show()
+
+
+from pyspark.sql.functions import first, last
+
+card_all.select(first(col("이용일")), last(col("이용일"))).show()
+
+
+from pyspark.sql.functions import min, max
+
+card_all.select(min("`금액`"), max("`금액`")).show()
+card_all.select(min(col("금액")), max(col("금액"))).show()
+
+from pyspark.sql.functions import sum
+
+card_all.select(sum(col("금액"))).show()
+
+from pyspark.sql.functions import avg, mean
+
+card_all.select(avg(col("금액")), mean(col("금액"))).show()
+
+
+# 분산, 표준편차
+# 모집단 : _pop
+# 표본집단 : _samp
+
+# 모 분산 : var_pop
+# 표본 분산 : var_samp
+# 모 표준편차 : stddev_pop
+# 표본 표준편차 : stddev_samp
+
+from pyspark.sql.functions import var_pop, var_samp, stddev_pop, stddev_samp
+
+card_all.select(var_pop(col("금액")), var_samp(col("금액")), stddev_pop(col("금액")), stddev_samp(col("금액")))		.show()
+
+from pyspark.sql.functions import corr
+
+card_all.select(corr(col("이용일"), col("금액"))).show()
+
+
+card_all.groupBy(col("대분류"), col("중분류")).count().show()
+
+# 윈도우함수 -> 집계/순위() over (partition by / order by)
+from pyspark.sql.functions import to_date
+
+date_df = card_all.withColumn("date", to_date(col("이용일").cast("string"), "yyyyMMdd"))
+date_df.show()
+
+date_df.createOrReplaceTempView("date_table")
+
+
+from pyspark.sql.window import Window
+from pyspark.sql.functions import desc
+
+window_function = Window.partitionBy(col("대분류")).orderBy(desc(col("date")))
+	.rowsBetween(Window.unboundedPreceding, Window.currentRow)
+
+# .rowsBetween(Window.unboundedPreceding, Window.currentRow) -> ???
+
+from pyspark.sql.functions import dense_rank, rank
+
+# rank : 1, 1, 3
+# dense_rank : 1, 1, 2
+win_dense = dense_rank().over(window_function)
+win_rank = rank().over(window_function)
+
+date_df.orderBy(col("대분류")).select(col("대분류"), col("date"), col("금액"), win_rank, win_dense).show(5)
+
+spark.sql("""
+	select `대분류`, date,
+		rank() over (partition by `대분류` order by date desc),
+		dense_rank() over (partition by `대분류` order by date desc)
+	from date_table
+	limit 5
+""").show()
+
+exit()
+
+pyspark
+
+heroes = spark.createDataFrame([
+    (1, 'iron man', 1, [1]),
+    (2, 'batman', 3, [1]),
+    (3, 'captain america', 1, [1]),
+    (4, 'deadpool', 2, [1, 2]),
+    (5, 'superman', 3, [1]),
+    (6, 'harley quinn', 4, [2]),
+    (7, 'dooly', 0, [0])
+]).toDF('id', 'name', 'team', 'job')
+
+teams = spark.createDataFrame([
+    (1, 'avengers', 'marvel'),
+    (2, 'x-force', 'marvel'),
+    (3, 'justice league', 'dc'),
+    (4, 'suicide squad', 'dc'),
+    (5, 'guardians of galaxy', 'marvel')
+]).toDF('id', 'team', 'comics')
+
+jobs = spark.createDataFrame([
+    (1, 'hero'),
+    (2, 'villain')
+]).toDF('id', 'job')
+
+heroes.createOrReplaceTempView('heroes')
+teams.createOrReplaceTempView('teams')
+jobs.createOrReplaceTempView('jobs')
+
+heroes.show()
+teams.show()
+jobs.show()
+
+# heroes : id, name, team, job
+# teams : id, team, comics
+# jobs : id, job
+
+join_condition = heroes["team"] == teams["id"]
+
+# join = inner join
+heroes.join(teams, join_condition).show()
+
+spark.sql("""
+	select *
+	from heroes join teams on (heroes.team = teams.id)
+""").show()
+
+# inner join
+heroes.join(teams, join_condition, 'inner').show()
+
+# outer join = full outer join
+heroes.join(teams, join_condition, 'outer').show()
+
+# left outer
+heroes.join(teams, join_condition, 'left_outer').show()
+
+# right outer
+heroes.join(teams, join_condition, 'right_outer').show()
+
+# left_semi : 오른쪽과 일치하는 왼쪽 데이터만
+# left_anti : 오른쪽과 일치하지 않는 왼쪽 데이터만
+
+# 배열데이터로 조인
+
+from pyspark.sql.functions import array_contains
+
+heroes.join(jobs, array_contains(heroes.job, jobs.id)).show()
+
+# data type
+
+from pyspark.sql.types import *
+
+eng_columns = StructType([
+	StructField('postdate', IntegerType(), True),
+	StructField('transdate', IntegerType(), True),
+	StructField('amount', IntegerType(), True),
+	StructField('pointree', IntegerType(), True),
+	StructField('maincategory', StringType(), True),
+	StructField('subcategory', StringType(), True),
+	StructField('store', StringType(), True),
+])
+
+card = spark.read.format("csv").option("header", "true").schema(eng_columns)
+		.load("./data/card_data/csv/202010.csv")
+
+card.printSchema()
+
+from pyspark.sql.functions import col
+
+card.select(col("maincategory"), col("store")).show()
+card.select("maincategory", "store").show()
+
+
+
+csv_file = spark.read.format("csv").option("header", "true").load("./data/card_data/csv/202010.csv")
+csv_file.show()
+
+csv_file.write.format("csv").mode("overwrite").save("/tmp/csv")
+
+# 새 터미널
+hdfs dfs -ls /tmp/csv
+hdfs dfs -cat /tmp/csv/*.csv
+
+# json
+json_file = spark.read.format("json").load("./data/card_data/json/202010.json")
+
+json_file.printSchema()
+json_file.show()
+# {"list": [{"이용일": 20201001, ...}, {}, {}, ...]}
+
+from pyspark.sql.functions import explode
+
+json_temp = json_file.select(explode(col("list")).alias("temp"))
+json_temp.show()
+json_temp.printSchema()
+
+json_df = json_temp.select("temp.*")
+json_df.show()
+json_df.printSchema()
+
+json_df.write.format("json").mode("overwrite").save("/tmp/json")
+
+# 새로운 터미널에서
+hdfs dfs -ls /tmp/json
+hdfs dfs -cat /tmp/json/*.json
+
+# format(???)
+# parquet : spark 컬럼기반 데이터 저장
+# orc : hadoop 컬럼기반 데이터 저장
+# db (hive, oracle, cassandra, ...)
+# text
+# ...
+
+
+exit()
+
+# spark program 실행
+spark-submit
+
+# 설치되어있는 spark (pyspark shell) 버전과 동일하게!!!!
+pip install pyspark==4.1.0
+
+# linux도 python을 사용 -> 전역(system-wide)으로 설치하면 dependency가 충돌 날 확률이 있어서
+# 가상환경 사용을 강권
+pip config set global.break-system-packages true
+
+pip install pyspark==4.1.0
+pip install numpy
+
+vim streamingcount.py
+
+[i]
+
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import explode, split
+
+# SparkSession 생성
+spark = SparkSession.builder.master("local").appName("streamingcount").getOrCreate()
+
+# 데이터 소스: 소켓에서 스트리밍 데이터 읽기
+# 포트 1111에서 들어오는 데이터를 읽습니다.
+lines = spark.readStream \
+    .format("socket") \
+    .option("host", "localhost") \
+    .option("port", 1111) \
+    .load()
+
+# 데이터 처리: 단어 수 세기
+# 1. split 함수로 라인을 공백 기준으로 분리하여 단어 배열을 만듭니다.
+# 2. explode 함수로 배열의 각 요소를 개별 로우로 만듭니다.
+# 3. groupBy로 단어를 그룹화하고 count로 단어 수를 셉니다.
+words = lines.select(
+    explode(split(lines.value, " ")).alias("word")
+)
+
+word_counts = words.groupBy("word").count()
+
+# 결과 출력: 콘솔에 스트리밍 결과 쓰기
+# trigger(processingTime='10 seconds')는 10초마다 결과를 업데이트하라는 의미입니다.
+# outputMode("complete")는 모든 단어의 최종 집계 결과를 출력합니다.
+output = word_counts.writeStream \
+    .outputMode("complete") \
+    .format("console") \
+    .option("truncate", "false") \
+    .start()
+
+# 스트리밍 쿼리가 종료될 때까지 대기
+output.awaitTermination()
+
+[esc] :wq!
+
+
+# netcat 사용해서 서버 실행 (1111 포트)
+nc -lk 1111
+
+# 새로운 터미널 
+python streamingcount.py
+
+# nc 터미널에서
+
+# streaming 을 좀 더 자세하게 공부하고 싶다!
+# tumbling window
+# sliding window
+
+stop-all.sh
+
+hadoop + spark
++ zeppelin
+
+database (linux)
+
+
+sudo apt update && sudo apt upgrade -y
+
+sudo apt install ubuntu-desktop -y
+
+reboot
+
+
+sudo apt install openssh-server -y
+sudo apt install ssh-askpass -y
+
+ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa
+
+cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+
+chmod 600 ~/.ssh/authorized_keys
+
+# java 11
+# amazon corretto
+wget ~.tar.gz
+
+tar -xvzf amazon[tab]
+
+ln -s amazon[tab].[tab] java
+
+ls -l
+
+sudo vim ~/.bashrc
+
+[o]
+
+# java
+export JAVA_HOME=/home/big/java
+export PATH=$JAVA_HOME/bin:$PATH
+
+[esc] :wq!
+
+source ~/.bashrc
+
+java -version
+javac -version
+
+
+sudo apt install python3-pip -y
+
+sudo vim ~/.bashrc
+
+[o]
+
+# python
+alias python=python3
+
+[esc] :wq!
+
+source ~/.bashrc
+
+python -V
+pip -V
+
+# hadoop
+wget ~.tar.gz
+
+# ubuntu mirror server 변경하기
+
+tar -xvzf hadoop[tab]
+ln -s hadoop[tab] hadoop
+ls -l
+
+sudo vim ~/.bashrc
+[o]
+
+# hadoop
+export HADOOP_HOME=/home/big/hadoop
+export HADOOP_CONF_DIR=/home/big/hadoop/etc/hadoop
+export PATH=$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$PATH
+
+# hadoop user
+export HDFS_NAMENODE_USER=big
+export HDFS_DATANODE_USER=big
+export HDFS_SECONDARYNAMENODE_USER=big
+export YARN_RESOURCEMANAGER_USER=big
+export YARN_NODEMANAGER_USER=big
+
+[esc]:wq!
+source ~/.bashrc
+
+cd $HADOOP_C[tab]
+
+vim hadoop-env.sh
+
+:54
+export JAVA_HOME=/home/big/java
+
+:62
+export HADOOP_HOME=/home/big/hadoop
+
+:72
+
+:202
+export HADOOP_PID_DIR=$HADOOP_HOME/pids
+
+[esc]:wq!
+
+vim core-site.xml
+
+<property>
+	<name>fs.defaultFS</name>
+	<value>hdfs://localhost:8020</value>
+</property>
+
+vim hdfs-site.xml
+
+
+<property>
+	<name>dfs.replication</name>
+	<value>1</value>
+</property>
+<property>
+	<name>dfs.namenode.name.dir</name>
+	<value>/home/big/hadoop/namenode_dir</value>
+</property>
+<property>
+	<name>dfs.datanode.data.dir</name>
+	<value>/home/big/hadoop/datanode_dir</value>
+</property>
+
+vim mapred-site.xml
+
+<property>
+	<name>mapreduce.framework.name</name>
+	<value>yarn</value>
+</property>
+
+cd
+
+hdfs namenode -format
+hdfs datanode -format
+
+start-all.sh
+
+jps
+
+hdfs dfsadmin -report
+
+# spark
+# 3.5.7 without hadoop (zeppelin 0.12.0과 호환성을 위해)
+wget ~.tgz
+
+tar -xvzf spark[tab]
+
+ln -s spark[tab] spark
+
+ls -l
+
+sudo vim ~/.bashrc
+
+[o]
+
+# spark
+export SPARK_HOME=/home/big/spark
+export PATH=$PATH:$SPARK_HOME/bin:$SPARK_HOME/sbin
+export SPARK_DIST_CLASSPATH=$($HADOOP_HOME/bin/hadoop classpath)
+
+[esc]:wq!
+source ~/.bashrc
+
+cd $SPARK_HOME/conf
+
+cp workers.template workers
+
+cp spark-env.sh.template spark-env.sh
+
+vim spark-env.sh
+[o]
+
+export JAVA_HOME=/home/big/java
+export HADOOP_HOME=/home/big/hadoop
+export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
+export YARN_CONF_DIR=$HADOOP_HOME/etc/hadoop
+export SPARK_DIST_CLASSPATH=$($HADOOP_HOME/bin/hadoop classpath)
+
+export PYSPARK_PYTHON=/usr/bin/python3
+export PYSPARK_DRIVER_PYTHON=/usr/bin/python3
+
+[esc]:wq!
+
+cp spark-defaults.conf.template spark-defaults.conf
+
+vim spark-defaults.conf
+[o]
+spark.master					yarn
+[esc]:wq!
+
+cd
+pyspark
+
+test = [1, 2, 3, 4, 5]
+test_rdd = sc.parallelize(test)
+test_rdd.collect()
+
+exit()
+
+# zeppelin
+# netinst -> 최소 설치
+wget ~.tgz
+
+tar -xvzf zeppelin[tab]
+
+ln -s zeppelin[tab] zeppelin
+
+ls -l
+
+sudo vim ~/.bashrc
+
+[o]
+# zeppelin
+export ZEPPELIN_HOME=/home/big/zeppelin
+export PATH=$PATH:$ZEPPELIN_HOME/bin
+[esc]:wq!
+
+source ~/.bashrc
+
+cd $ZEPPELIN_HOME/conf
+ls
+
+# log + for + java -> log4j
+
+cp zeppelin-env.sh.template zeppelin-env.sh
+
+vim zeppelin-env.sh
+
+:19
+export JAVA_HOME=/home/big/java
+
+:80
+export SPARK_HOME=/home/big/spark
+
+:90
+export HADOOP_CONF_DIR=/home/big/hadoop/etc/hadoop
+
+[esc] :wq!
+
+cp zeppelin-site.xml.template zeppelin-site.xml
+
+vim zeppelin-site.xml
+
+# 127.0.0.1 -> 0.0.0.0 변경!!
+<name>zeppelin.server.add</name>
+<value>0.0.0.0</value>
+
+# 8080 -> 9876
+<name>zeppelin.server.port</name>
+<value>9876</value>
+
+[esc] :wq!
+
+cd
+
+zeppelin-daemon.sh start
+
+# localhost:9876
+
+zeppelin-daemon.sh stop
+
+stop-all.sh
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

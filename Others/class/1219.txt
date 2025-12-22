@@ -268,26 +268,12 @@ elasticsearch				opensearch service
 
 by gemini
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Python
+Machine Learning
+DataBase
+Data Engineering -> Linux (Ubuntu) Hadoop + Spark
+			- RDD / DataFrame
+		    AWS EC2 instance (OS)
 
 
 

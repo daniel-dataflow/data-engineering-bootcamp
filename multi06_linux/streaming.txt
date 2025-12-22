@@ -1,0 +1,35 @@
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import explode, split
+
+# SparkSession 생성
+spark = SparkSession.builder.master("local").appName("streamingcount").getOrCreate()
+
+# 데이터 소스: 소켓에서 스트리밍 데이터 읽기
+# 포트 1111에서 들어오는 데이터를 읽습니다.
+lines = spark.readStream \
+    .format("socket") \
+    .option("host", "localhost") \
+    .option("port", 1111) \
+    .load()
+
+# 데이터 처리: 단어 수 세기
+# 1. split 함수로 라인을 공백 기준으로 분리하여 단어 배열을 만듭니다.
+# 2. explode 함수로 배열의 각 요소를 개별 로우로 만듭니다.
+# 3. groupBy로 단어를 그룹화하고 count로 단어 수를 셉니다.
+words = lines.select(
+    explode(split(lines.value, " ")).alias("word")
+)
+
+word_counts = words.groupBy("word").count()
+
+# 결과 출력: 콘솔에 스트리밍 결과 쓰기
+# trigger(processingTime='10 seconds')는 10초마다 결과를 업데이트하라는 의미입니다.
+# outputMode("complete")는 모든 단어의 최종 집계 결과를 출력합니다.
+output = word_counts.writeStream \
+    .outputMode("complete") \
+    .format("console") \
+    .option("truncate", "false") \
+    .start()
+
+# 스트리밍 쿼리가 종료될 때까지 대기
+output.awaitTermination()
