@@ -1,0 +1,103 @@
+Client 모드와 Cluster 모드의 차이는, Spark 애플리케이션 드라이버(Driver)가 어디에서 실행되느냐를 기준으로 이해하는 것이 가장 정확합니다. Zeppelin은 Spark를 직접 실행하지 않고, Spark 인터프리터를 통해 spark-submit을 호출하므로 Spark 실행 모드의 차이가 그대로 반영됩니다.
+
+1. 핵심 차이 요약
+| 구분                   | Client Mode                  | Cluster Mode              |
+| -------------------- | ---------------------------- | ------------------------- |
+| Driver 위치            | Zeppelin 서버 노드               | YARN / Kubernetes 클러스터 내부 |
+| Zeppelin ↔ Driver 연결 | 직접 연결                        | Resource Manager를 통해 간접   |
+| Notebook 세션 안정성      | 낮음 (Zeppelin 종료 시 Driver 종료) | 높음                        |
+| 대화형 분석               | 매우 적합                        | 제한적                       |
+| 대규모 배치/장시간 작업        | 부적합                          | 적합                        |
+| 로그 확인                | 즉시 확인 가능                     | 별도 로그 조회 필요               |
+
+
+
+
+
+2. Client Mode 상세 설명
+
+[Browser]
+   ↓
+[Zeppelin Server + Spark Driver]
+   ↓
+[Cluster Executors]
+
+- Spark Driver가 Zeppelin 서버 프로세스 내부에서 실행
+- Executor는 클러스터 노드에서 실행
+- Zeppelin과 Driver가 동일 JVM 또는 동일 노드에서 동작
+
+특징
+
+- Notebook 실행 결과가 즉시 반환
+- 디버깅, 로그 확인이 매우 편리
+- Zeppelin 종료/재시작 시 실행 중인 Spark Job도 종료
+
+장점
+
+- 대화형 분석(EDA)에 최적
+- 개발 및 테스트에 적합
+- Spark UI 접근이 간단
+
+단점
+
+- Zeppelin 서버에 메모리/CPU 부하 집중
+- 장시간 Job에 취약
+- 다수 사용자 환경에서 불안정
+
+권장 사용 사례
+
+- 데이터 탐색
+- 알고리즘 검증
+- 쿼리 테스트
+- 개인 분석 환경
+
+
+
+
+3. Cluster Mode 상세 설명
+
+[Browser]
+   ↓
+[Zeppelin Server]
+   ↓ (submit)
+[Resource Manager]
+   ↓
+[Cluster Node (Driver + Executors)]
+
+- Spark Driver가 클러스터 내부 노드에서 실행
+- Zeppelin은 Job 제출자 역할만 수행
+- Driver는 Zeppelin과 독립적으로 생존
+
+특징
+
+- Zeppelin 재시작과 무관하게 Job 지속
+- 대규모 리소스 사용 가능
+- 네트워크 지연으로 인터랙션은 상대적으로 느림
+
+장점
+
+- 운영 환경에 적합
+- 대용량 데이터 처리 안정적
+- 서버 장애에 강함
+
+단점
+
+- 로그 확인 불편
+- Notebook 인터랙션 제한
+- Spark UI 접근이 번거로움
+
+권장 사용 사례
+
+- 정기 배치 작업
+- 대규모 ETL
+- 모델 학습 (장시간)
+- 운영 파이프라인
+
+
+
+4. 실무 팁
+
+- 개발 환경: Client Mode
+- 운영 환경: Cluster Mode
+- 동일 Zeppelin에서 Interpreter를 분리하여 혼용 가능
+- 다중 사용자 환경에서는 Client Mode 사용 시 리소스 제한 필수

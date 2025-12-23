@@ -1,0 +1,386 @@
+QR !!
+
+
+# github 에서 data download
+wget https://github.com/dongheon-dev/data/archive/refs/heads/master.zip
+
+# 압축 해제
+unzip master.zip
+
+mv data-master data
+
+hdfs dfs -mkdir -p /user/big
+hdfs dfs -put ~/data /user/big/data
+hdfs dfs -ls /user/big/data
+
+
+
+
+
+pyspark
+- window function
+- join
+- streaming
+- ml
+
+zeppelin notebook
+
+start-all.sh
+
+zeppelin-daemon.sh start
+
+# localhost:9876
+# 오른쪽 상단에 anonymous -> interpreter -> spark [edit]
+
+spark.master -> yarn
+spark.submit.deployMode -> client (cluster)
+
+PYSPARK_PYTHON	-> python3
+PYSPARK_DRIVER_PYTHON -> python3
+
+# [save] 꼭!
+
+# 왼쪽 위 메뉴  notebook -> create new note
+
+%pyspark
+
+test = [1,2, 3, 4, 5]
+test_rdd = sc.parallelize(test)
+test_rdd.collect()
+
+%pyspark
+
+card = spark.read.format("csv").option("header", "true").option("inferSchema", "true")
+		.load("./data/card_data/csv/202010.csv")
+
+card.createOrReplaceTempView("card")
+
+%sql
+select * from card
+
+zeppelin-daemon.sh stop
+
+# mysql
+sudo apt install mysql-server -y
+sudo apt install mysql-client -y
+
+sudo service mysql start
+sudo systemctl enable mysql
+sudo service mysql status
+
+sudo mysql -u root
+
+use mysql;
+
+alter user 'root'@'localhost' identified with mysql_native_password by '1234';
+
+create user 'root'@'%' identified by '1234';
+
+grant all privileges on *.* to 'root'@'localhost' with grant option;
+grant all privileges on *.* to 'root'@'%' with grant option;
+
+flush privileges;
+
+select user, host from user;
+
+create table test(id int, name varchar(30));
+insert into test values(1, 'mysql');
+
+exit;
+
+# connector/j -> java connector
+wget https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-j_9.5.0-1ubuntu24.04_all.deb
+
+sudo dpkg -i mysql[tab]
+cd /usr/share/java/
+ls
+
+cd $SPARK_HOME/conf
+
+vim spark-defaults.conf
+[o]
+
+spark.jars			/usr/share/java/mysql-connector-j-9.5.0.jar
+
+[esc] :wq!
+
+cd
+
+pyspark
+
+user = "root"
+password = "1234"
+url = "jdbc:mysql://localhost:3306/mysql"
+driver = "com.mysql.cj.jdbc.Driver"
+dbtable = "test"
+
+test_df = spark.read.format("jdbc").option("user", user).option("password", password)
+				.option("url", url).option("driver", driver)
+				.option("dbtable", dbtable).load()
+
+test_df.show()
+
+test_insert = [(2, "python-mysql")]
+insert_df = sc.parallelize(test_insert).toDF(["id", "name"])
+insert_df.show()
+
+insert_df.write.jdbc(url, dbtable, "append", properties={"driver": driver, "user": user, "password": password})
+
+test_df.show()
+
+exit()
+
+# postgresql
+
+sudo apt insteall postgresql -y
+
+# sudo psql -u postgres
+sudo -u postgres psql
+
+exit
+
+sudo vim /etc/postgresql/16/main/pg_hba.conf
+
+local	all	postgres		trust
+
+local	all	all			trust
+host	all	all	127.0.0.1/32	trust
+host	all	all	::1/128		trust
+
+local	replication	all			trust
+host	replication	all	127.0.0.1/32	trust
+host	replication	all	::1/128		trust
+
+[esc] :wq!
+
+sudo service postgresql restart
+# sudo systemctl restart postgresql
+
+sudo serivce postgresql status
+
+psql -U postgres
+
+create role big with login;
+
+alter role big with superuser;
+
+create database big with owner = big;
+
+exit
+
+psql
+# psql -U big
+# big 이라는 유저(계정)로 big 이라는 database에 접속
+
+create table test (id integer, name varchar(30));
+
+insert into test values (3, 'postgres');
+
+exit;
+# \q
+
+# psqljdbc
+wget https://jdbc.postgresql.org/download/postgresql-42.7.8.jar
+ls
+# 만일, 필요한 jar 파일이 home directory에 있는게 불편하면 -> 
+# cd spark/jars
+
+vim ~/spark/conf/spark-defaults.conf
+
+spark.jars		/usr/share/java/mysql-connector-j-9.5.0.jar,/home/big/postgresql-42.7.8.jar
+
+[esc] :wq!
+
+pyspark
+
+jdbc_url = "jdbc:postgresql://localhost:5432/big"
+properties = {
+	"user": "big",
+	"password": "",
+	"driver": "org.postgresql.Driver"
+}
+
+# spark.read.format("jdbc").option()....load()
+postgre_df = spark.read.jdbc(url=jdbc_url, table="test", properties=properties)
+
+postgre_df.show()
+
+insert_df = sc.parallelize([(4, "python-postgres")]).toDF(["id", "name"])
+insert_df.show()
+
+insert_df.write.jdbc(
+	url = jdbc_url,
+	table="test",
+	mode="append",
+	properties=properties
+)
+
+postgre_df.show()
+
+exit()
+
+# mongodb
+
+sudo service mongod status
+sudo service mongod start
+sudo systemctl enable mongod
+
+mongosh
+
+db.test.insertOne({"id": 5, "name": "mongodb"})
+db.test.find()
+
+exit
+
+# mvnrepository.com
+# mongo spark connector
+
+# groupId : artifactId : version
+org.mongodb.spark:mongo-spark-connector_2.12:3.0.2
+
+vim ~/spark/conf/spark-defaults.conf
+[o]
+spark.jars.packages			org.mongodb.spark:mongo-spark-connector_2.12:3.0.2
+
+spark.mongodb.input.uri			mongodb://localhost/test
+spark.mongodb.output.uri		mongodb://localhost/test
+
+[esc] :wq!
+
+pyspark
+
+
+test_df = spark.read.format("mongo").option("collection", "test").load()
+test_df.show()
+
+insert_df = spark.createDataFrame([(6, "python-mongo")], ["id", "name"])
+insert_df.show()
+insert_df.write.format("mongo").option("collection", "test").mode("append").save()
+
+test_df.show()
+
+# mongosh
+# db.test.find()
+db.test.drop()
+
+exit()
+
+
+# redis
+sudo apt install redis
+
+sudo service redis-server start
+# sudo systemctl enable redis-server
+sudo service redis-server status
+
+
+redis-cli
+
+#  spark-redis는 hash로 불러온다!!!!
+hset test:7 name redis
+
+exit
+
+# 외부 접속 허용
+sudo vim /etc/redis/redis.conf
+
+:87
+bind 0.0.0.0 ::1
+
+[esc] :wq!
+
+sudo service redis-server restart
+sudo service redis-server status
+
+# mvnrepository.com
+# spark redis
+
+com.redislabs:spark-redis_2.12:3.1.0
+
+vim ~/spark/conf/spark-defaults.conf
+
+spark.jars.packages		mongo...,com.redislabs:spark-redis_2.12:3.1.0
+
+spark.redis.host		localhost
+spark.redis.port		6379
+
+[esc] :wq!
+
+pyspark
+
+redis_df = spark.read.format("org.apache.spark.sql.redis").option("table","test")
+			.option("key.column", "id").option("infer.schema","true").load()
+redis_df.show()
+
+insert_df = spark.createDataFrame([(8, "python-redis")],["id", "name"])
+insert_df.show()
+insert_df.write.format("org.apache.spark.sql.redis").option("table","test").option("key.column","id").mode("append").save()
+
+redis_df.show()
+
+exit()
+
+zeppelin-daemon.sh start
+
+# localhost:9876
+
+%pyspark
+
+user = "root"
+password = "1234"
+url = "jdbc:mysql://localhost:3306/mysql"
+driver = "com.mysql.cj.jdbc.Driver"
+dbtable = "test"
+
+mysql_df = spark.read.format("jdbc").options(user=user, password=password, url=url, driver=driver, dbtable=dbtable).load()
+mysql_df.show()
+
+%pyspark
+
+jdbc_url = "jdbc:postgresql://localhost:5432/big"
+properties = {
+	"user": "big",
+	"password": "",
+	"driver": "org.postgresql.Driver"
+}
+postgre_df = spark.read.jdbc(url=jdbc_url, table="test", properties=proerties)
+postgre_df.show()
+
+%pyspark
+
+mongo_df = spark.read.format("mongo").option("collection", "test").load()
+mongo_df = mongo_df.drop("_id")
+mongo_df.show()
+
+%pyspark
+
+redis_df = spark.read.format("org.apache.spark.sql.redis").option("table","test")
+			.option("key.column", "id").option("infer.schema","true").load()
+redis_df.show()
+
+%pyspark
+
+result_df = mysql_df.union(postgre_df).union(mongo_df).union(redis_df.select("id", "name"))
+
+result_df.show()
+
+
+
+reflection
+
+zeppelin-daemon.sh stop
+
+stop-all.sh
+
+
+reflection
+
+
+
+
+
+
+
+
+
+
