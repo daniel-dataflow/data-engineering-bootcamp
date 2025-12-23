@@ -343,7 +343,7 @@ properties = {
 	"password": "",
 	"driver": "org.postgresql.Driver"
 }
-postgre_df = spark.read.jdbc(url=jdbc_url, table="test", properties=proerties)
+postgre_df = spark.read.jdbc(url=jdbc_url, table="test", properties=properties)
 postgre_df.show()
 
 %pyspark
