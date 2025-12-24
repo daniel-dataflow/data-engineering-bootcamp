@@ -408,7 +408,8 @@ task01 >> task02
 
 
 
-reflection
+airflow
+-> DAG => task ==> pipeline
 
 
 
