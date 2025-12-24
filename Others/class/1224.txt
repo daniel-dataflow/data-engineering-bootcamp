@@ -1,0 +1,430 @@
+QR!!
+
+# 전역에서 설정하기
+pip config set global.break-system-packages true
+
+# 만일 설치하다가 dependency version 문제로 인해 설치가 중단된다면!
+# 해당 library만 따로 pip install로 설치 (에러 메세지에서 어느 버전부터 가능한지 확인후, 해당 버전으로)
+# 이후에 다시 airflow 설치
+pip install apache-airflow
+
+sudo vim ~/.bashrc
+
+# airflow
+export AIRFLOW_HOME=/home/big/airflow
+export PATH=$PATH:/home/big/.local/bin
+
+[esc] :wq!
+
+source ~/.bashrc
+
+# 첫번째 방법
+airflow standalone
+
+# localhost:8080
+# admin / ~~
+
+# 세번째 방법
+cd airflow
+ls
+vim airflow.cfg
+
+:69
+# 계정이름 : 권한
+simple_auth_manager_users = root:admin
+[esc] :wq!
+
+vim simple_auth_manager_passwords.json.generated
+{"root": "1234"}
+[esc] :wq!
+
+airflow api-server
+# localhost:8080
+# root / 1234
+
+# 네번째 방법 - login 없이 사용
+vim airflow.cfg
+
+:75
+simple_auth_manager_all_admins = True
+[esc] :wq!
+
+airflow api-server
+# localhost:8080
+
+--------
+
+# 설정
+vim airflow.cfg
+
+:7
+
+:43
+default_timezone = Asia/Seoul
+
+:51
+
+:149
+load_examples = False
+
+:463
+
+:641
+
+:1246
+port = 9877
+
+:2161
+refresh_interval = 60
+
+[esc] :wq!
+
+
+# 이전 설정 삭제
+rm airflow.db
+
+# 설정에 맞게 db 다시 생성
+airflow db migrate
+
+# 첫번째 터미널 : browser (gui)
+airflow api-server
+# 두번째 터미널 : dag와 관련된 job
+airflow dag-processor
+# 세번째 터미널 : 전반적인 조율 
+airflow scheduler
+
+# 새로운 터미널 (작업)
+cd airflow
+
+mkdir dags
+cd dags
+
+vim air01.py
+
+from airflow.sdk import DAG
+from pendulum import yesterday
+from airflow.providers.standard.operators.empty import EmptyOperator
+
+
+with DAG(
+	dag_id = "air01",
+	start_date = yesterday(),
+	schedule = None
+):
+	EmptyOperator(task_id="task")
+
+[esc] :wq!
+# localhost:9877
+
+vim air02.py
+
+from airflow.sdk import DAG
+from pendulum import yesterday
+from airflow.providers.standard.operators.empty import EmptyOperator
+
+
+dag = DAG(
+	dag_id = "air02",
+	start_date = yesterday(),
+	schedule = None
+)
+
+EmptyOperator(task_id="task", dag=dag)
+
+[esc] :wq!
+
+vim air03.py
+
+from airflow.sdk import dag
+from pendulum import yesterday
+from airflow.providers.standard.operators.empty import EmptyOperator
+
+
+@dag(start_date=yesterday(), schedule=None)
+def air03():
+	EmptyOperator(task_id="task")
+
+
+air03()
+
+[esc] :wq!
+
+
+vim air04.py
+
+from airflow.sdk import DAG
+from pendulum import yesterday
+from airflow.providers.standard.operators.empty import EmptyOperator
+
+
+
+with DAG(
+	dag_id="air04",
+	start_date = yesterday(),
+	schedule = None
+) as dag:
+	task01 = EmptyOperator(task_id = "task01")
+	task02 = EmptyOperator(task_id = "task02")
+
+task01 >> task02
+# task01은 task02의 upstream
+# task02는 task01의 downstream
+
+
+vim air05.py
+
+from airflow.sdk import DAG
+from pendulum import yesterday
+from airflow.providers.standard.operators.empty import EmptyOperator
+
+
+with DAG(
+	dag_id = "air05",
+	start_date = yesterday(),
+	schedule = None
+) as dag:
+	task01 = EmptyOperator(task_id="task01")
+	task02 = EmptyOperator(task_id="task02")
+	task03 = EmptyOperator(task_id="task03")
+
+# task01 << task02 << task03
+task03 << task02 >> task01
+
+
+[esc] :wq!
+
+vim air06.py
+
+from airflow.sdk import DAG
+from pendulum import yesterday
+from airflow.providers.standard.operators.empty import EmptyOperator
+
+
+with DAG(
+	dag_id="air06",
+	start_date = yesterday(),
+	schedule = None
+) as dag:
+	task01 = EmptyOperator(task_id="task01")
+	task02 = EmptyOperator(task_id="task02")
+	task03 = EmptyOperator(task_id="task03")
+
+
+# task01 >> task02
+task01.set_downstream(task02)
+# task03 << task02
+task03.set_upstream(task02)
+
+vim air07.py
+
+from airflow.sdk import DAG
+from pendulum import yesterday
+from airflow.providers.standard.operators.empty import EmptyOperator
+
+
+with DAG(
+	dag_id = "air07",
+	start_date = yesterday(),
+	schedule = None
+) as dag:
+
+	task01 = EmptyOperator(task_id="task01")
+	task02 = EmptyOperator(task_id="task02")
+	task03 = EmptyOperator(task_id="task03")
+	task04 = EmptyOperator(task_id="task04")
+	task05 = EmptyOperator(task_id="task05")
+
+
+[task01, task02] >> task03
+[task01, task02] >> task04
+task05 << [task03, task04]
+
+[esc] :wq!
+
+vim air08.py
+
+from airflow.sdk import DAG, cross_downstream
+from pendulum import yesterday
+from airflow.providers.standard.operators.empty import EmptyOperator
+
+
+with DAG(
+	dag_id = "air08",
+	start_date = yesterday(),
+	schedule = None
+) as dag:
+	
+	task01 = EmptyOperator(task_id="task01")
+	task02 = EmptyOperator(task_id="task02")
+	task03 = EmptyOperator(task_id="task03")
+	task04 = EmptyOperator(task_id="task04")
+	task05 = EmptyOperator(task_id="task05")	
+
+
+cross_downstream([task01, task02], [task03, task04])
+cross_downstream([task03, task04], task05)
+
+[esc] :wq!
+
+vim air09.py
+
+from airflow.sdk import DAG, chain
+from pendulum import yesterday
+from airflow.providers.standard.operators.empty import EmptyOperator
+
+
+with DAG(
+	dag_id = "air09",
+	start_date = yesterday(),
+	schedule = None
+) as dag:
+	
+	task01 = EmptyOperator(task_id="task01")
+	task02 = EmptyOperator(task_id="task02")
+	task03 = EmptyOperator(task_id="task03")
+	task04 = EmptyOperator(task_id="task04")
+	task05 = EmptyOperator(task_id="task05")	
+
+
+chain([task01, task02], [task03, task04], task05)
+
+[esc] :wq!
+
+# time window
+# crontab.guru
+
+
+crontab
+
+
+
+
+vim air10.py
+
+from airflow.sdk import DAG
+from pendulum import yesterday, tomorrow
+from datetime import timedelta
+from airflow.providers.standard.operators.empty import EmptyOperator
+
+
+with DAG(
+	dag_id = "air10",
+	start_date = yesterday(),
+	end_date = tomorrow(),
+	# schedule = "0 * * * *",
+	# schedule = timedelta(hours=1),
+	schedule = "@hourly",
+	catchup = True
+) as dag:
+	task = EmptyOperator(task_id="task")
+
+
+
+
+# crontab 연습!
+crontab -e
+[o]
+* * * * * echo "$(date)" >> /home/big/test.txt
+
+[esc ] :wq!
+crontab -l
+
+tail -f /home/big/test.txt
+# m h dom mon dow 
+
+vim air11.py
+
+
+from airflow.sdk import DAG, task_group
+from pendulum import yesterday
+from airflow.providers.standard.operators.empty import EmptyOperator
+
+
+with DAG(
+	dag_id="air11",
+	start_date = yesterday(),
+	schedule = None
+) as dag:
+
+	@task_group
+	def group01():
+		task01 = EmptyOperator(task_id="task01")
+		task02 = EmptyOperator(task_id = "task02")
+
+	
+	task03 = EmptyOperator(task_id="task03")
+
+	group01() >> task03
+
+[esc] :wq!
+
+
+vim air12.py
+
+from airflow.sdk import DAG, Label
+from pendulum import yesterday
+from airflow.providers.stndard.operators.empty import EmptyOperator
+
+with DAG(
+	dag_id = "air12",
+	start_date = yesterday(),
+	schedule = None
+) as dag:
+	task01 = EmptyOperator(task_id="수집")
+	task02 = EmptyOperator(task_id="저장")
+	task03 = EmptyOperator(task_id="분석")
+	task04 = EmptyOperator(task_id="결측치제거")
+	task05 = EmptyOperator(task_id="결과")
+
+	task01 >> task02 >> task03
+	task03 >> task05
+	task03 >> Label("결측치존재") >> task04 >> task05
+
+[esc] :wq!
+
+vim air13.py
+
+from airflow.sdk import DAG
+from pendulum import yesterday
+from airflow.providers.standard.operators.python import PythonOperator
+from airflow.providers.standard.operators.bash import BashOperator
+
+
+def hello():
+	print("hello, python!")
+
+with DAG( 
+	dag_id = "air13",
+	start_date = yesterday(),
+	schedule = None
+) as dag:
+
+	task01 = PythonOperator(task_id="task01",
+				python_callable=hello)
+	task02 = BashOperator(task_id="task02",
+				bash_command="echo 'hello, bash!' ")
+
+task01 >> task02
+
+
+
+reflection
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
