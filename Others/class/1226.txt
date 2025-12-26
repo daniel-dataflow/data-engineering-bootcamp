@@ -312,6 +312,17 @@ ps -ef | grep airflow
 # kill {scheduler}
 # kill {dag-processor}
 
+reflection | project 주제 선정
+
+airflow + spark -> pip install apache-airflow-providers-apache-spark
+airflow + hadoop -> pip install apache-airflow-providers-apache-hdfs
+=> conn_id
+
+
+
+
+
+
 
 
 
