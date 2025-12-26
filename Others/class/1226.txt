@@ -1,0 +1,325 @@
+QR !!
+
+
+hadoop + spark -> 적재 + 가공(처리)
+zeepelin (notebook)
+
+Database on linux
++ connector/j -> spark가 jvm기반
+
+pipeline 구축
+-> airflow
+
+# 원래대로라면
+airflow api-server
+airflow scheduler
+airflow dag-processor
+
+# nohup / &
+nohup airflow api-server &
+nohup airflow scheduler &
+nohup airflow dag-processor &
+
+# nohup / &
+mkdir airflow_logs
+
+nohup airflow api-server >> ~/airflow_logs/api-server.log &
+nohup airflow scheduler >> ~/airflow_logs/scheduler.log &
+nohup airflow dag-processor >> ~/airflow_logs/dag-processor.log &
+
+# localhost:8080
+
+cd airflow/dags
+ls
+vim air14.py
+
+from airflow.sdk import DAG, task
+from pendulum import yesterday
+from airflow.providers.standard.operators.python import PythonOperator
+from airflow.providers.standard.operators.bash import BashOperator
+
+
+@task(task_id="task01")
+def hello01():
+	print("hello, python!")
+
+
+@task.bash(task_id="task02")
+def hello02():
+	return "echo 'hello, bash!' "
+
+
+
+with DAG(
+	dag_id="air14",
+	start_date = yesterday(),
+	schedule = None
+) as dag:
+
+	hello01() >> hello02()
+
+vim air15.py
+
+from airflow.sdk import dag, task
+from pendulum import yesterday
+from pprint import pprint
+
+
+@dag(dag_id="air15", start_date=yesterday(), schedule=None)
+def main():
+
+	@task(task_id="task01", do_xcom_push=True)
+	def get_context(**kwargs):
+		pprint(kwargs)
+		return str(kwargs)
+
+	@task.bash(task_id="task02")
+	def print_context():
+		return """
+			echo '{{ task_instance.xcom_pull(task_ids="task01") }}'  >> ~/context.json
+			"""
+
+	get_context() >> print_context()
+
+main()
+
+
+
+
+vim air16.py
+
+from airflow.sdk import DAG
+from airflow.providers.standard.operators.empty import EmptyOperator
+
+
+with DAG("dag01", schedule=None):
+	task01 = EmptyOperator(task_id = "task01")
+	task02 = EmptyOperator(task_id = "task02")
+	
+	task01 >> task02
+
+
+with DAG("dag02", schedule=None):
+	task03 = EmptyOperator(task_id = "task03")
+	task04 = EmptyOperator(task_id = "task04")
+
+	task03 >> task04
+
+[esc]:wq!
+
+
+# connection id : fs_default
+# connection type : File (path)
+# 추가 필드 json : {"path": "/"}
+
+pip install apache-airflow-providers-standard
+
+
+vim air17.py
+
+from airflow.sdk import DAG, task
+from pendulum import yesterday
+from airflow.providers.standard.sensors.filesystem import FileSensor
+
+
+@task(do_xcom_push=True, multiple_outputs=True)
+def python_task():
+	crawling = {"key01": "value01", "key02": "value02"}
+	return crawling
+
+@task.bash
+def bash_task():
+	return """
+		echo '{{ task_instance.xcom_pull(task_ids="python_task") }}' >> ~/dummy.json
+	"""
+
+@task.bash
+def result_task():
+	return " echo 'success' "
+
+
+with DAG(
+	dag_id="air17",
+	start_date=yesterday(),
+	schedule=None
+)as dag:
+	exists_task = FileSensor(task_id="exists_task",
+				filepath="/home/big/dummy.json",
+				fs_conn_id="fs_default"
+				)
+
+	python_task() >> [exists_task, bash_task()] >> result_task()
+
+[esc]:wq!
+
+
+# sensor poking : 해당 경로에 파일이 존재하는지 주기적으로 확인
+
+# spark와 연결
+cd spark
+cat RELEASE
+# spark 3.5.7 확인!!!!!
+cd
+pip install pyspark==3.5.7
+
+pip install apache-airflow-providers-common-compat
+pip install grpcio-status
+
+pip install apache-airflow-providers-apache-spark
+
+# airflow 종료 후 다시시작 (install 한 provider 추가)
+ps -ef | grep airflow
+
+# kill {airflow api_server pid}
+# kill {airflow scheduler pid}
+# kill {airflow dag-processor pid}
+
+# hadoop과 연결
+pip install hdfs
+pip install pandas
+
+pip install apache-airflow-providers-apache-hdfs
+# if krb5-config --libs gssapi error!
+# sudo apt install libkrb5-dev -y
+
+
+vim dbconnect.py
+
+from pyspark.sql import SparkSession
+
+
+spark = SparkSession.builder.master("yarn").appName("airflow using spark").getOrCreate()
+
+# mysql
+user = "root"
+password = "1234"
+url = "jdbc:mysql://localhost:3306/mysql"
+driver = "com.mysql.cj.jdbc.Driver"
+dbtable = "test"
+
+mysql_df = spark.read.format("jdbc")
+		.options(user=user, password=password, url=url, driver=driver, dbtable=dbtable).load()
+
+# postgre
+jdbc_url = "jdbc:postgresql://localhost:5432/big"
+properties = {
+	"user": "big",
+	"password": "",
+	"driver": "org.postgresql.Driver"
+}
+
+postgre_df = spark.read.jdbc(url=jdbc_url, table="test", properties=properties)
+
+
+# mongo
+mongo_df = spark.read.format("mongo").option("collection", "test").load()
+mongo_df = mongo_df.drop("_id")
+
+# redis
+redis_df = spark.read.format("org.apache.spark.sql.redis").option("table", "test")
+				.option("key.column", "id").option("infer.schema", "true").load()
+
+
+# union
+result_df = mysql_df.union(postgre_df).union(mongo_df).union(redis_df.select("id", "name"))
+
+# hadoop에 저장
+result_df.write.format("json").mode("overwrite").save("/result")
+
+[esc] :wq!
+
+vim air18.py
+
+from airflow.sdk import DAG
+from pendulum import yesterday
+from airflow.providers.apache.spark.operators.spark_submit import SparkSubmitOperator
+
+
+with DAG(
+	dag_id = "air18",
+	start_date = yesterday(),
+	schedule = None
+)as dag:
+	spark_submit_task = SparkSubmitOperator(
+		task_id="spark_submit_task",
+		application = "/home/big/airflow/dags/dbconnect.py",
+		conn_id="spark_default"
+	)
+	
+	spark_submit_task
+
+[esc]:wq!
+
+# airflow start
+nohup airflow api-server >> ~/airflow_logs/api-server.log &
+nohup airflow scheduler >> ~/airflow_logs/scheduler.log &
+nohup airflow dag-processor >> ~/airflow_logs/dag-processor.log &
+
+# hadoop start
+start-all.sh
+hdfs dfsadmin -report
+hdfs dfs -ls /
+
+# localhost:8080
+# 관리자 -> 커넥션들 -> 커넥션 추가
+# connection id : spark_default / connection type : spark / host : yarn
+
+hdfs dfs -ls /result
+
+hdfs dfs -cat /result/part-0000*
+
+# 삭제
+hdfs dfs -rm -r /result
+
+vim air19.py
+
+from airflow.sdk import DAG
+from pendulum import yesterday
+from airflow.providers.apache.spark.operators.spark_submit import SparkSubmitOperator
+from airflow.providers.apache.hdfs.sensors.web_hdfs import WebHdfsSensor
+
+
+with DAG(
+	dag_id="air19",
+	start_date=yesterday(),
+	schedule=None
+)as dag:
+	spark_submit_task = SparkSubmitOperator(
+		task_id="spark_submit_task",
+		application = "/home/big/airflow/dags/dbconnect.py",
+		conn_id="spark_default"
+	)
+
+	hdfs_sensor = WebHdfsSensor(
+		task_id="hdfs_sensor",
+		webhdfs_conn_id="webhdfs_default",
+		filepath="/result"
+	)
+	
+	spark_submit_task
+	hdfs_sensor
+
+# 관리자 -> 커넥션들 -> 커넥션 추가
+#  connection id : webhdfs_default / connection 유형 : Apache WebHDFS / host : localhost, port : 9870
+
+
+# hadoop 종료
+stop-all.sh
+
+# airflow 종료
+ps -ef | grep airflow
+# kill {api-server}
+# kill {scheduler}
+# kill {dag-processor}
+
+
+
+
+
+
+
+
+
+
+
+
