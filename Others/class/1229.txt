@@ -1,0 +1,527 @@
+QR !!!
+
+매니저님 슬랙 확인!!!!
+
+Data Engineer
+- Linux
+- Hadoop (HDFS) + Spark
+- Airflow
+- Kafka (Message Queue)
+
+big
+big
+big
+1234
+1234
+
+sudo apt update
+
+sudo apt upgrade -y
+
+sudo apt install ubuntu-desktop -y
+
+reboot
+
+sudo apt install python3-pip -y
+
+"apache kafka"
+
+cd
+
+wget ~~~.tgz
+
+# 2.13 : scala
+# 4.1.1 : kafka
+
+
+
+# 용어 정리
+
+Broker : Message Broker (= server, queue) -> message(topic) 
+
+Producer : (client) -> publisher (message 발행)
+Consumer : (client) -> subscriber (message 구독)
+
+Topic : (= message) 논리적인 이름
+- partition 단위로 구성
+
+# java 17
+wget ~~~.tar.gz
+
+tar -xvzf amazon[tab]
+tar -xvzf kafka[tab]
+
+ln -s amazon[tab].[tab] java
+ln -s kafka[tab] kafka
+
+ls -l
+
+# 설정
+sudo vim ~/.bashrc
+
+[o]
+
+# python
+alias python=python3
+# java
+export JAVA_HOME=/home/big/java
+# kafka
+export KAFKA_HOME=/home/big/kafka
+# path
+export PATH=$JAVA_HOME/bin:$KAFKA_HOME/bin:$PATH
+
+[esc] :wq!
+
+source ~/.bashrc
+
+python -V
+java -version
+javac -version
+
+cd $KAFKA_HOME
+
+# kafka cluster 초기화
+KAFKA_CLUSTER_ID="$(bin/kafka-storage.sh random-uuid)"
+
+# format
+bin/kafka-storage.sh format --standalone -t $KAFKA_CLUSTER_ID -c config/server.properties
+
+# 실행
+bin/kafka-server-start.sh config/server.properties
+
+# 새 창
+cd kafka
+
+# topic 생성
+bin/kafka-topics.sh --create --topic multi --bootstrap-server localhost:9092
+
+# producer가 topic에 event 등록
+bin/kafka-console-producer.sh --topic multi --bootstrap-server localhost:9092
+> multi
+> kafka
+
+# 새 창
+# consumer가 topic에 등록된 event 확인
+cd kafka
+bin/kafka-console-consumer.sh --topic multi --from-beginning --bootstrap-server localhost:9092
+
+producer 	-msg(event)-> 		kafka (broker) / topic		-msg ->		consumer
+
+# miniconda
+# 터미널 들어갔을 때 자동으로 (base) 가상환경 실행 취소
+conda config --set auto_activate_base false
+
+# channel 확인
+conda config --show channels
+
+conda config --add channels conda-forge
+conda config --set channel_priority strict
+
+conda config --remove channels defaults
+
+conda config --show channels
+
+cd miniconda3
+vim .condarc
+
+channels
+	- conda-forge
+[esc] :wq!
+
+# kafka-python
+
+conda create -n multi python=3.13
+
+cd
+
+mkdir multi_kafka
+cd multi_kafka
+
+conda activate multi
+
+pip install kafka-python
+
+vim producer01.py
+####
+
+from kafka import KafkaProducer
+
+
+producer = KafkaProducer()
+
+for i in range(100):
+	producer.send("multi", value=bytes(f"{i}", "utf-8"))
+	producer.flush()
+
+producer.close()
+
+
+####
+
+
+vim consumer01.py
+
+from kafka import KafkaConsumer
+
+
+consumer = KafkaConsumer(
+			"multi",
+			auto_offset_reset="earliest",
+			consumer_timeout_ms=1000
+		)
+
+for msg in consumer:
+	print(f"{msg.topic} : {msg.value}")
+
+consumer.close()
+
+####
+python producer01.py
+python consumer01.py
+
+
+####
+
+vim producer02.py
+
+from kafka import KafkaProducer
+from pprint import pprint
+
+
+producer = KafkaProducer(bootstrap_servers=["localhost:9092"], acks=0)
+
+for i in range(100):
+	producer.send("multi", value=bytes(f"{i}", "utf-8"))
+	producer.flush()
+
+print(producer.partitions_for("multi"))
+pprint(producer.metrics())
+
+producer.close()
+
+vim consumer02.py
+
+from kafka import KafkaConsumer
+from pprint import pprint
+
+
+consumer = KafkaConsumer("multi",
+			bootstrap_servers=["localhost:9092"],
+			auto_offset_reset="earliest",
+			consumer_timeout_ms=1000
+			)
+
+for msg in consumer:
+	print(f"{msg.topic} : {msg.partition} {msg.offset} : {msg.value}")
+
+pprint(consumer.metrics())
+
+consumer.close()
+
+python producer02.py
+python consumer02.py
+
+# 새 창
+github -> dongheon-dev -> data 
+wget https://github.com/dongheon-dev/data/archive/refs/heads/master.zip
+
+unzip master.zip
+mv data-master data
+
+# 다시 원래 창
+cd ~/multi_kafka
+
+vim producer03.py
+
+from kafka import KafkaProducer
+import json
+
+
+with open("../data/card_data/json/202112.json") as file:
+	data = json.load(file)
+
+
+producer = KafkaProducer(bootstrap_servers=["localhost:9092"],
+			value_serializer=lambda x: json.dumps(x).encode("utf-8"))
+
+producer.send("account", value=data)
+producer.flush()
+
+producer.close()
+
+
+# server 통신 시 직렬화(serialize) 해야 하는 이유???
+
+vim consumer03.py
+
+from kafka import KafkaConsumer
+import json
+
+
+consumer = KafkaConsumer("account",
+			bootstrap_servers=["localhost:9092"],
+			value_deserializer=lambda x: json.loads(x.decode("utf-8")),
+			auto_offset_reset="earliest",
+			consumer_timeout_ms=1000)
+
+
+for msg in consumer:
+	print(f"{msg.topic} : {msg.value} ")
+
+consumer.close()
+
+python producer03.py
+python consumer03.py
+
+vim producer04.py
+
+from kafka import KafkaProducer
+import json
+
+
+producer = KafkaProducer(bootstrap_servers=["localhost:9092"],
+			value_serializer=lambda x: json.dumps(x).encode("utf-8"))
+
+
+for i in range(1000):
+	producer.send("numbers", value={"mynum" : i})
+	producer.flush()
+
+producer.close()
+
+
+vim consumer04.py
+
+from kafka import KafkaConsumer
+import json
+
+
+consumer = KafkaConsumer("numbers",
+			bootstrap_servers=["localhost:9092"],
+			group_id="multi04",
+			value_deserializer=lambda x: json.loads(x.decode("utf-8")),
+			auto_offset_reset="earliest",
+			consumer_timeout_ms=5000)
+
+for msg in consumer:
+	print(f"{msg.value}")
+
+consumer.close()
+
+vim consumer05.py
+
+from kafka import KafkaConsumer
+import json
+
+
+consumer = KafkaConsumer(bootstrap_servers=["localhost:9092"],
+			value_deserializer=lambda x: json.loads(x.decode("utf-8")),
+			auto_offset_reset="earliest",
+			consumer_timeout_ms=5000)
+
+
+consumer.subscribe(["account", "numbers"])
+
+for msg in consumer:
+	print(f"{msg.topic} : {msg.value}")
+
+consumer.close()
+
+
+python consumer05.py
+
+~/kafka/bin/kafka-topics.sh --list --bootstrap-server localhost:9092
+
+# __consumer_offsets : consumer group이 읽어드리는 topic의 offset을 저장
+
+vim adminclient05.py
+
+from kafka import KafkaAdminClient
+from pprint import pprint
+
+admin_client = KafkaAdminClient(bootstrap_servers=["localhost:9092"])
+
+print(admin_client.describe_cluster())
+print("--")
+print(admin_client.describe_consumer_groups(["multi04"]))
+print("--")
+
+pprint(admin_client.describe_topics())
+
+print("--")
+print(admin_client.list_consumer_groups())
+print("--")
+print(admin_client.list_topics())
+
+python adminclient05.py
+
+
+vim consumer06.py
+
+from kafka import KafkaConsumer
+import json
+
+
+consumer = KafkaConsumer("numbers",
+			bootstrap_servers=["localhost:9092"],
+			value_deserializer=lambda x: json.loads(x.decode("utf-8")),
+			auto_offset_reset="earliest",
+			group_id="none04",
+			consumer_timeout_ms=5000)
+
+for msg in consumer:
+	print(f"{msg.topic}: {int(msg.value['mynum'])}")
+	if int(msg.value["mynum"]) == 50:
+		break
+
+consumer.close()
+
+python consumer06.py
+
+~/kafka/bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --describe --all-groups
+
+python consumer06.py
+
+~/kafka/bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --describe --all-groups
+
+python consumer06.py
+
+~/kafka/bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --describe --all-groups
+
+vim adminclient07.py
+
+from kafka.admin import KafkaAdminClient, NewTopic
+
+
+admin_client = KafkaAdminClient(bootstrap_servers=["localhost:9092"])
+new_topic = NewTopic(name="partition-topic", num_partitions=2, replication_factor=1)
+
+admin_client.create_topics([new_topic])
+
+
+python adminclient07.py
+
+vim producer07.py
+
+from kafka import KafkaProducer
+
+producer = KafkaProducer(bootstrap_servers=["localhost:9092"])
+
+producer.send("partition-topic", value=b"hello", partition=0)
+producer.flush()
+
+producer.send("partition-topic", value=b"world", partition=1)
+producer.flush()
+
+producer.close()
+
+python producer07.py
+
+vim consumer07.py
+
+from kafka import KafkaConsumer
+
+
+consumer = KafkaConsumer("partition-topic",
+			bootstrap_servers=["localhost:9092"],
+			auto_offset_reset="earliest",
+			consumer_timeout_ms=1000)
+
+for msg in consumer:
+	print(f"{msg.partition} : {msg.value}")
+
+consumer.close()
+
+vim producer08.py
+
+from kafka.admin import KafkaAdminClient, NewTopic
+from kafka import KafkaProducer
+
+
+topic_name = "five-topics"
+topic_partitions = 5
+admin_client = KafkaAdminClient(bootstrap_servers=["localhost:9092"])
+new_topic = NewTopic(name=topic_name, num_partitions=topic_partitions, replication_factor=1)
+
+admin_client.create_topics([new_topic])
+
+
+producer = KafkaProducer(bootstrap_servers=["localhost:9092"])
+
+for i in range(topic_partitions):
+	producer.send(topic_name, value=bytes(f"{i}", "utf-8"), partition=i)
+	producer.flush()
+
+producer.close()
+
+vim consumer08.py
+
+from kafka import KafkaConsumer
+from kafka.coordinator.assignors.roundrobin import RoundRobinPartitionAssignor
+
+from threading import Thread
+
+
+def myConsumer(name):
+	consumer = KafkaConsumer("five-topics",
+				group_id="five",
+				bootstrap_servers=["localhost:9092"],
+				auto_offset_reset="earliest",
+				consumer_timeout_ms=10000,
+				partition_assignment_strategy=[RoundRobinPartitionAssignor()])
+
+	for msg in consumer:
+		print(f"{name} : {msg.value}")
+
+	consumer.close()
+
+
+
+if __name__ == "__main__":
+	thread01 = Thread(target=myConsumer, args=("consumer01",), name="consumer01")
+	thread02 = Thread(target=myConsumer, args=("consumer02",), name="consumer02")
+	
+	thread01.start()
+	thread02.start()
+	thread01.join()
+	thread02.join()
+
+
+
+# -----------
+
+kafka (broker) : msg(topic)
+- producer (client)
+- consumer (client)
+
+reflection
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
