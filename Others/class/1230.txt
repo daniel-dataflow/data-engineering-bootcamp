@@ -1,0 +1,568 @@
+QR !!
+
+
+Trello
+
+<Data Engineer>
+DataBase
+- RDB : MySQL, PostgreSQL (SQL -> DDL / DML / DCL (/TCL))
+- NoSQL : MongoDB, Redis
+
+<-> Connector (Driver)
+
+Linux : 기초 명령어, shell script
+
+Hadoop : 데이터를 분산 저장 -> DataLake
+- HDFS
+
+Spark : 데이터를 처리/가공
+
+Zeppelin (NoteBook) : browser에서 사용
+
+Airflow : pipeline
+
+Kafka : 실시간 처리 (Pub/Sub 구조)
+
+-------
+
+Elastic Stack 				<->	OpenSearch
+
+E : elasticsearch : 분산 vector db
+L : logstash : event 수집, 정제
+K : kibana : 시각화, 관리
++
+B : Beats : 경량 수집도구
+
+big
+big
+big
+1234
+1234
+
+sudo apt update && sudo apt upgrade -y
+
+sudo apt install ubuntu-desktop -y
+
+reboot
+
+# github -> dongheon-dev -> .,..
+wget https://github.com/dongheon-dev/data/archive/refs/heads/master.zip
+
+unzip master.zip
+mv data-master data
+
+# mysql
+sudo apt install mysql-server -y
+sudo apt install mysql-client -y
+
+sudo service mysql start
+sudo systemctl enable mysql
+sudo service mysql status
+
+# mysql-connector-j
+wget ~.deb
+
+sudo dpkg -i mysql[tab]
+
+sudo cp ~/data/card_data/csv/202112.csv /var/lib/mysql-files/card.csv
+
+sudo ls /var/lib/mysql-files/
+
+
+sudo mysql -u root
+
+use mysql;
+
+alter user 'root'@'localhost' identified with mysql_native_password by '1234';
+
+create user 'root'@'%' identified by '1234';
+
+grant all privileges on *.* to 'root'@'localhost' with grant option;
+grant all privileges on *.* to 'root'@'%' with grant option;
+
+flush privileges;
+
+create table card (
+	postdate varchar(8),
+	transdate varchar(8),
+	amount integer,
+	pointree varchar(100),
+	maincategory varchar(100),
+	subcategory varchar(100),
+	store varchar(100)
+);
+
+
+load data infile '/var/lib/mysql-files/card.csv'
+into table card
+fields terminated by ','
+ignore 1 rows;
+
+
+alter table card add column id int not null auto_increment primary key first;
+
+select * from card;
+
+exit;
+
+# ELK
+wget elastic~
+wget kibana~
+wget logstash~
+
+tar -xvzf elastic[tab]
+tar -xvzf kibana[tab]
+tar -xvzf logstash[tab]
+
+ln -s elastic[tab] elasticsearch
+ln -s kibana[tab] kibana
+ln -s logstash[tab] logstash
+
+ls -l
+
+
+sudo vim ~/.bashrc
+
+# elk
+export ELASTIC_HOME=/home/big/elasticsearch
+export LOGSTASH_HOME=/home/big/logstash
+export KIBANA_HOME=/home/big/kibana
+
+export PATH=$ELASTIC_HOME/bin:$LOGSTASH_HOME/bin:$KIBANA_HOME/bin:$PATH
+
+[esc] :wq!
+
+source ~/.bashrc
+
+elasticsearch
+
+elasticsearch-reset-password -i -u elastic
+# y
+# 123456
+
+kibana
+
+# 새 창
+logstash-plugin install logstash-integration-jdbc
+
+vim ~/logstash/card.conf
+
+input {
+	jdbc {
+		jdbc_driver_library => "/usr/share/java/mysql-connnector-j-9.5.0.jar"
+		jdbc_driver_class => "com.mysql.cj.jdbc.Driver"
+		jdbc_connection_string => "jdbc:mysql://localhost:3306/mysql"
+		jdbc_user => "root"
+		jdbc_password => "1234"
+		statement => "select * from card"
+		schedule => "* * * * *"
+	}
+}
+filter {
+}
+output {
+	elasticsearch {
+		data_stream => "false"
+		index => "card"
+		hosts => ["https://127.0.0.1:9200"]
+		ssl_certificate_authorities => "/home/big/elasticsearch/config/certs/http_ca.crt"
+		ssl_verification_mode => "full"
+		user => "elastic"
+		password => "123456"
+		document_id => "%{id}"
+	}
+}
+
+[esc] :wq!
+
+
+
+logstash -f ~/logstash/card.conf
+
+
+https://localhost:9200/card/_search?sort=id
+
+RDB			<---->			Elastic
+
+database					index
+table						type
+row						document
+column						field
+schema						mapping
+index						index
+sql						query dsl
+
+
+
+# REST 연습
+
+# 전체 출력
+GET card/_search
+
+# count
+GET card/_count
+
+# id를 가지고 특정 데이터 검색
+GET card/_doc/1
+
+# field type
+GET card/_mapping
+
+# maingcategory가 '식사' 인 데이터 검색
+GET card/_search
+{
+	"query": {
+		"term": {
+			"maincategory": {
+				"value": "식사"
+			}
+		}
+	}
+}
+
+# 위와 동일
+GET card/_search
+{
+	"query": {
+		"bool": {
+			"must": [
+				{"match": {
+					"maincategory" : "식사"
+					}
+				}
+			]
+		}
+	}
+}
+
+# 또!
+GET card/_search
+{
+	"query": {
+		"bool": {
+			"filter": [
+				{"term": {
+					"maincategory" : "식사"
+				}}
+			]
+		}
+	}
+}
+
+# match + filter
+GET card/_search
+{
+	"query": {
+		"bool": {
+			"must": [
+				{"match": 
+					{"maincategory": "식사"}}
+			],
+			"filter": [
+				{"term": {
+					"subcategory": "닭강정"
+				}}
+			]
+		}
+	}
+}
+
+# postdate가 202011201 인 데이터들 중에 amount가 5000 이상인 데이터들 검색
+GET card/_search
+{
+	"query": {
+		"bool": {
+			"must": [{"match": {
+						"postdate": "20211201"
+					}
+				}
+			],
+			"filter": [{"range": {
+						"amount": {
+							"gte": 5000
+						}
+					}
+				}
+			]
+		}
+	}
+}
+
+# must : and
+# should : or
+GET card/_search
+{
+	"query": {
+		"bool": {
+			"should": [
+				{"match":
+					{"postdate": "20211204"}
+				},
+				{"match":
+					{"postdate": "20211207"}
+				}
+			]
+		}
+	}
+}
+
+# 위와 동일
+GET card/_search
+{
+	"query": {
+		"match": {
+			"postdate": {
+				"query": "20211204 20211207",
+				"operator": "or"
+			}
+		}
+	}
+}
+
+
+# 집계
+GET card/_search
+{
+	"aggs": {
+		"maincategory": {
+			"terms": {
+				"field": "maincategory.keyword"
+			}	
+		}
+	}
+}
+
+# min
+GET card/_search
+{
+	"aggs": {
+		"min_amount": {
+			"min": {
+				"field": "amount"
+			}
+		}
+	}
+}
+
+# amount가 0보다 크면서 가장 작은 값?
+GET card/_search
+{
+	"query": {
+		"bool": {
+			"filter": [
+				{"range":
+					{"amount": {"gte": 0}}
+				}
+			]
+		}
+	},
+	"aggs": {
+		"min_account": {
+			"min": {
+				"field": "amount"
+			}
+		}
+	}
+}
+
+# maincategory 로 groupby 해서 평균
+GET card/_search
+{
+	"aggs": {
+		"mygroup": {
+			"composite": {
+				"sources": [
+					{"group_main": {
+						"terms": {
+							"field": "maincategory.keyword"
+						}
+					}}
+				]
+			},
+			"aggs": {
+				"average": {
+					"avg": {"field": "amount"}
+				}
+			}
+		}
+	}
+}
+
+# histogram
+GET card/_search
+{
+	"aggs": {
+		"histogram_aggs": {
+			"histogram": {
+				"field": "amount",
+				"interval": 100000
+			}
+		}
+	}
+}
+
+# sql 로 검색
+GET _sql?format=txt
+{
+	"query": """
+		select * from card
+	"""
+}
+
+GET _sql?format=csv
+{
+	"query": """
+		select * from card
+	"""
+}
+
+GET _sql?format=json
+{
+	"query": """
+		select * from card
+	"""
+}
+
+# cursor
+GET _sql?format=json
+{
+	"query": """
+		select * from card
+	""",
+	"fetch_size": 5
+}
+
+GET _sql?format=json
+{
+	"query": """
+		select * from card
+	""",
+	"fetch_size": 5,
+	"cursor": "???"
+}
+
+# _sql (sql) -> querydsl
+GET _sql/translate
+{
+	"query": """
+		select maincategory, avg(amount)
+		from card
+		group by maincategory
+	"""
+}
+
+
+reflection
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
