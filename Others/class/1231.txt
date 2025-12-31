@@ -1,0 +1,334 @@
+QR !!!
+
+
+elasticsearch -d
+
+# nohup kibana >> kibana.log &
+kibana
+
+# localhost:5601
+# elastic
+# 123456
+
+# REST
+# - GET : 검색
+# - PUT : 생성 (index, document)
+# - POST : 수정
+# - DELETE : 삭제
+
+
+PUT test01
+
+PUT test01/_doc/1
+{
+	"name": "dongheon",
+	"age": 100,
+	"class": "data engineer"
+}
+
+GET test01/_search
+
+GET test01/_mapping
+
+
+PUT test01/_create/2
+{
+	"name": "hong-gd",
+	"age": 50,
+	"class": "data science"
+}
+
+GET test01/_search
+
+POST test01/_doc
+{
+	"name": "lee-ss",
+	"age": 30,
+	"class": "web developer"
+}
+
+POST test01/_update/1
+{
+	"doc": {"name": "이동헌"}
+}
+
+GET test01/_doc/1
+GET test01/_doc/2
+
+
+DELETE test01
+
+GET test01/_search
+
+PUT test02
+
+# keyword : analyzer 미적용 (정확하게 일치) 
+# text : analyzer 적용 (full text search -> tokenizing 한다.)
+PUT test02/_mapping
+{
+	"properties": {
+		"name": {"type": "keyword"},
+		"age": {"type": "integer"},
+		"addr": {"type": "text"},
+		"class": {"type": "keyword"},
+		"birthday": {"type": "date"}
+	}
+}
+
+GET test02/_mapping
+
+PUT test02/_doc/1
+{
+	"name": "dongheon",
+	"age": 100,
+	"addr": "경기도 수원시 영통구",
+	"class": "data engineer",
+	"birtday": "2025-12-31"
+}
+
+POST _bulk
+{
+	"index": 
+	{
+		"_index": "test02",
+		"_id": "2"
+	}
+}
+{
+	"name": "two"
+}
+{
+	"delete":
+	{
+		"_index": "test02",
+		"_id": "1"
+	}
+}
+{
+	"create":
+	{
+		"_index": "test02",
+		"_id": "3"
+	}
+}
+{
+	"name": "three"
+}
+{
+	"update":
+	{
+		"_id": "2",
+		"_index": "test02"
+	}
+}
+{
+	"doc": {"name": "2"}
+}
+
+
+GET test02/_search
+
+# https://localhost:9200/_all
+# GET _all 과 동일!
+
+POST test02/_close
+# shard 가 offline으로 전환 -> 메모리 절약
+
+POST test02/_open
+
+# analyzer
+
+POST _analyze
+{
+	"analyzer": "whitespace",
+	"text": "Elasticsearch is <b>Very Easy</b>"
+}
+
+POST _analyze
+{
+	"tokenizer": "lowercase",
+	"text": "Elasticsearch is <b>Very Easy</b>"
+}
+
+
+POST _analyze
+{
+	"tokenizer": "standard",
+	"char_filter": ["html_strip"],
+	"filter": ["lowercase", "asciifolding"],
+	"text": "Elasticsearch is <b>Very Easy</b>"
+}
+
+PUT test03
+{
+	"settings": {
+		"analysis": {
+			"analyzer": {
+				"my_analyzer": {
+					"tokenizer": "lowercase",
+					"char_filter": ["html_strip"],
+					"filter": ["asciifolding", "stemmer"]
+				}
+			}
+		}
+	},
+	"mappings": {
+		"properties": {
+			"corpus": {"type": "text", "analyzer": "my_analyzer"}
+		}
+	}
+}
+
+GET test03/_analyze
+{
+	"analyzer": "my_analyzer",
+	"text": "Elasticsearch is <b>Very Easy</b>"
+}
+
+# elasticsearch
+# is
+# veri
+# easi
+
+
+PUT test03/_doc/1
+{
+	"corpus": "Elasticsearch is <b>Very Easy</b>"
+}
+
+GET test03/_search
+{
+	"query": {
+		"match": {
+			"corpus": "easy"
+		}
+	}
+}
+
+GET test03/_search
+{
+	"query": {
+		"match": {
+			"corpus": "easi"
+		}
+	}
+}
+
+# 새로운 터미널
+sudo ./elasticsearch/bin/elasticsearch-plugin install analysis-nori
+
+# python
+sudo apt install python3-pip -y
+
+sudo vim ~/.bashrc
+
+alias python=python3
+[esc]:wq!
+
+source ~/.bashrc
+
+pip config set global.break-system-packages true
+
+pip install elasticsearch
+
+vim elastic.py
+
+from elasticsearch import Elasticsearch
+
+
+client = Elasticsearch(
+		"https://localhost:9200",
+		ca_certs="/home/big/elasticsearch/config/certs/http_ca.crt",
+		basic_auth=("elastic", "123456")
+	)
+
+print(client.info())
+print(client.get(index="card", id="1"))
+# GET card/_search/1
+
+
+[esc]:wq!
+
+python elastic.py
+
+card
+card*
+
+
+
+
+
+project 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
