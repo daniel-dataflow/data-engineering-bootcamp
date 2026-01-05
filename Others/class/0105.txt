@@ -1,0 +1,281 @@
+QR !!!
+
+python -> 데이터 분석 / 데이터 엔지니어
+database : rdb (mysql, postgresql) / nosql (mongodb, redis)
+----
+데이터 분석
+- ML / DeepLearning
+- crawling 
+- visualization
+----
+데이터 엔지니어
+- linux
+- hadoop
+- spark
+- kafka
+- airflow
+================================================================
+docker
+
+
+<용어>
+container
+image
+pull : download images
+run : image를 기반으로 container 실행
+
+
+
+docker run -it ubuntu:24.04 bash
+- i : interactive
+- t : psudo-tty (terminal 접속)
+- bash : container의 bash shell을 실행하여 접속
+
+whoami
+pwd
+ls
+
+exit
+
+# docker process (container) 확인
+docker ps == docker container ls
+docker ps -a
+
+docker rm determined_elgamal
+
+docker ps -a
+
+docker run -it --name linux ubuntu:24.04 bash
+exit
+docker ps -a
+
+docker rm linux
+
+docker run -it --name linux -d ubuntu:24.04 bash
+# -d : detached (background 실행)
+
+docker ps
+
+# background 상태의 container에 접속
+docker exec -it linux bash
+exit
+
+# pull 되어있는 images 확인
+docker images
+
+hadoop
+
+
+docker run --name hadoop -it apache/hadoop:3.4.0 bash
+
+pwd
+ls
+cd etc/hadoop
+ls
+vi hadoop-env.sh
+[esc]:q!
+
+exit
+
+docker ps -a
+
+# docker hub에 올리고 싶다!
+# 1. commit (image로 만들기)
+docker commit hadoop dongheondev/myhadoop:1.0.0
+
+docker images
+
+# 2. hub login
+docker login
+
+# 3. hub에 push
+docker push dongheondev/myhadoop:1.0.0
+
+#-----
+
+# image 삭제
+docker rmi dongheondev/myhadoop:1.0.0
+
+docker images
+
+docker rmi apache/hadoop:3.4.0
+
+docker rm hadoop
+
+docker images
+
+docker run --name my -it hodol0213/myhadoop:1.0.0 bash
+
+exit
+
+docker ps
+
+docker start my
+docker ps
+
+docker exec -it my bash
+exit
+
+
+docker rm -f my
+
+# window
+cd Desktop
+or
+cd onedrive/"바탕 화면"
+
+# mac
+cd Documents (or anywhere)
+
+# volume : directory 공유!
+mkdir volume
+
+cd volume
+
+# win
+notepad index.html
+# mac
+touch index.html
+
+vim index.html
+
+<h1>hello, docker</h1>
+
+[esc]:wq!
+
+docker run -d --name volume -p 8080:80 -v "c:\Users\student\Desktop\volume":/usr/share/nginx/html nginx
+# "c:\Users\student\oneDrive\바탕 화면\volume"
+# "c:\Users\student\Desktop\volume"
+# "/home/student/Documents/volume"
+
+# localhost:8080
+
+-v : volume (host path : container path)
+-p : port (host port : container port)
+
+
+
+# dockerfile
+
+# win
+type nul > Dockerfile
+notepad Dockerfile
+
+# mac
+vim Dockerfile
+## ---
+
+FROM ubuntu:24.04
+RUN apt-get update && apt-get upgrade -y
+RUN echo "hello, world" >> hello.txt
+RUN cat hello.txt
+
+CMD ["/bin/bash"]
+
+## ---
+
+# build dockerfile
+docker build .
+
+docker ps -a
+docker images
+
+# -t : tag
+docker build -t mylinux:latest .
+
+docker images
+
+# docker-compose.yaml
+
+# win
+notepad docker-compose.yaml
+# mac
+vim docker-compose.yaml
+
+name: devops
+services:
+  gitlab:
+    container_name: 'gitlab'
+    image: 'gitlab/gitlab-ce:latest'
+    ports:
+      - '8972:80'
+    volumes:
+      - 'c:\Users\student\Desktop\volume\devops\gitlab\config:/etc/gitlab'
+      - 'c:\Users\student\Desktop\volume\devops\gitlab\logs:/var/log/gitlab'
+      - 'c:\Users\student\Desktop\volume\devops\gitlab\data:/var/opt/gitlab'
+
+  jenkins:
+    container_name: 'jenkins'
+    image: 'jenkins/jenkins'
+    ports:
+      - '8973:80'
+    volumes:
+      - 'c:\Users\student\Desktop\volume\devops\jenkins:/var/jenkins_home'
+
+# 만들기!
+volume\devops\gitlab\config
+volume\devops\gitlab\logs
+volume\devops\gitlab\data
+volume\devops\jenkins
+
+docker compose up
+
+
+
+docker exec -it gitlab bash
+cat /etc/gitlab/initial_root_password
+
+# 0GlT49FffNfOfcmIWJWrpUFCaVYh+R/m4J0Bib8H/kk=
+# root의 password
+# localhost:8972
+
+exit
+
+docker exec -it jenkins bash
+# CI/CD
+
+cat /var/jenkins_home/secrets/initialAdminPassword
+# 8fd27459f098455589d1edb7e76a7b40
+# localhost:8973
+
+exit
+
+docker compose down
+
+docker compose up
+
+# localhost:8973
+# volume\devops\jenkins\secrets\initialAdminPassword
+
+Docker : container 관리
+
+kubernetes : orchestration
+k8s
+
+sudo apt update && sudo apt upgrade -y
+
+sudo apt install ubuntu-desktop -y
+
+reboot
+
+reflection
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
