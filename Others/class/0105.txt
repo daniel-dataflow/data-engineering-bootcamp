@@ -258,11 +258,16 @@ sudo apt install ubuntu-desktop -y
 
 reboot
 
-reflection
 
+Docker
+-> container => image
+- ?
+- ?
+- Dockerfile
+- docker-compose.yaml
++ network
 
-
-
+K8S
 
 
 
