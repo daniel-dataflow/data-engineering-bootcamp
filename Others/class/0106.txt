@@ -1,0 +1,531 @@
+QR !!
+
+docker
+k8s
+
+sudo apt install openssh-server -y
+
+ca-certificates : 인증서 기반의 ssl 통신 지원
+
+curl -fsSL
+-f : html 오류페이지 없이
+-s : 다운로드 진행상황 없이
+-S : 오류 발생한다면 메세지 확인
+-L : 리디렉션 발생하면 따라가기
+
+sudo docker ps
+
+sudo usermod -aG docker $USER
+
+reboot
+
+docker ps
+sudo apt update && sudo apt upgrade -y
+
+apt-transport-https : https를 통해 패키지 접근 가능
+gpg : GNU Privacy Guard : 데이터 암호화 및 디지털 서명을 위한 패키지
+
+apt-mark hold : apt-get upgrade 명령으로 버전이 올라가는 것을 방지
+
+sudo systemctl enable --now kubelet
+
+# kubeadm 사용 시 반드시!! swap 비활성화!!
+sudo sed -i '/swap/d' /etc/fstab
+
+# container runtime으로 containerd 사용하기 위해
+sudo mkdir -p /etc/containerd
+
+sudo containerd config default | sudo tee /etc/containerd/config.toml
+
+# cgroup : control group
+sudo sed -i 's/SystemdCgroup = false/SystemdCgroup = true/' /etc/containerd/config.toml
+
+sudo systemctl restart containerd
+
+sudo kubeadm config images pull
+
+# clone worker1 / worker2
+
+sudo hostnamectl set-hostname master
+sudo hostnamectl set-hostname worker1
+sudo hostnamectl set-hostname worker2
+
+ip address
+192.168.31.142 master
+192.168.31.143 worker1
+192.168.31.144 worker2
+
+sudo vim /etc/hosts
+
+# master
+# 초기화
+sudo apt install conntrack
+sudo kubeadm init --pod-network-cidr=10.244.0.0/16
+
+cat > token.sh
+# ctrl + shift + v (kubeadm join ~)
+# ctrl + d
+
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+# cni (container network interface)
+# calico github -> manifests -> calico.yaml [raw]
+kubectl apply -f [ctrl + shift + v]
+
+# worker에 join 전달
+scp token.sh worker1:/home/big/token.sh
+scp token.sh worker2:/home/big/token.sh
+
+# worker1
+sudo apt install conntrack
+chmod +x token.sh
+
+sudo ./token.sh
+
+mkdir -p $HOME/.kube
+
+# worker2
+sudo apt install conntrack
+chmod +x token.sh
+
+sudo ./token.sh
+
+mkdir -p $HOME/.kube
+
+# master
+scp /home/big/.kube/config worker1:/home/big/.kube/config
+scp /home/big/.kube/config worker2:/home/big/.kube/config
+
+# node 확인
+kubectl get nodes
+# pod 확인
+kubectl get pods --all-namespaces
+
+sudo vim ~/.bashrc
+
+source <(kubectl completion bash)
+[esc]:wq!
+source ~/.bashrc
+
+kubectl get namespace
+kubectl get ns
+
+
+# default namespace
+kubectl get pods
+
+# k8s 운영과 관련된 pod 확인
+kubectl get pods -n kube-system
+
+# namespace 생성
+kubectl create ns test-system
+# namespace 삭제
+kubectl delete ns test-system
+# namespace 확인
+kubectl get ns
+
+
+kubectl run pod01 --image nginx
+
+kubectl get pods
+kubectl get pods -o wide
+
+curl -sf 10.244.189.65
+
+ip address
+# tunl0 -> calico cni가 사용하는 ternel interface
+
+watch -n 1 kubectl get pods -o wide
+
+vim pod02.yaml
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod02
+spec:
+  containers:
+  - name: nginx-container
+    image: nginx
+    ports:
+    - containerPort: 80
+
+[esc]:wq!
+
+kubectl apply -f pod02.yaml
+# run : 없으면 만들어라.
+# apply : 없으면 만들고, 있으면 업데이트해라.
+
+kubectl delete pod pod01
+kubectl delete pod pod02
+
+ls /etc/kubernetes/manifests/
+
+
+vim hello.yaml
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hello-pod
+spec:
+  containers:
+  - name: hello-container
+    image: busybox
+    command: ["/bin/sh", "-c"]
+    args:
+    - 'for i in $(seq 1 5); do echo "hello, world!"; sleep 5; done'
+
+[esc]:wq!
+
+
+kubectl apply -f hello.yaml
+
+# container lifecycle
+- wating
+
+- running
+
+- terminated
+
+vim lifecycle-pod.yaml
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: lifecycle-pod
+spec:
+  containers:
+  - name: lifecycle-con
+    image: busybox
+    command: ["/bin/sh", "-c", "exit 1"]
+
+[esc]:wq!
+
+kubectl apply -f lifecycle-pod.yaml
+
+kubectl describe pod lifecycle-pod
+
+vim liveness-pod.yaml
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: liveness-pod
+spec:
+  containers:
+  - name: liveness-con
+    image: busybox
+    command: ["/bin/sh", "-c"]
+    args:
+    - torch /tmp/healthy; sleep 30; rm -f /tmp/healthy; sleep 60
+    livenessProbe:
+      exec:
+        command:
+        - cat
+        - /tmp/healthy
+      initialDelaySeconds: 5
+      periodSeconds: 5
+
+[esc]:wq!
+
+vim initcontainer.yaml
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: init-pod
+spec:
+  initContainers:
+  - name: init-container01
+    image: busybox
+    command: ["/bin/sh", "-c", "sleep 10"]
+  - name: init-container02
+    image: busybox
+    command:
+    - /bin/sh
+    - -c
+    - sleep 10
+  containers:
+  - name: my-container
+    image: busybox
+    command: ["/bin/sh", "-c", "echo 'hello, init container!'; sleep 600;"]
+
+[esc]:wq!
+
+
+kubectl logs init-pod
+
+vim resources.yaml
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: resource-pod
+spec:
+  containers:
+  - name: resource-con
+    image: nginx
+    resources:
+      requests:
+        cpu: 0.1
+        memory: 200M
+      limits:
+        cpu: 0.5
+        memory: 1G
+
+[esc]:wq!
+
+kubectl delete pod resource-pod
+# 이후에 cpu 10으로 변경 후
+kubectl apply -f resources.yaml
+
+
+
+
+vim env-pod.yaml
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: env-pod
+spec:
+  containers:
+  - name: env-con
+    image: busybox
+    command: ["/bin/sh", "-c", "sleep 6000"]
+    env:
+    - name: TEST
+      value: "test"
+    - name: HOSTNAME
+      valueFrom:
+        fieldRef:
+          fieldPath: spec.nodeName
+    - name: PODNAME
+      valueFrom:
+        fieldRef:
+          fieldPath: metadata.name
+[esc]:wq!
+
+
+kubectl exec -it env-pod -- sh
+
+echo $TEST
+echo $HOSTNAME
+echo $PODNAME
+env
+exit
+
+
+# spec.containers[].name
+
+kubectl create configmap configmap01 --from-literal=username=dongheon --from-literal=password=1234
+
+# watch -n 1 kubectl get pods,configmap -o wide
+
+vim test.properties
+
+address=suwon
+phone=01011112222
+
+kubectl create configmap configmap02 --from-file=test.properties
+
+# 확인
+kubectl get configmap configmap01
+kubectl get configmap configmap02
+
+kubectl get configmap configmap01 -o yaml
+kubectl get configmap configmap02 -o yaml
+
+vim using-configmap.yaml
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: configmap-pod
+spec:
+  containers:
+  - name: configmap-con
+    image: busybox
+    command: ["/bin/sh", "-c", "echo $username && echo $password && echo $fileconfig"]
+    env:
+    - name: username
+      valueFrom:
+        configMapKeyRef:
+          name: configmap01
+          key: username
+    - name: password
+      valueFrom:
+        configMapKeyRef:
+          name: configmap01
+          key: password
+    - name: fileconfig
+      valueFrom:
+        configMapKeyRef:
+          name: configmap02
+          key: test.properties
+
+
+kubectl appyl -f using-configmap.yaml
+
+kubectl logs configmap-pod
+
+vim secret01.yaml
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: secret01
+type: Opaque
+stringData:
+  username: dongheon
+  password: "1234"
+
+vim env-secret.yaml
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: secret-pod
+spec:
+  containers:
+  - name: secret-con
+    image: busybox
+    command: ["/bin/sh", "-c", "sleep 6000"]
+    env:
+    - name: myid
+      valueFrom:
+        secretKeyRef:
+          name: secret01
+          key: username
+    - name: mypw
+      valueFrom:
+        secretKeyRef:
+          name: secret01
+          key: password
+
+kubectl apply -f secret01.yaml
+kubectl apply -f env-secret.yaml
+
+# watch -n 1 kubectl get pods,configmap,secret -o wide
+
+kubectl exec -it secret-pod -- sh
+
+echo $myid
+echo $mypw
+exit
+
+kubectl get secret secret01 -o jsonpath='{.data}'
+
+echo -n dongheon | base64
+
+echo -n ZG9uZ2hlb24= | base64 -d
+
+vim secret02.yaml
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: secret02
+type: Opaque
+data:
+  username: ZG9uZ2hlb24=
+
+[esc]:wq!
+
+kubectl apply -f secret02.yaml
+
+kubectl get secret secret02 -o jsonpath='{.data}'
+
+vim label01.yaml
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: server01
+  labels:
+    app: web-server
+    env: develop
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    ports:
+    - containerPort: 80
+
+cp label01.yaml label02.yaml
+vim label02.yaml
+
+name: server01 -> server02
+
+env: develop -> production
+
+
+kubectl apply -f label01.yaml -f label02.yaml
+
+kubectl get pods --selector env=develop
+kubectl get pods -l env=develop
+kubectl get pods -l env!=production
+
+kubectl get pods -l "env in (develop, production)"
+
+K8S
+-> Node -> Pod -> Container
+.yaml
+
+systemctl => containerd (runtime) / kubectl
+
+
+5:10
+
+reflection
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
