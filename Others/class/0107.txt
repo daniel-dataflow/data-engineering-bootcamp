@@ -509,8 +509,14 @@ kubectl get all
 
 
 
+k8s
+-> controller
+   service
+-> volume
 
++
 
+django
 
 
 
