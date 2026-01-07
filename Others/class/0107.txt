@@ -1,0 +1,534 @@
+QR !!!
+
+k8s
+- Node - Pod - container
+
+
+# controller
+
+vim replica.yaml
+
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: replica-set
+spec:
+  template:
+    metadata:
+      name: replica-pod
+      labels:
+        env: dev
+    spec:
+      containers:
+      - name: replica-con
+        image: nginx
+  replicas: 2
+  selector:
+    matchLabels:
+      env: dev
+[esc] :wq!
+
+kubectl apply -f replica.yaml
+
+watch -n 1 kubectl get pods,rs -o wide
+
+kubectl delete pod replica-set-99mgn
+
+kubectl delete rs replica-set
+
+kubectl apply -f replica.yaml
+
+kubectl scale rs replica-set --replicas 3
+
+kubectl delete rs replica-set --cascade=orphan
+
+vim deployment.yaml
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment
+  labels:
+    env: dev
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      env: dev
+  template:
+    metadata:
+      labels:
+        env: dev
+    spec:
+      containers:
+      - name: deploy-con
+        image: nginx
+
+[esc]:wq!
+
+
+watch -n 1 kubectl get deploy,rs,pods -o wide
+
+
+vim rolling.yaml
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rolling
+  annotations:
+    kubernetes.io/change-cause: version 1.28.1
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      env: dev
+  template:
+    metadata:
+      labels:
+        env: dev
+    spec:
+      containers:
+      - name: rolling-container
+        image: nginx:1.28.1
+
+kubectl apply -f rolling.yaml
+
+watch -n 1 kubectl get pods,deploy -o wide
+
+kubectl set image deployment rolling rolling-container=nginx:1.29.4
+
+kubectl edit deployment rolling
+
+vim rolling.yaml
+
+# change-cause: image: 둘 다 1.26.3
+
+kubectl apply -f rolling.yaml
+
+kubectl rollout history deployment rolling
+
+kubectl rollout undo deployment rolling
+
+kubectl describe deployment rolling | grep Image
+
+vim daemon.yaml
+
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: daemonset
+spec:
+  selector:
+    matchLabels:
+      name: daemonset
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        name: daemonset
+    spec:
+      containers:
+      - name: daemonset-con
+        image: nginx
+[esc] :wq!
+
+watch -n 1 kubectl get pods,ds -o wide
+
+# daemonset controller -> 모든 node에 pod가 배포
+
+
+kubectl get pod -n kube-system
+
+# master node에는 taint 가 걸려있다!! (taint : node에서 pod 배포 제한)
+kubectl describe nodes master | grep -i taint
+kubectl describe nodes worker1 | grep -i taint
+kubectl describe nodes worker2 | grep -i taint
+
+# toleration (pod에서 node에 배포될 수 있다.)
+
+vim toleration.yaml
+
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: daemonset
+spec:
+  selector:
+    matchLabels:
+      name: daemonset
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        name: daemonset
+    spec:
+      tolerations:
+      - key: node-role.kubernetes.io/control-plane
+        effect: NoSchedule
+      containers:
+      - name: daemonset
+        image: nginx
+
+kubectl delete ds daemonset
+
+# updateStrategy: 
+#   type: RollingUpdate
+
+
+Deployment type
+- RollingUpdate
+- Recreate
+
+Daemonset type
+- RollingUpdate
+- OnDelete
+
+# ---
+
+vim stateful.yaml
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: stateful-service
+spec:
+  selector:
+    env: dev
+  ports:
+  - port: 80
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: stateful
+spec:
+  selector:
+    matchLabels:
+      env: dev
+  serviceName: "stateful-service"
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        env: dev
+    spec:
+      containers:
+      - name: stateful
+        image: nginx
+  
+watch -n 1 kubectl get sts,pods -o wide
+
+
+# state : 상태
+# stateless : 상태가 다르다 / stateful : 상태가 같다
+
+kubectl scale sts stateful --replicas 5
+
+kubectl scale sts stateful --replicas 2
+kubectl scale sts stateful --replicas 3
+
+vim job.yaml
+
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: job
+spec:
+  template:
+    spec:
+      containers:
+      - name: job
+        image: busybox
+        command: ["/bin/sh", "-c", "echo hello"]
+      restartPolicy: Never
+
+[esc]:wq!
+
+kubectl apply -f job.yaml
+
+
+kubectl logs job-25v6q
+
+kubectl delete job job
+
+
+vim cron.yaml
+
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: cron
+spec:
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: cron
+            image: busybox
+            command: ["/bin/sh", "-c", "echo hello"]
+          restartPolicy: Never
+
+[esc]:wq!
+
+kubectl apply -f cron.yaml
+
+watch -n 1 kubectl get cronjob,pods -o wide
+
+vim cron.yaml
+
+jobTemplate:
+  spec:
+      completions: 4
+      parallelism: 2
+      template:
+
+
+kubectl delete cronjob cron
+kubectl apply -f cron.yaml
+
+# 1분(* * * * *)마다 작업이 2개씩 총 4개 완료
+
+
+# Service 종류
+- ClusterIP
+- NodePort
+- LoadBalancer
+- ExternalName
+- headless
+
+watch -n 1 kubectl get svc,deploy,pods -o wide
+
+kubectl delete svc stateful-service
+
+kubectl create deployment nginx-service --image=nginx --replicas=2 --port=80
+
+curl -sf 10.244.235.164
+curl -sf 10.244.189.98
+
+echo pod 1 > index.html
+kubectl cp index.html nginx-service-~~~~~:/usr/share/nginx/html/index.html
+
+curl -sf 10.244.235.164
+
+echo pod 2 > index.html
+kubectl cp index.html nginx-service-~~~~~:/usr/share/nginx/html/index.html
+
+curl -sf 10.244.189.98
+
+vim cluster.yaml
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: cluster-ip
+spec:
+  type: ClusterIP
+  selector:
+    app: nginx-service
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+
+curl -sf 10.108.148.188
+
+vim nodeport.yaml
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: nodeport
+spec:
+  type: NodePort
+  selector:
+    app: nginx-service
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+    nodePort: 30000
+
+# nodePort를 지정해주지 않으면 30000 ~ 32767 범위 내부에서 임의의 포트 자동 할당!
+
+# worker1 로 가서
+ip addr
+
+# master에서 브라우저 열고
+192.168.31.143:30000
+
+vim external.yaml
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: externalname
+spec:
+  type: ExternalName
+  externalName: google.com
+
+[esc]:wq!
+
+
+kubectl apply -f external.yaml
+
+kubectl run -it --rm alpine --image=alpine -- /bin/sh
+
+apk add curl
+
+# 이름.네임스페이스.타입.클러스터.로컬 (내부에서 외부에 연결 )
+curl externalname.default.svc.cluster.local
+nslookup externalname.default.svc.cluster.local
+exit
+
+kubectl delete svc --all
+
+vim headless.yaml
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: headless
+spec:
+  clusterIP: None
+  selector:
+    app: nginx-service
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+
+[esc]:wq!
+
+kubectl apply -f headless.yaml
+
+kubectl run -it --rm alpine --image=alpine -- /bin/sh
+
+apk add curl
+
+curl -sf headless.default.svc.cluster.local
+
+exit
+
+kubectl delete svc,deploy,pods --all
+
+# watch -n 1 kubectl get ing,svc,deploy,pods -o wide
+
+kubectl create deploy service01 --image nginx --port 80
+kubectl create deploy service02 --image nginx --port 80
+
+echo service01 > index.html
+kubectl cp index.html service01-~~~~~:/usr/share/nginx/html/index.html
+echo service02 > index.html
+kubectl cp index.html service02-~~~~~:/usr/share/nginx/html/index.html
+
+kubectl expose deploy service01
+kubectl expose deploy service02
+
+
+curl -sf 10.108.129.12
+curl -sf 10.111.25.53
+
+github kubernetes nginx
+
+# baremetal = local
+
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/refs/heads/main/deploy/static/provider/baremetal/deploy.yaml
+
+# ingress : 요청을 받아서 어떻게 처리할지 "규칙" 정의
+# ingress controller : 규칙대로 요청을 처리해주는 객체 -> L7 (application layer) 역할
+ingress-nginx 라는 controller 설치
+
+kubectl get ns
+
+vim ingress-config.yaml
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: service-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: service.com
+    http:
+      paths:
+      - path: /service01
+        pathType: Prefix
+        backend:
+          service:
+            name: service01
+            port:
+              number: 80
+      - path: /service02
+        pathType: Prefix
+        backend:
+          service:
+            name: service02
+            port:
+              number: 80
+
+
+
+kubectl apply -f ingress-config.yaml
+
+# hosts에 등록
+sudo vim /etc/hosts
+
+192.168.31.143 service.com
+
+[esc]:wq!
+
+# ingress controller 확인
+kubectl get svc,deploy -n ingress-nginx
+
+# 30298
+curl -sf service.com:30298/service01
+curl -sf service.com:30298/service02
+
+
+kubectl delete -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/refs/heads/main/deploy/static/provider/baremetal/deploy.yaml
+
+kubectl delete all --all
+
+kubectl delete ing --all
+
+kubectl get ns
+kubectl get all
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
