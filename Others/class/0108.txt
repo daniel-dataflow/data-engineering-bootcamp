@@ -1,0 +1,319 @@
+QR !!!!
+
+k8s
+- volume
+  - hostPath : 저렴하게 구축
+  - emptyDir : 영구적으로 유지되지 않지만 공유 가능 (local disk)
+
+
+vim empty-volume.yaml
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: emptydir
+spec:
+  containers:
+  - name: insert-container
+    image: busybox
+    command: ["/bin/sh", "-c", "echo '<h1>hello</h1>' > /html/index.html; sleep 6000;"]
+    volumeMounts:
+    - name: emptyvolume
+      mountPath: /html
+  - name: nginx-container
+    image: nginx
+    ports:
+    - containerPort: 80
+    volumeMounts:
+    - name: emptyvolume
+      mountPath: /usr/share/nginx/html
+  volumes:
+  - name: emptyvolume
+    emptyDir: {}
+
+kubectl apply -f empty-volume.yaml
+
+# watch -n 1 kubectl get pods -o wide
+
+curl 10.244.189.103
+
+# pod가 배포된 노드로 가서!
+sudo passwd
+su
+
+cd /var/lib/kubelet/pods/
+ls
+
+# master 에서 uid 확인
+# kubectl get pods emptydir -o yaml | grep uid
+
+cd bb6[tab]
+
+ls
+
+cd volumes
+ls
+cd kubernetes.io~empty-dir
+ls -l
+cd emptyvolume
+cat index.html
+
+# hostpath
+# master에서 작업
+vim host-volume.yaml
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hostpath
+spec:
+  containers:
+  - name: nginx-container
+    image: nginx
+    ports:
+    - containerPort: 80
+    volumeMounts:
+    - name: hostvolume
+      mountPath: /usr/share/nginx/html
+  volumes:
+  - name: hostvolume
+    hostPath:
+      path: /html
+      type: DirectoryOrCreate
+
+kubectl delete pod emptydir
+
+kubectl apply -f host-volume.yaml
+
+# worker2
+cd /html
+sudo vim index.html
+
+<h1>hostpath</h1>
+
+
+# master에서
+
+curl 10.244.189.104
+
+kubectl delete pod hostpath
+kubectl apply -f host-volume.yaml
+
+curl 10.244.235.170
+
+# nfs
+# Network FileSystem -> 여러 개의 pod가 하나의 volume을 공유
+
+# 모든 node에 설치
+sudo apt install nfs-common -y
+
+# master 에서
+sudo apt install nfs-kernel-server -y
+
+sudo mkdir -p /data
+sudo chmod 777 /data
+
+# 공유 설정
+echo "/data *(rw,sync,no_subtree_check)" | sudo tee -a /etc/exports
+
+sudo systemctl restart  nfs-server
+
+
+- PV : PersistentVolume - 공유 저장소 설정
+- PVC : PersistentVolumeClaim - 저장소 사용 요청
+
+vim nfs-pv.yaml
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-pv
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+  - ReadWriteMany
+  nfs:
+    path: /data
+    server: 192.168.31.142
+
+vim nfs-pvc.yaml
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-pvc
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+
+
+kubectl apply -f nfs-pv.yaml -f nfs-pvc.yaml
+
+kubectl delete pod hostpath
+
+# watch -n 1 kubectl get pv,pvc -o wide
+
+vim nfs-nginx.yaml
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nfs-nginx
+spec:
+  containers:
+  - name: nfs-container
+    image: nginx
+    ports:
+    - containerPort: 80
+    volumeMounts:
+    - name: nfsvolume
+      mountPath: /usr/share/nginx/html
+  volumes:
+  - name: nfsvolume
+    persistentVolumeClaim:
+      claimName: nfs-pvc
+
+kubectl apply -f nfs-nginx.yaml
+
+cd /data
+sudo vim index.html
+<h1>nfs</h1>
+
+kubectl get pods -o wide
+curl 10.244.189.105
+
+# configmap volume mount
+
+kubectl create configmap configmap02 --from-file=test.properties
+
+# watch -n 1 kubectl get pods,configmap -o wide
+
+vim volume-config.yaml
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: volume-config  
+spec:
+  containers:
+  - name: volume-config-container
+    image: busybox
+    command: ["/bin/sh", "-c", "cat /config/test.properties && sleep 6000"]
+    volumeMounts:
+    - name: config-volume
+      mountPath: /config
+  volumes:
+  - name: config-volume
+    configMap:
+      name: configmap02
+
+kubectl apply -f volume-config.yaml
+kubectl logs volume-config
+
+
+
+conda create -n multi08 python
+
+c:\workspaces\multi08_django
+
+pip install django
+
+# web framework
+
+django-admin startproject mysite djangotutorial
+
+djangotutorial (= project)
+ㄴmysite (= app)
+
+cd djangotutorial
+
+python manage.py runserver
+# ctrl + c 
+
+cd ..
+
+# django-admin startproject app project
+django-admin startproject hello django01
+
+cd django01
+
+wsgi / asgi : web (async) server gateway interface
+settings.py
+urls.py
+
+hello/views.py
+
+python manage.py runserver 0.0.0.0:8888
+# 0.0.0.0 : *
+
+django : MVT 구조
+Model
+View
+Tempate
+
+# ctrl + c
+
+공유폴더/ppt/django.pdf
+
+python manage.py startapp hello01
+
+django01 (=project)
+ㄴhello (=app)
+ㄴhello01 (=app)
+
+
+django : MVT 구조			<---->			MVC 구조
+- Model : database 담당						Model (db 연결 + business logic)
+- View : 처리 담당						Controller
+- Tempate : 화면 담당						View
+
+
+hello01/views.py
+hello01/urls.py
+
+hello/urls.py
+hello/views.py
+
+python manage.py runserver
+
+hello01/views.py
+hello01/urls.py
+
+# ctrl + c
+cd ..
+
+django-admin startproject tags django02
+
+cd django02
+
+tags/settings.py
+
+django02/templates
+django02/templates/tags
+# app/template.html로 만들 예정!
+
+templates/tags/index.html
+tags/views.py
+tags/urls.py
+
+python manage.py runserver
+
+
+Server Side Rendering (SSR)	<---->		Client Side Rendering (CSR)
+
+
+K8S
+-> Volume : data 공유할 수 있는 "저장소"
+    - emptyDir
+    - nodePath
+    - PV / PVC
+    + configMap
+
+DJango : python Web Framework
+
+Framework
+Library (Module) -> Package

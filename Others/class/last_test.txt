@@ -1,0 +1,96 @@
+dml이 아닌 것은 : drop -> mongodb
+select insert update delete
+
+mongodb의 데이터 저장 단위 -> db.collection.document // table
+
+spark 의 data type -> rdd, dataframe, dataset (java, scalar) // series
+
+hadoop module -> common, hdfs, mapreduce, yarn // kafka connect
+
+linux 시간 -> cron // ls, cat, man
+
+ubuntu -> apt // rpm, yum, dnf
+
+hadoop node -> namenode, secondarynamenode, datanode // node.js
+
+다른 출력 결과 : 1번
+select emp_no, last_name 
+from employees
+where emp_no > 10001 limit 1;
+
+explain : 실행 계획 (어떻게 실행할 건지 미리 예측) // index, join, window function
+
+mongodb 집계 -> aggregate // find, drop, rank?
+
+transaction : query 묶어서 작업 단위 -> rollback / commit 
+
+spark에서 지원하는 언어 : python, scala, java, r // go
+
+tar -xvzf // unzip : .zip, dpkg : .pkg, rpm
+
+shell 처음 실행 -> .bashrc // .log, .env, .conf
+
+a.log를 b.log로 -> mv a.log b.log // cp, ssh, cat, 
+
+sql에서 data를 삭제 -> delete // clear? , drop, remove?
+
+sql에서 table을 삭제 -> drop // ..
+
+hadoop에서 data 저장 단위 : block // chunk, node, file 
+
+rdb table 구조 : description (desc)
+
+docker process (=container) : docker ps // docker images, docker rm, docker rmi
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
