@@ -1,0 +1,180 @@
+QR !!
+
+
+출석 (강사가 체크한 출석내용) 시상식!
+- 정근상 : 커피
+  이주형 한대성
+
+- 개근상 : 커피 + @
+  김소영 박주언
+
+
+
+AWS 접속 확인!
+사용시간 : 08:30 ~ 18:30
+- 서버 임시 연장 가능 (무제한 X)
+- 19시, 22시, 02시 자동 종료
+- 주말 서버접속 불가
+
+
+# team01
+ssh -i de4_final01.pem ubuntu@16.208.23.213
+
+# team02
+ssh -i de4_final02.pem ubuntu@56.155.47.51
+
+# pem : ssh 접속 public key
+# ppk : putty 접속 key
+
+
+
+
+
+
+
+
+
+
+
+
+templates/
+  var/
+    forloop.html
+
+var/
+  views.py
+  urls.py
+
+
+templates/
+  var/
+    index.html
+ 
+cd django02
+
+python manage.py runserver
+
+templates/
+  var/
+    if01.html
+
+var/
+  views.py
+  urls.py
+
+templates/
+  var/
+    index.html
+    if02.html
+
+var/
+  views.py
+  urls.py
+
+templates/
+  var/
+    index.html
+    href.html
+var/
+  views.py
+  urls.py
+
+templates/
+  var/
+    index.html
+    get.html
+    post.html
+
+var/
+  views.py
+  urls.py
+
+templates/var/index.html
+* 검사하지 않는 숙제!
+csrf
+cors
+origin
+
+ctrl + c
+
+python manage.py startapp statics
+tags/settings.py
+
+django02/
+  static/
+    css/
+      style.css
+
+templates/
+  statics/
+    index.html
+
+statics/
+  views.py
+  urls.py
+
+tags/
+  urls.py
+
+templates/tags/index.html
+
+python manage.py runserver
+
+static/
+  js/
+    test.js
+
+templates/
+  statics/
+    index.html
+
+# localhost:8000/statics/
+
+# tags/urls.py -> statics/urls.py (statics/) -> statics/views.py/index(request) -> templates/statics/index.html
+
+# {% load static %}
+# http://localhost:8000/static/js/test.js
+# http://localhost:8000/static/css/style.css
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

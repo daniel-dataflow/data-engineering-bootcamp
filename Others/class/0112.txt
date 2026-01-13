@@ -1,0 +1,106 @@
+QR !!!
+
+=> 주제
+
+
+1. 멘토링
+- 데엔 / 데사 
+- 2시간 1팀 / 2시간 2팀 => 개인
+
+
+2. 프로젝트 문서 (블로그 등)
+- 오류 / 해결
+- 기능 구현
+- 일일보고서/주간보고서 x => 주간보고서 내용 
+
+
+3. 중간 산출물 (멘토링 발표자료)
+- 어디까지 했다/ 어디 할 예정이다
+- 문제가 뭐뭐가 있다
+- 앞으ㅏ로의 방향성
+
+
+주제 선정시 필요한 내용
+1. 분석
+- 타겟분석 (논문) *
+- 기능
+
+2. 기술 ***
+- DE
+- DS (논문)
+- WEB
+- DATA (논문)
+
+
+cd django02
+
+python manage.py startapp var
+
+# jinja2
+
+templates/var/
+  index.html
+  variable01.html
+
+django02/ (=project)
+  var/    (=app)
+    views.py
+    urls.py
+  tags/
+    urls.py
+  templates/
+    tags/
+      index.html
+
+python manage.py runserver
+# localhost:8000
+
+# tags/urls.py (localhost:8000/"") -> tags/views.py/index -> templates/tags/index.html
+# tags/urls.py (localhost:8000/var/) 
+  -> var/urls.py (localhost:8000/var/"") -> var/views.py/index -> templates/var/index.html
+# tags/urls.py (localhost:8000/var/var01/)
+  -> var/urls.py(localhost:8000/var/var01/) -> var/vies.py/variable01 -> templates/var/variable01.html
+
+
+# 설정 필요 (settings.py)			[default]
+django02(=project)				django02 (=project)
+ㄴtemplates					ㄴtags (=app)
+  ㄴtags					  ㄴtemplates
+  ㄴvar						ㄴvar (=app)
+  ㄴasdf					  ㄴtemplates
+    ...						ㄴadsf(=app)
+ㄴtags(=app)					  ㄴtemplates
+ㄴvar(=app)					...
+ㄴasdf(=app)
+...
+
+templates/
+  var/
+    variable02.html
+
+var/
+  views.py
+  urls.py
+templates/
+  var/
+     index.html
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

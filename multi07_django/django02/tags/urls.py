@@ -22,4 +22,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index),
     path('var/', include('var.urls')),
+    path('statics/', include('statics.urls')),
 ]
