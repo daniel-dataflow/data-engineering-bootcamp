@@ -1,0 +1,105 @@
+QR !!
+
+sqlite : 경량 디비 -> 모바일
+download -> path에 등록
+
+sqlite3
+.exit
+
+cd ..
+
+django-admin startproject dbtest django03
+
+cd django03
+
+python manage.py migrate
+# django03/db.sqlite3
+
+sqlite3 db.sqlite3
+
+.table
+.exit
+
+dbtest/settings.py
+# INSTALLED_APPS 에, models.py를 사용할 app을 등록해야 한다!! 반드시!!
+
+dbtest/models.py
+
+python manage.py makemigrations dbtest
+
+python manage.py sqlmigrate dbtest 0001
+
+python manage.py migrate
+
+sqlite3 db.sqlite3
+.table
+# dbtest_myboard
+.schema dbtest_myboard
+.exit
+
+python manage.py shell
+
+from dbtest.models import MyBoard
+from django.utils import timezone
+
+test = MyBoard(myname='testuser', mytitle='test title', mycontent='test 1234 content', mydate=timezone.now())
+test.save()
+
+# objects : django.db.models.Manager 객체
+MyBoard.objects.all()
+
+exit()
+
+dbtest/templates/
+  index.html
+
+dbtest/
+  views.py
+  urls.py
+
+python manage.py runserver
+
+templates/
+  detail.html
+dbtest/
+  views.py
+  urls.py
+
+templates/
+  insert.html
+
+views.py
+urls.py
+update.html
+
+"{% url 'update' dto.id %}"
+== 
+"/update/{{ dto.id }}"
+
+
+models.py
+MyBoard.objects(.all(), .get(), .filter(), ...)
+objects = Manager 객체
+# objects = django.db.models.Manager
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
