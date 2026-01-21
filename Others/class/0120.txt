@@ -1,0 +1,88 @@
+QR !!!
+
+다음주 월 - 상담
+- 원하는 회사/직무
+- 직무를 위한 준비
+
+django04/myboard/views.py
+		/templates/index.html
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# dummy data input
+# cd django04
+python manage.py shell
+
+from myboard.models import MyBoard
+from django.utils import timezone
+
+for i in range(1, 100):
+	temp = MyBoard(myname=i, mytitle=i, mycontent=i, mydate=timezone.now())
+	temp.save()
+
+exit()
+python manage.py runserver
+
+- 매니저님 슬랙 확인! (4단위기간 훈련비)
+- 멘토링 설문!
+http://localhost:8000/?page=8
+
+ctrl+ c
+
+python manage.py createsuperuser
+
+admin
+admin@admin.com
+1234
+1234
+y
+# Superuser created successfully.
+
+myboard/admin.py
+
+# admin app -> web에서 database를 사용(제어)
+# admin.py -> model 연결
+
+# localhost:8000/admin
+# admin / 1234
+
+models.py
+admin.py
+templates/register.html
+views.py
+urls.py
+
+ctrl+c
+
+python manage.py makemigrations myboard
+python manage.py migrate
+
+python manage.py runserver
+
+# localhost:8000/admin
+
+templates/login.html
+views.py
+
+
+
+
+
+
+

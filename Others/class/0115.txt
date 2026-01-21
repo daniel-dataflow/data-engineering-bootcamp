@@ -1,0 +1,63 @@
+QR !!!
+
+mysql -u root -p
+exit;
+
+cd ..
+
+django-admin startproject myboard django04
+
+pip install mysqlclient
+
+settings.py
+models.py
+
+
+myboard/templates/
+  index.html
+  detail.html
+  insert.html
+  update.html
+
+views.py
+urls.py
+
+cd django04
+
+cd django04
+python manage.py makemigrations myboard
+
+python manage.py migrate
+
+python manage.py runserver
+
+
+
+pip install mysqlclient==2.2.7
+
+
+conda create -n multi09 python=3.13 -y
+
+pip install django
+pip install mysqlclient
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
