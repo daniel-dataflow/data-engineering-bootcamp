@@ -1,0 +1,116 @@
+QR !!
+
+
+django -> Web Application
+- urls.py : 
+- views.py : 
+- models.py : 
+- templates/ : 
+
++ admin.py : 
++ authentication
+cd ..
+
+django-admin startproject mymember django05 
+cd django05
+
+settings.py
+django05/templates/
+		index.html
+		register.html
+
+forms.py
+views.py
+
+Class Based View (CBV) vs Function Based View (FBV)
+
+urls.py
+
+python manage.py runserver
+
+testuser
+12345678asdf
+
+localhost:8000/admin
+
+login.html
+result.html
+
+settings.py
+views.py
+urls.py
+
+ctrl + c
+cd ..
+django-admin startproject updown django06
+cd django06
+
+settings.py
+django06/templates/
+django06/media/
+
+index.html
+download.html
+
+views.py
+urls.py
+
+python manage.py runserver
+
+11:05
+
+
+----
+
+conda create -n multi10 python -y
+
+multi09_fast
+
+pip install fastapi[standard]
+# uvicorn : asgi server (Asynchronous Server Gateway Interface)
+pip install uvicorn
+
+mkdir fast01
+cd fast01
+
+fast01/main.py
+
+# dev server
+# fastapi dev main.py
+# 배포
+uvicorn main:app --reload
+
+localhost:8000
+localhost:8000/items/5
+localhost:8000/items/5?q=somequery
+
+# swagger ui (restful api documentation tool)
+localhost:8000/docs
+# alternative api
+localhost:8000/redoc
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

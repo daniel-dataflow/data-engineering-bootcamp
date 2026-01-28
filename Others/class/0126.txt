@@ -1,0 +1,21 @@
+QR !!!
+
+pip install sqlmodel
+#  SQLAlchemy
+
+pip install mysql-connector-python
+
+fast02/database.py
+      /main.py
+
+cd fast02
+uvicorn main:app --reload
+
+# localhost:8000/docs
+# localhost:8000/user/all/
+
+
+
+
+
+

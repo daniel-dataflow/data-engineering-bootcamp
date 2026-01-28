@@ -1,0 +1,51 @@
+QR !!
+fast01/
+  param01.py
+
+cd fast01
+uvicorn param01:app --reload
+# localhost:8000/docs
+# localhost:8000/param01/dkanrjsk
+# localhost:8000/param02/123
+# localhost:8000/param02/a
+# localhost:8000/param03
+
+
+# localhost:8000/param04/dongheon/100
+# localhost:8000/param04/dongheon/0
+
+ctrl + c
+param02.py
+
+uvicorn param02:app --reload
+
+# localhost:8000/param01/?name=dongheon&age=100
+# localhost:8000/param02
+# localhost:8000/param02?name=dongheon			-> age : 0
+# localhost:8000/param03?name=dongheon&age=100
+# localhost:8000/param03?name=dongheon			-> age : None
+
+# localhost:8000/param04?name=dongheon&addr=asdflkasjdpfiohasdiuofhbnasoidfnjioasdjfoiasdjiofjasdoifjoiasdjf
+
+# localhost:8000/param05?name=dongheon&hobby=game&hobby=music&hobby=book
+
+# localhost:8000/user?name=dongheon&age=100&addr=suwon
+# localhost:8000/user?name=dongheon
+
+ctrl+c
+pip install jinja2
+
+cd ..
+mkdir fast02
+fast02/main.py
+fast02/templates/
+	index.html
+
+cd fast02
+uvicorn main:app --reload
+
+# localhost:8000/user/all
+
+
+fast02/static/
+	style.css
